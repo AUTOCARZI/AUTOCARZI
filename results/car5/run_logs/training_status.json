@@ -1,0 +1,29 @@
+{
+    "AutonomousCar": {
+        "checkpoints": [
+            {
+                "steps": 64,
+                "file_path": "results/car5/AutonomousCar/AutonomousCar-64.onnx",
+                "reward": null,
+                "creation_time": 1750647572.686045,
+                "auxillary_file_paths": [
+                    "results/car5/AutonomousCar/AutonomousCar-64.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 64,
+            "file_path": "results/car5/AutonomousCar.onnx",
+            "reward": null,
+            "creation_time": 1750647572.686045,
+            "auxillary_file_paths": [
+                "results/car5/AutonomousCar/AutonomousCar-64.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.11.0"
+    }
+}

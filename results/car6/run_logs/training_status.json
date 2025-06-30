@@ -1,0 +1,65 @@
+{
+    "AutonomousCar": {
+        "checkpoints": [
+            {
+                "steps": 1024,
+                "file_path": "results/car6/AutonomousCar/AutonomousCar-1024.onnx",
+                "reward": null,
+                "creation_time": 1750648455.345438,
+                "auxillary_file_paths": [
+                    "results/car6/AutonomousCar/AutonomousCar-1024.pt"
+                ]
+            },
+            {
+                "steps": 2816,
+                "file_path": "results/car6/AutonomousCar/AutonomousCar-2816.onnx",
+                "reward": null,
+                "creation_time": 1750649012.586376,
+                "auxillary_file_paths": [
+                    "results/car6/AutonomousCar/AutonomousCar-2816.pt"
+                ]
+            },
+            {
+                "steps": 2816,
+                "file_path": "results/car6/AutonomousCar/AutonomousCar-2816.onnx",
+                "reward": null,
+                "creation_time": 1750649261.508597,
+                "auxillary_file_paths": [
+                    "results/car6/AutonomousCar/AutonomousCar-2816.pt"
+                ]
+            },
+            {
+                "steps": 3292,
+                "file_path": "results/car6/AutonomousCar/AutonomousCar-3292.onnx",
+                "reward": 11.691649794578552,
+                "creation_time": 1750649557.3539782,
+                "auxillary_file_paths": [
+                    "results/car6/AutonomousCar/AutonomousCar-3292.pt"
+                ]
+            },
+            {
+                "steps": 3352,
+                "file_path": "results/car6/AutonomousCar/AutonomousCar-3352.onnx",
+                "reward": 1.5088622458279133,
+                "creation_time": 1750649848.576749,
+                "auxillary_file_paths": [
+                    "results/car6/AutonomousCar/AutonomousCar-3352.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 3352,
+            "file_path": "results/car6/AutonomousCar.onnx",
+            "reward": 1.5088622458279133,
+            "creation_time": 1750649848.576749,
+            "auxillary_file_paths": [
+                "results/car6/AutonomousCar/AutonomousCar-3352.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.11.0"
+    }
+}
