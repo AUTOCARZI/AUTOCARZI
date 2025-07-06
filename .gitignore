@@ -8,3 +8,5 @@
 [Mm]emoryCaptures/
 
 .DS_Store
+*.csproj
+.vs/
