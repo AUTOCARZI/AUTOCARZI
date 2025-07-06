@@ -1,0 +1,47 @@
+{
+    "AutonomousCar": {
+        "checkpoints": [
+            {
+                "steps": 244,
+                "file_path": "results/car7/AutonomousCar/AutonomousCar-244.onnx",
+                "reward": 1.5492412562016398,
+                "creation_time": 1750650042.833368,
+                "auxillary_file_paths": [
+                    "results/car7/AutonomousCar/AutonomousCar-244.pt"
+                ]
+            },
+            {
+                "steps": 568,
+                "file_path": "results/car7/AutonomousCar/AutonomousCar-568.onnx",
+                "reward": 0.48511795736849306,
+                "creation_time": 1750650234.051428,
+                "auxillary_file_paths": [
+                    "results/car7/AutonomousCar/AutonomousCar-568.pt"
+                ]
+            },
+            {
+                "steps": 624,
+                "file_path": "results/car7/AutonomousCar/AutonomousCar-624.onnx",
+                "reward": 0.036435521207749844,
+                "creation_time": 1750655561.621365,
+                "auxillary_file_paths": [
+                    "results/car7/AutonomousCar/AutonomousCar-624.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 624,
+            "file_path": "results/car7/AutonomousCar.onnx",
+            "reward": 0.036435521207749844,
+            "creation_time": 1750655561.621365,
+            "auxillary_file_paths": [
+                "results/car7/AutonomousCar/AutonomousCar-624.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.11.0"
+    }
+}
