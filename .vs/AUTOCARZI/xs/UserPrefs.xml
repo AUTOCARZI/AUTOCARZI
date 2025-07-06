@@ -1,0 +1,43 @@
+﻿<Properties StartupConfiguration="{472A79E0-E490-ABF7-5B27-5A368A48036B}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Azerilo/Car Model No.1201 Asset/Scripts/OpenCVLaneAgent.cs">
+    <Files>
+      <File FileName="Assets/Tomerinio/LEDLightBlocks/Contents/Scripts/LEDNode.cs" Line="175" Column="29" />
+      <File FileName="Assets/Azerilo/Car Model No.1201 Asset/Scripts/CarController.cs" Line="10" Column="28" />
+      <File FileName="Assets/Azerilo/Car Model No.1201 Asset/Scripts/InputManagerAmbulance.cs" Line="11" Column="1" />
+      <File FileName="Assets/Azerilo/Car Model No.1201 Asset/Scripts/InputManager.cs" />
+      <File FileName="Assets/Azerilo/Car Model No.1201 Asset/Scripts/CarControllerAmbulance.cs" Line="115" Column="2" />
+      <File FileName="Assets/Azerilo/Car Model No.1201 Asset/Scripts/OpenCVLaneAgent.cs" Line="12" Column="17" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="AUTOCARZI" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Azerilo" expanded="True">
+                <Node name="Car Model No.1201 Asset" expanded="True">
+                  <Node name="Scripts" expanded="True">
+                    <Node name="OpenCVLaneAgent.cs" selected="True" />
+                  </Node>
+                </Node>
+              </Node>
+              <Node name="Tomerinio" expanded="True">
+                <Node name="LEDLightBlocks" expanded="True">
+                  <Node name="Contents" expanded="True">
+                    <Node name="Scripts" expanded="True" />
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="826ffe75-1a10-4c8c-96c3-f3ceefb894ea" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

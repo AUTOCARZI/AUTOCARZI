@@ -22,15 +22,15 @@ public class InputManager : MonoBehaviour {
             steer = 0;
 
             // Check throttle (forward/backward)
-            if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed)
+            if (keyboard.upArrowKey.isPressed)
                 throttle = 1f;
-            else if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed)
+            else if (keyboard.downArrowKey.isPressed)
                 throttle = -1f;
 
             // Check steering (left/right)
-            if (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed)
+            if (keyboard.leftArrowKey.isPressed)
                 steer = -1f;
-            else if (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed)
+            else if (keyboard.rightArrowKey.isPressed)
                 steer = 1f;
 
             // Check L key for headlights
