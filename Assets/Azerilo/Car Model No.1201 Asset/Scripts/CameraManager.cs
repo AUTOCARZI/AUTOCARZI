@@ -36,7 +36,5 @@ public class CameraManager : MonoBehaviour {
                 Camera.main.fieldOfView = 60f;
                 break;
         }
-
-        Debug.Log(camMode);
     }
 }
