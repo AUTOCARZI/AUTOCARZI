@@ -3221,6 +3221,11 @@ MonoBehaviour:
   behindBlinkThreshold: 0.9
   sideBlinkThreshold: 0.9
   frontBlinkThreshold: 0.95
+  hudCanvas: {fileID: 1652590232}
+  hudAmbulanceLeft: {fileID: 1773452563}
+  hudAmbulanceRight: {fileID: 836709008}
+  hudBlinkInterval: 1
+  hudFadeSpeed: 2
 --- !u!54 &660572448
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -21760,7 +21765,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1132022550193295568, guid: af1c3e5a3edbe1d4193759238a03cab0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.146783
+      value: -7.03
       objectReference: {fileID: 0}
     - target: {fileID: 1132022550193295568, guid: af1c3e5a3edbe1d4193759238a03cab0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -21768,7 +21773,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1132022550193295568, guid: af1c3e5a3edbe1d4193759238a03cab0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 18.367386
+      value: 18.37
       objectReference: {fileID: 0}
     - target: {fileID: 1132022550193295568, guid: af1c3e5a3edbe1d4193759238a03cab0, type: 3}
       propertyPath: m_LocalRotation.w
