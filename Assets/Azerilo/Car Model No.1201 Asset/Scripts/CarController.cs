@@ -9,6 +9,7 @@ public class CarController : MonoBehaviour
 {
     public InputManager im;
     public LightingManager lm;
+    private HUDManager hm;
     public List<WheelCollider> throttleWheels;
     public List<GameObject> steeringWheels;
     public List<GameObject> meshes;
@@ -30,6 +31,13 @@ public class CarController : MonoBehaviour
     public float behindBlinkThreshold = 0.90f;    // 뒤쪽 (behind, behind-left, behind-right)
     public float sideBlinkThreshold = 0.90f;     // 옆쪽 (to the left, to the right)
     public float frontBlinkThreshold = 0.95f;    // 앞쪽 (ahead, ahead-left, ahead-right)
+
+    [Header("HUD System")]
+    public Canvas hudCanvas;
+    public UnityEngine.UI.RawImage hudAmbulanceLeft;
+    public UnityEngine.UI.RawImage hudAmbulanceRight;
+    public float hudBlinkInterval = 1f;
+    public float hudFadeSpeed = 2f;
 
     private float currentAmbulanceVolume;
     private Vector3 ambulanceDirection;
@@ -53,6 +61,21 @@ public class CarController : MonoBehaviour
         }
 
         FindAllLEDs();
+        InitializeHUDSystem();
+    }
+
+    void InitializeHUDSystem()
+    {
+        if (hudCanvas != null)
+        {
+            hm = new HUDManager(hudCanvas, hudBlinkInterval, hudFadeSpeed);
+
+            // 앰뷸런스 상황 HUD 등록
+            hm.RegisterHUD("ambulance-left", hudAmbulanceLeft);
+            hm.RegisterHUD("ambulance-right", hudAmbulanceRight);
+
+            Debug.Log("HUD System initialized");
+        }
     }
 
     void FindAllLEDs()
@@ -86,6 +109,47 @@ public class CarController : MonoBehaviour
 
         CheckAmbulanceAudio();
         UpdateWarningLEDs();
+
+        // HUD 업데이트
+        if (hm != null)
+        {
+            UpdateHUDSystem();
+        }
+    }
+
+    void UpdateHUDSystem()
+    {
+        // 앰뷸런스 상황 체크
+        CheckAmbulanceSituation();
+    }
+
+    void CheckAmbulanceSituation()
+    {
+        bool shouldShowAmbulanceHUD = currentAmbulanceVolume > ambulanceVolumeThreshold;
+
+        if (shouldShowAmbulanceHUD)
+        {
+            switch (ambulanceRelativeDirection)
+            {
+                case "behind-left":
+                    hm.StartBlinking("ambulance-left");
+                    hm.StopBlinking("ambulance-right");
+                    break;
+                case "behind-right":
+                    hm.StartBlinking("ambulance-right");
+                    hm.StopBlinking("ambulance-left");
+                    break;
+                default:
+                    hm.StopBlinking("ambulance-left");
+                    hm.StopBlinking("ambulance-right");
+                    break;
+            }
+        }
+        else
+        {
+            hm.StopBlinking("ambulance-left");
+            hm.StopBlinking("ambulance-right");
+        }
     }
 
     void CheckAmbulanceAudio()
@@ -275,8 +339,190 @@ public class CarController : MonoBehaviour
         }
     }
 
+    void OnDestroy()
+    {
+        if (hm != null)
+        {
+            hm.Cleanup();
+        }
+    }
+
     public float GetCurrentAmbulanceVolume() => currentAmbulanceVolume;
     public Vector3 GetAmbulanceDirection() => ambulanceDirection;
     public float GetAmbulanceDistance() => ambulanceDistance;
     public string GetAmbulanceRelativeDirection() => ambulanceRelativeDirection;
+}
+
+// HUD 관리 시스템
+public class HUDManager
+{
+    private Canvas canvas;
+    private float blinkInterval;
+    private float fadeSpeed;
+    private Dictionary<string, HUDElement> hudElements;
+    private Dictionary<string, Coroutine> blinkingCoroutines;
+    private MonoBehaviour coroutineRunner;
+
+    public HUDManager(Canvas hudCanvas, float interval, float speed)
+    {
+        canvas = hudCanvas;
+        blinkInterval = interval;
+        fadeSpeed = speed;
+        hudElements = new Dictionary<string, HUDElement>();
+        blinkingCoroutines = new Dictionary<string, Coroutine>();
+        coroutineRunner = hudCanvas.GetComponent<MonoBehaviour>();
+
+        if (canvas != null)
+        {
+            canvas.gameObject.SetActive(true);
+        }
+    }
+
+    public void RegisterHUD(string key, UnityEngine.UI.RawImage rawImage)
+    {
+        if (rawImage != null)
+        {
+            HUDElement element = new HUDElement(rawImage);
+            hudElements[key] = element;
+
+            // 초기 설정: 투명하게 만들고 비활성화
+            Color color = rawImage.color;
+            color.a = 0f;
+            rawImage.color = color;
+            rawImage.gameObject.SetActive(false);
+
+            Debug.Log($"📱 Registered HUD: {key}");
+        }
+    }
+
+    public void StartBlinking(string key)
+    {
+        if (!hudElements.ContainsKey(key)) return;
+
+        // 이미 깜빡이고 있다면 중복 시작하지 않음
+        if (blinkingCoroutines.ContainsKey(key) && blinkingCoroutines[key] != null) return;
+
+        if (coroutineRunner != null)
+        {
+            blinkingCoroutines[key] = coroutineRunner.StartCoroutine(BlinkCoroutine(key));
+        }
+    }
+
+    public void StopBlinking(string key)
+    {
+        if (blinkingCoroutines.ContainsKey(key) && blinkingCoroutines[key] != null)
+        {
+            if (coroutineRunner != null)
+            {
+                coroutineRunner.StopCoroutine(blinkingCoroutines[key]);
+            }
+            blinkingCoroutines[key] = null;
+        }
+
+        // HUD를 fade-out으로 숨기기
+        if (hudElements.ContainsKey(key) && coroutineRunner != null)
+        {
+            coroutineRunner.StartCoroutine(FadeOut(key));
+        }
+    }
+
+    public void StopAllBlinking()
+    {
+        foreach (string key in hudElements.Keys)
+        {
+            StopBlinking(key);
+        }
+    }
+
+    private System.Collections.IEnumerator BlinkCoroutine(string key)
+    {
+        while (true)
+        {
+            // Fade In
+            yield return FadeIn(key);
+
+            // 표시 시간 (30%)
+            yield return new UnityEngine.WaitForSeconds(blinkInterval * 0.3f);
+
+            // Fade Out
+            yield return FadeOut(key);
+
+            // 숨김 시간 (70%)
+            yield return new UnityEngine.WaitForSeconds(blinkInterval * 0.7f);
+        }
+    }
+
+    private System.Collections.IEnumerator FadeIn(string key)
+    {
+        if (!hudElements.ContainsKey(key)) yield break;
+
+        HUDElement element = hudElements[key];
+        element.rawImage.gameObject.SetActive(true);
+
+        Color color = element.rawImage.color;
+        float startAlpha = color.a;
+        float elapsed = 0f;
+        float duration = 1f / fadeSpeed;
+
+        while (elapsed < duration)
+        {
+            elapsed += UnityEngine.Time.deltaTime;
+            color.a = UnityEngine.Mathf.Lerp(startAlpha, 1f, elapsed / duration);
+            element.rawImage.color = color;
+            yield return null;
+        }
+
+        color.a = 1f;
+        element.rawImage.color = color;
+    }
+
+    private System.Collections.IEnumerator FadeOut(string key)
+    {
+        if (!hudElements.ContainsKey(key)) yield break;
+
+        HUDElement element = hudElements[key];
+
+        Color color = element.rawImage.color;
+        float startAlpha = color.a;
+        float elapsed = 0f;
+        float duration = 1f / fadeSpeed;
+
+        while (elapsed < duration)
+        {
+            elapsed += UnityEngine.Time.deltaTime;
+            color.a = UnityEngine.Mathf.Lerp(startAlpha, 0f, elapsed / duration);
+            element.rawImage.color = color;
+            yield return null;
+        }
+
+        color.a = 0f;
+        element.rawImage.color = color;
+        element.rawImage.gameObject.SetActive(false);
+    }
+
+    public void ShowMultiple(params string[] keys)
+    {
+        foreach (string key in keys)
+        {
+            StartBlinking(key);
+        }
+    }
+
+    public void Cleanup()
+    {
+        StopAllBlinking();
+    }
+}
+
+// HUD 요소 클래스
+public class HUDElement
+{
+    public UnityEngine.UI.RawImage rawImage;
+    public bool isActive;
+
+    public HUDElement(UnityEngine.UI.RawImage img)
+    {
+        rawImage = img;
+        isActive = false;
+    }
 }
