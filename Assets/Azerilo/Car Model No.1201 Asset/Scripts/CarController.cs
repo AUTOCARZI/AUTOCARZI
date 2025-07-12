@@ -1,55 +1,53 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(InputManager))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(LightingManager))]
 public class CarController : MonoBehaviour
 {
-    public InputManager im;
-    public LightingManager lm;
-    private HUDManager hm;
+    [Header("Car Physics")]
     public List<WheelCollider> throttleWheels;
     public List<GameObject> steeringWheels;
     public List<GameObject> meshes;
     public float strengthCoefficient = 10000f;
     public float maxTurn = 20f;
     public Transform CM;
-    public Rigidbody rb;
     public float brakeStrength;
 
     [Header("Audio Detection")]
     public CarControllerAmbulance ambulanceToDetect;
     public float ambulanceVolumeThreshold = 0.3f;
 
-    [Header("LED Warning System")]
-    public Transform rightLEDParent;
-    public Transform leftLEDParent;
+    [Header("Sound Response System")]
+    public SoundResponseManager soundResponseManager = new SoundResponseManager();
 
-    [Header("Direction-based Blink Thresholds")]
-    public float behindBlinkThreshold = 0.90f;    // 뒤쪽 (behind, behind-left, behind-right)
-    public float sideBlinkThreshold = 0.90f;     // 옆쪽 (to the left, to the right)
-    public float frontBlinkThreshold = 0.95f;    // 앞쪽 (ahead, ahead-left, ahead-right)
+    private InputManager im;
+    private LightingManager lm;
+    private Rigidbody rb;
 
-    [Header("HUD System")]
-    public Canvas hudCanvas;
-    public UnityEngine.UI.RawImage hudAmbulanceLeft;
-    public UnityEngine.UI.RawImage hudAmbulanceRight;
-    public float hudBlinkInterval = 1f;
-    public float hudFadeSpeed = 2f;
-
+    // Audio detection variables
     private float currentAmbulanceVolume;
     private Vector3 ambulanceDirection;
     private float ambulanceDistance;
     private string ambulanceRelativeDirection;
-    private LEDNode[] allLEDs;
-    private float currentBlinkThreshold; // 현재 방향에 따른 임계값
+    private float currentBlinkThreshold;
+
+    // HUD 상태 관리 (중복 이벤트 방지)
+    private string currentActiveHUD = "";
+
+    // 사운드 소스 맵
+    private Dictionary<SoundType, ISoundSource> soundSources;
 
     void Start()
     {
         im = GetComponent<InputManager>();
+        lm = GetComponent<LightingManager>();
         rb = GetComponent<Rigidbody>();
+
         if (CM)
         {
             rb.centerOfMass = CM.position;
@@ -57,211 +55,274 @@ public class CarController : MonoBehaviour
 
         if (ambulanceToDetect == null)
         {
-            ambulanceToDetect = FindObjectOfType<CarControllerAmbulance>();
+            ambulanceToDetect = FindFirstObjectByType<CarControllerAmbulance>();
         }
 
-        FindAllLEDs();
-        InitializeHUDSystem();
+        InitializeSoundSystem();
+
+        // 모든 이벤트 구독
+        EventManager.Subscribe<SoundEvent>(OnSoundEventReceived);
+        EventManager.Subscribe<CarInputEvent>(OnCarInputEventReceived);
+
+        Debug.Log("[CarController] CarController initialized with Emergency Response System");
     }
 
-    void InitializeHUDSystem()
+    void OnDestroy()
     {
-        if (hudCanvas != null)
-        {
-            hm = new HUDManager(hudCanvas, hudBlinkInterval, hudFadeSpeed);
-
-            // 앰뷸런스 상황 HUD 등록
-            hm.RegisterHUD("ambulance-left", hudAmbulanceLeft);
-            hm.RegisterHUD("ambulance-right", hudAmbulanceRight);
-
-            Debug.Log("HUD System initialized");
-        }
-    }
-
-    void FindAllLEDs()
-    {
-        List<LEDNode> allLEDsList = new List<LEDNode>();
-
-        if (rightLEDParent != null)
-        {
-            LEDNode[] rightLEDs = rightLEDParent.GetComponentsInChildren<LEDNode>();
-            allLEDsList.AddRange(rightLEDs);
-            Debug.Log($"Found {rightLEDs.Length} RIGHT LED nodes");
-        }
-
-        if (leftLEDParent != null)
-        {
-            LEDNode[] leftLEDs = leftLEDParent.GetComponentsInChildren<LEDNode>();
-            allLEDsList.AddRange(leftLEDs);
-            Debug.Log($"Found {leftLEDs.Length} LEFT LED nodes");
-        }
-
-        allLEDs = allLEDsList.ToArray();
-        Debug.Log($"Total LEDs found: {allLEDs.Length}");
+        EventManager.Unsubscribe<SoundEvent>(OnSoundEventReceived);
+        EventManager.Unsubscribe<CarInputEvent>(OnCarInputEventReceived);
     }
 
     void Update()
     {
-        if (im.l)
+        // 입력 이벤트 받기
+        bool headlightPressed = im.l;
+        var inputEvent = new CarInputEvent(im.throttle, im.steer, im.brake, headlightPressed);
+        EventManager.Publish(inputEvent);
+
+        CheckAllAudioSources();
+    }
+
+void InitializeSoundSystem()
+    {
+        soundResponseManager.Initialize();
+
+        // 사운드 소스 맵 초기화
+        soundSources = new Dictionary<SoundType, ISoundSource>();
+
+        // 앰뷸런스 프로필 등록
+        if (ambulanceToDetect != null)
         {
-            lm.ToggleHeadlights();
+            soundSources[SoundType.Ambulance] = new AmbulanceSoundSource(ambulanceToDetect);
         }
 
-        CheckAmbulanceAudio();
-        UpdateWarningLEDs();
+        // 경적 프로필 등록
+        // soundSources[SoundType.CarHorn] = new CarHornSoundSource(carHornSource, carHornTransform);
 
-        // HUD 업데이트
-        if (hm != null)
+        Debug.Log($"[CarController] Sound Response System initialized with {soundSources.Count} sources");
+
+        // 모든 프로필 정보 출력
+        foreach (SoundType soundType in soundResponseManager.GetRegisteredSoundTypes())
         {
-            UpdateHUDSystem();
+            soundResponseManager.PrintProfileInfo(soundType);
         }
     }
 
-    void UpdateHUDSystem()
+    // 모든 사운드 소스 체크
+    void CheckAllAudioSources()
     {
-        // 앰뷸런스 상황 체크
-        CheckAmbulanceSituation();
-    }
-
-    void CheckAmbulanceSituation()
-    {
-        bool shouldShowAmbulanceHUD = currentAmbulanceVolume > ambulanceVolumeThreshold;
-
-        if (shouldShowAmbulanceHUD)
+        foreach (var kvp in soundSources)
         {
-            switch (ambulanceRelativeDirection)
+            SoundType soundType = kvp.Key;
+            ISoundSource source = kvp.Value;
+
+            if (source.IsActive())
             {
-                case "behind-left":
-                    hm.StartBlinking("ambulance-left");
-                    hm.StopBlinking("ambulance-right");
-                    break;
-                case "behind-right":
-                    hm.StartBlinking("ambulance-right");
-                    hm.StopBlinking("ambulance-left");
-                    break;
-                default:
-                    hm.StopBlinking("ambulance-left");
-                    hm.StopBlinking("ambulance-right");
-                    break;
+                float volume = source.GetPerceivedVolume(this.transform);
+                Vector3 sourcePosition = source.GetPosition();
+                CheckSoundAndRespond(soundType, volume, sourcePosition);
             }
+        }
+    }
+
+    // 사운드 체크 메서드
+    private void CheckSoundAndRespond(SoundType soundType, float volume, Vector3 sourcePosition)
+    {
+        var profile = soundResponseManager.GetProfile(soundType);
+        if (profile == null) return;
+
+        if (volume > profile.activationThreshold)
+        {
+            Vector3 toSource = sourcePosition - this.transform.position;
+            float distance = toSource.magnitude;
+            Vector3 direction = toSource.normalized;
+            string relativeDirection = GetRelativeDirection(direction);
+
+            var soundDirection = ConvertToSoundDirection(relativeDirection);
+            var soundEvent = new SoundEvent(
+                soundDirection,
+                distance,
+                volume,
+                soundType,
+                sourcePosition,
+                this.transform.position,
+                soundResponseManager.GetDirectionThreshold(soundType, relativeDirection)
+            );
+
+            EventManager.Publish(soundEvent);
+            Debug.Log($"[CarController] {soundType} detected: Volume={volume:F2}, Direction={relativeDirection}");
         }
         else
         {
-            hm.StopBlinking("ambulance-left");
-            hm.StopBlinking("ambulance-right");
+            StopAllEmergencyEffects();
         }
     }
 
-    void CheckAmbulanceAudio()
+    private void StopAllEmergencyEffects()
     {
-        if (ambulanceToDetect != null)
+        // LED 중지
+        var ledStopEvent = new LEDControlEvent(0f, 0f, false, 0f, "");
+        EventManager.Publish(ledStopEvent);
+
+        // HUD 중지
+        if (!string.IsNullOrEmpty(currentActiveHUD))
         {
-            currentAmbulanceVolume = ambulanceToDetect.GetPerceivedVolumeFrom(this.transform);
+            EventManager.Publish(new HUDControlEvent(currentActiveHUD, false));
+            currentActiveHUD = "";
+        }
 
-            Vector3 toAmbulance = ambulanceToDetect.transform.position - this.transform.position;
-            ambulanceDistance = toAmbulance.magnitude;
-            ambulanceDirection = toAmbulance.normalized;
+        Debug.Log("[CarController] All emergency effects stopped - volume below threshold");
+    }
 
-            ambulanceRelativeDirection = GetRelativeDirection(ambulanceDirection);
+    // 이벤트 핸들러
+    private void OnSoundEventReceived(SoundEvent soundEvent)
+    {       
+        RouteToHUD(soundEvent);
+        RouteToLED(soundEvent);
+    }
 
-            // 방향에 따른 임계값 설정
-            currentBlinkThreshold = GetBlinkThresholdForDirection(ambulanceRelativeDirection);
+    private void OnCarInputEventReceived(CarInputEvent inputEvent)
+    {
+        RouteToMovement(inputEvent);
 
-            if (currentAmbulanceVolume > ambulanceVolumeThreshold)
+        if (inputEvent.headlights)
+        {
+            lm.ToggleHeadlights();
+        }
+    }
+
+    private void RouteToHUD(SoundEvent soundEvent)
+    {
+        string directionStr = ConvertToDirectionString(soundEvent.direction);
+        var volumeLevel = soundResponseManager.GetVolumeLevel(soundEvent.soundType, soundEvent.volume);
+
+        if (volumeLevel == null)
+        {
+            Debug.LogWarning($"[CarController] No volume level found for {soundEvent.soundType}");
+            return;
+        }
+
+        Debug.Log($"[CarController] Sound Response: {soundEvent.soundType} - {volumeLevel.name}");
+        Debug.Log($"[CarController] RouteToHUD Debug:");
+        Debug.Log($"  - Sound Type: {soundEvent.soundType}");
+        Debug.Log($"  - Direction: {directionStr}");
+        Debug.Log($"  - Volume: {soundEvent.volume:F2}");
+        Debug.Log($"  - Volume Level: {volumeLevel.name}");
+        Debug.Log($"  - Should Show HUD: {volumeLevel.showHUD}");
+
+        // 대상 HUD 결정 -> 고치기
+        string targetHUD = "";
+        if (volumeLevel.showHUD)
+        {
+            string[] targetHUDs = soundResponseManager.GetHUDsForDirection(soundEvent.soundType, directionStr);
+            if (targetHUDs.Length > 0)
             {
-                Debug.Log($"Ambulance {ambulanceRelativeDirection}! Volume: {currentAmbulanceVolume:F2}, Blink Threshold: {currentBlinkThreshold:F2}, Distance: {ambulanceDistance:F1}m");
-                ReactToAmbulanceDirection(ambulanceRelativeDirection);
+                targetHUD = targetHUDs[0]; // 첫 번째 HUD 사용
             }
         }
+
+        // 상태가 변경될 때만 이벤트 발행
+        if (currentActiveHUD != targetHUD)
+        {
+            // 이전 HUD 끄기
+            if (!string.IsNullOrEmpty(currentActiveHUD))
+            {
+                EventManager.Publish(new HUDControlEvent(currentActiveHUD, false));
+                Debug.Log($"[CarController] Deactivating HUD: {currentActiveHUD}");
+            }
+
+            // 새 HUD 켜기
+            if (!string.IsNullOrEmpty(targetHUD))
+            {
+                EventManager.Publish(new HUDControlEvent(targetHUD, true, directionStr));
+                Debug.Log($"[CarController] Activating HUD: {targetHUD} for {soundEvent.soundType}");
+            }
+
+            currentActiveHUD = targetHUD;
+            Debug.Log($"[CarController] HUD state changed to: {targetHUD}");
+        }
     }
 
-    float GetBlinkThresholdForDirection(string direction)
+    // 모듈화된 LED 라우팅
+    private void RouteToLED(SoundEvent soundEvent)
+    {
+        string directionStr = ConvertToDirectionString(soundEvent.direction);
+        var volumeLevel = soundResponseManager.GetVolumeLevel(soundEvent.soundType, soundEvent.volume);
+        var profile = soundResponseManager.GetProfile(soundEvent.soundType);
+
+        if (volumeLevel == null || profile == null)
+        {
+            Debug.LogWarning($"[CarController] Missing profile or volume level for {soundEvent.soundType}");
+            return;
+        }
+
+        float directionThreshold = soundResponseManager.GetDirectionThreshold(soundEvent.soundType, directionStr);
+        bool shouldBlink = volumeLevel.activateLED && soundEvent.volume >= directionThreshold;
+
+        Debug.Log($"[CarController] RouteToLED Debug:");
+        Debug.Log($"  - Sound Type: {soundEvent.soundType}");
+        Debug.Log($"  - Direction: {directionStr}");
+        Debug.Log($"  - Volume: {soundEvent.volume:F2}");
+        Debug.Log($"  - Direction Threshold: {directionThreshold:F2}");
+        Debug.Log($"  - Volume Level: {volumeLevel.name}");
+        Debug.Log($"  - Should Blink: {shouldBlink}");
+
+        if (shouldBlink)
+        {
+            // 프로필에서 깜빡임 설정 가져오기
+            float blinkSpeed = profile.ledBlinkSpeed;
+            float timerSpeed = profile.ledTimerSpeed;
+
+            var ledEvent = new LEDControlEvent(blinkSpeed, timerSpeed, true, soundEvent.volume, directionStr);
+            EventManager.Publish(ledEvent);
+
+            Debug.Log($"[CarController] LED Event: Speed={blinkSpeed:F2}, Timer={timerSpeed:F2} (From {soundEvent.soundType} profile)");
+        }
+        else
+        {
+            var ledEvent = new LEDControlEvent(0f, 0f, false, soundEvent.volume, directionStr);
+            EventManager.Publish(ledEvent);
+
+            Debug.Log($"[CarController] LED Event: STOP (Level: {volumeLevel.name})");
+        }
+    }
+
+    private void RouteToMovement(CarInputEvent inputEvent)
+    {
+        var movementEvent = new MovementControlEvent(inputEvent.throttle, inputEvent.steer, inputEvent.brake);
+        EventManager.Publish(movementEvent);
+    }
+
+
+    private SoundEvent.Direction ConvertToSoundDirection(string directionStr)
+    {
+        switch (directionStr)
+        {
+            case "ahead": return SoundEvent.Direction.Ahead;
+            case "ahead-right": return SoundEvent.Direction.AheadRight;
+            case "to the right": return SoundEvent.Direction.Right;
+            case "behind-right": return SoundEvent.Direction.BehindRight;
+            case "behind": return SoundEvent.Direction.Behind;
+            case "behind-left": return SoundEvent.Direction.BehindLeft;
+            case "to the left": return SoundEvent.Direction.Left;
+            case "ahead-left": return SoundEvent.Direction.AheadLeft;
+            default: return SoundEvent.Direction.Ahead;
+        }
+    }
+
+    private string ConvertToDirectionString(SoundEvent.Direction direction)
     {
         switch (direction)
         {
-            // 뒤쪽 - 0.90 임계값
-            case "behind":
-            case "behind-left":
-            case "behind-right":
-                return behindBlinkThreshold;
-
-            // 옆쪽 - 0.90 임계값
-            case "to the left":
-            case "to the right":
-                return sideBlinkThreshold;
-
-            // 앞쪽 - 0.95 임계값
-            case "ahead":
-            case "ahead-left":
-            case "ahead-right":
-                return frontBlinkThreshold;
-
-            default:
-                return frontBlinkThreshold; // 기본값은 앞쪽과 동일
-        }
-    }
-
-    void UpdateWarningLEDs()
-    {
-        if (allLEDs != null && allLEDs.Length > 0)
-        {
-            if (currentAmbulanceVolume >= currentBlinkThreshold)
-            {
-                // Calculate blink speed based on volume
-                float volumeRatio = (currentAmbulanceVolume - currentBlinkThreshold) / (1.0f - currentBlinkThreshold);
-                volumeRatio = Mathf.Clamp01(volumeRatio);
-
-                float minOffTime = 0.5f;
-                float maxOffTime = 2.0f;
-                float blinkSpeed = Mathf.Lerp(maxOffTime, minOffTime, volumeRatio);
-
-                float minTimerSpeed = 2.0f;
-                float maxTimerSpeed = 8.0f;
-                float timerSpeed = Mathf.Lerp(minTimerSpeed, maxTimerSpeed, volumeRatio);
-
-                // 모든 LED 초기화
-                foreach (LEDNode led in allLEDs)
-                {
-                    led.isFirstNode = false;
-                    led.prevNode = null;
-
-                    led.SetTimingSettings(
-                        0.8f,        // onTime
-                        blinkSpeed,  // offTime
-                        timerSpeed,  // onTimerSpeed
-                        timerSpeed   // offTimerSpeed
-                    );
-                }
-
-                // 체인 연결: 각 LED가 이전 LED를 참조하도록 설정
-                for (int i = 0; i < allLEDs.Length; i++)
-                {
-                    if (i == 0)
-                    {
-                        // 첫 번째 LED만 firstNode로 설정
-                        allLEDs[i].isFirstNode = true;
-                        allLEDs[i].prevNode = null;
-                    }
-                    else
-                    {
-                        // 나머지 LED들은 이전 LED를 참조
-                        allLEDs[i].isFirstNode = false;
-                        allLEDs[i].prevNode = allLEDs[i - 1];
-                    }
-                }
-
-                Debug.Log($"LEDs chained blinking! Direction: {ambulanceRelativeDirection}, Volume: {currentAmbulanceVolume:F2}");
-            }
-            else
-            {
-                // Volume below threshold - 모든 LED 정상상태로
-                foreach (LEDNode led in allLEDs)
-                {
-                    led.SetTimingSettings(0.1f, 10.0f, 1.0f, 1.0f);
-                    led.isFirstNode = false;
-                    led.prevNode = null;
-                }
-            }
+            case SoundEvent.Direction.Ahead: return "ahead";
+            case SoundEvent.Direction.AheadRight: return "ahead-right";
+            case SoundEvent.Direction.Right: return "to the right";
+            case SoundEvent.Direction.BehindRight: return "behind-right";
+            case SoundEvent.Direction.Behind: return "behind";
+            case SoundEvent.Direction.BehindLeft: return "behind-left";
+            case SoundEvent.Direction.Left: return "to the left";
+            case SoundEvent.Direction.AheadLeft: return "ahead-left";
+            default: return "ahead";
         }
     }
 
@@ -313,216 +374,45 @@ public class CarController : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    // ==================== PUBLIC API METHODS ====================
+
+    // 런타임에 새 사운드 소스 추가
+    public void RegisterSoundSource(SoundType soundType, ISoundSource soundSource)
     {
-        foreach (WheelCollider wheel in throttleWheels)
+        if (soundSources == null)
         {
-            if (im.brake)
-            {
-                wheel.motorTorque = 0f;
-                wheel.brakeTorque = brakeStrength * Time.deltaTime;
-            }
-            else
-            {
-                wheel.motorTorque = strengthCoefficient * Time.deltaTime * im.throttle;
-                wheel.brakeTorque = 0f;
-            }
+            soundSources = new Dictionary<SoundType, ISoundSource>();
         }
-        foreach (GameObject wheel in steeringWheels)
+
+        soundSources[soundType] = soundSource;
+        Debug.Log($"[CarController] Registered new sound source: {soundType}");
+    }
+
+    // 사운드 소스 제거
+    public void UnregisterSoundSource(SoundType soundType)
+    {
+        if (soundSources != null && soundSources.ContainsKey(soundType))
         {
-            wheel.GetComponent<WheelCollider>().steerAngle = maxTurn * im.steer;
-            wheel.transform.localEulerAngles = new Vector3(0f, im.steer * maxTurn, 0f);
-        }
-        foreach (GameObject mesh in meshes)
-        {
-            mesh.transform.Rotate(rb.linearVelocity.magnitude * (transform.InverseTransformDirection(rb.linearVelocity).z >= 0 ? 1 : -1) / (2 * Mathf.PI * 0.33f), 0f, 0f);
+            soundSources.Remove(soundType);
+            Debug.Log($"[CarController] Unregistered sound source: {soundType}");
         }
     }
 
-    void OnDestroy()
+    // 설정 업데이트 메서드들
+    public void UpdateSoundThreshold(SoundType soundType, string direction, float threshold)
     {
-        if (hm != null)
-        {
-            hm.Cleanup();
-        }
+        soundResponseManager.UpdateDirectionThreshold(soundType, direction, threshold);
+    }
+
+    public void UpdateSoundActivationThreshold(SoundType soundType, float threshold)
+    {
+        soundResponseManager.UpdateActivationThreshold(soundType, threshold);
     }
 
     public float GetCurrentAmbulanceVolume() => currentAmbulanceVolume;
     public Vector3 GetAmbulanceDirection() => ambulanceDirection;
     public float GetAmbulanceDistance() => ambulanceDistance;
     public string GetAmbulanceRelativeDirection() => ambulanceRelativeDirection;
-}
-
-// HUD 관리 시스템
-public class HUDManager
-{
-    private Canvas canvas;
-    private float blinkInterval;
-    private float fadeSpeed;
-    private Dictionary<string, HUDElement> hudElements;
-    private Dictionary<string, Coroutine> blinkingCoroutines;
-    private MonoBehaviour coroutineRunner;
-
-    public HUDManager(Canvas hudCanvas, float interval, float speed)
-    {
-        canvas = hudCanvas;
-        blinkInterval = interval;
-        fadeSpeed = speed;
-        hudElements = new Dictionary<string, HUDElement>();
-        blinkingCoroutines = new Dictionary<string, Coroutine>();
-        coroutineRunner = hudCanvas.GetComponent<MonoBehaviour>();
-
-        if (canvas != null)
-        {
-            canvas.gameObject.SetActive(true);
-        }
-    }
-
-    public void RegisterHUD(string key, UnityEngine.UI.RawImage rawImage)
-    {
-        if (rawImage != null)
-        {
-            HUDElement element = new HUDElement(rawImage);
-            hudElements[key] = element;
-
-            // 초기 설정: 투명하게 만들고 비활성화
-            Color color = rawImage.color;
-            color.a = 0f;
-            rawImage.color = color;
-            rawImage.gameObject.SetActive(false);
-
-            Debug.Log($"📱 Registered HUD: {key}");
-        }
-    }
-
-    public void StartBlinking(string key)
-    {
-        if (!hudElements.ContainsKey(key)) return;
-
-        // 이미 깜빡이고 있다면 중복 시작하지 않음
-        if (blinkingCoroutines.ContainsKey(key) && blinkingCoroutines[key] != null) return;
-
-        if (coroutineRunner != null)
-        {
-            blinkingCoroutines[key] = coroutineRunner.StartCoroutine(BlinkCoroutine(key));
-        }
-    }
-
-    public void StopBlinking(string key)
-    {
-        if (blinkingCoroutines.ContainsKey(key) && blinkingCoroutines[key] != null)
-        {
-            if (coroutineRunner != null)
-            {
-                coroutineRunner.StopCoroutine(blinkingCoroutines[key]);
-            }
-            blinkingCoroutines[key] = null;
-        }
-
-        // HUD를 fade-out으로 숨기기
-        if (hudElements.ContainsKey(key) && coroutineRunner != null)
-        {
-            coroutineRunner.StartCoroutine(FadeOut(key));
-        }
-    }
-
-    public void StopAllBlinking()
-    {
-        foreach (string key in hudElements.Keys)
-        {
-            StopBlinking(key);
-        }
-    }
-
-    private System.Collections.IEnumerator BlinkCoroutine(string key)
-    {
-        while (true)
-        {
-            // Fade In
-            yield return FadeIn(key);
-
-            // 표시 시간 (30%)
-            yield return new UnityEngine.WaitForSeconds(blinkInterval * 0.3f);
-
-            // Fade Out
-            yield return FadeOut(key);
-
-            // 숨김 시간 (70%)
-            yield return new UnityEngine.WaitForSeconds(blinkInterval * 0.7f);
-        }
-    }
-
-    private System.Collections.IEnumerator FadeIn(string key)
-    {
-        if (!hudElements.ContainsKey(key)) yield break;
-
-        HUDElement element = hudElements[key];
-        element.rawImage.gameObject.SetActive(true);
-
-        Color color = element.rawImage.color;
-        float startAlpha = color.a;
-        float elapsed = 0f;
-        float duration = 1f / fadeSpeed;
-
-        while (elapsed < duration)
-        {
-            elapsed += UnityEngine.Time.deltaTime;
-            color.a = UnityEngine.Mathf.Lerp(startAlpha, 1f, elapsed / duration);
-            element.rawImage.color = color;
-            yield return null;
-        }
-
-        color.a = 1f;
-        element.rawImage.color = color;
-    }
-
-    private System.Collections.IEnumerator FadeOut(string key)
-    {
-        if (!hudElements.ContainsKey(key)) yield break;
-
-        HUDElement element = hudElements[key];
-
-        Color color = element.rawImage.color;
-        float startAlpha = color.a;
-        float elapsed = 0f;
-        float duration = 1f / fadeSpeed;
-
-        while (elapsed < duration)
-        {
-            elapsed += UnityEngine.Time.deltaTime;
-            color.a = UnityEngine.Mathf.Lerp(startAlpha, 0f, elapsed / duration);
-            element.rawImage.color = color;
-            yield return null;
-        }
-
-        color.a = 0f;
-        element.rawImage.color = color;
-        element.rawImage.gameObject.SetActive(false);
-    }
-
-    public void ShowMultiple(params string[] keys)
-    {
-        foreach (string key in keys)
-        {
-            StartBlinking(key);
-        }
-    }
-
-    public void Cleanup()
-    {
-        StopAllBlinking();
-    }
-}
-
-// HUD 요소 클래스
-public class HUDElement
-{
-    public UnityEngine.UI.RawImage rawImage;
-    public bool isActive;
-
-    public HUDElement(UnityEngine.UI.RawImage img)
-    {
-        rawImage = img;
-        isActive = false;
-    }
+    public SoundResponseManager GetSoundResponseManager() => soundResponseManager;
+    public Dictionary<SoundType, ISoundSource> GetSoundSources() => soundSources;
 }

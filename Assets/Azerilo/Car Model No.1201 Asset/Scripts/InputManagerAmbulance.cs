@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManagerAmbulance : MonoBehaviour {
+public class InputManagerAmbulance : MonoBehaviour
+{
     public float throttle;
     public float steer;
     public bool l;
     public bool brake;
+    public bool siren;
+    public bool horn;
 
-    // Update is called once per frame
+
     void Update()
     {
-        // Using the new Input System with Keyboard class
+       
         Keyboard keyboard = Keyboard.current;
-
         if (keyboard != null)
         {
             // Reset values
             throttle = 0;
             steer = 0;
+            horn = false; 
 
             // Check throttle (forward/backward)
             if (keyboard.wKey.isPressed)
@@ -36,8 +39,15 @@ public class InputManagerAmbulance : MonoBehaviour {
             // Check L key for headlights
             l = keyboard.lKey.wasPressedThisFrame;
 
-            // Check brake key (Space)
+            // Check brake key (B)
             brake = keyboard.bKey.isPressed;
+
+            // Check A key for siren toggle
+            if (keyboard.aKey.wasPressedThisFrame)
+                siren = !siren;
+
+            // Check C key for horn
+            horn = keyboard.hKey.isPressed;
         }
     }
 }
