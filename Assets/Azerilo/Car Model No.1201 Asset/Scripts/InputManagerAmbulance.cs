@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -42,11 +40,11 @@ public class InputManagerAmbulance : MonoBehaviour
             // Check brake key (B)
             brake = keyboard.bKey.isPressed;
 
-            // Check A key for siren toggle
-            if (keyboard.aKey.wasPressedThisFrame)
+            // Check Z key for siren toggle
+            if (keyboard.zKey.wasPressedThisFrame)
                 siren = !siren;
 
-            // Check C key for horn
+            // Check H key for horn
             horn = keyboard.hKey.isPressed;
         }
     }

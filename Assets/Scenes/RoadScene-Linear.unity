@@ -3222,18 +3222,6 @@ MonoBehaviour:
   brakeStrength: 2000
   ambulanceToDetect: {fileID: 1514595534}
   ambulanceVolumeThreshold: 0.3
-  emergencySettings:
-    hudActivationThreshold: 0.97
-    ledActivationThreshold: 0.97
-    ledIntenseThreshold: 0.8
-    criticalAlertThreshold: 0.95
-    behindLedThreshold: 0.9
-    sideLedThreshold: 0.9
-    frontLedThreshold: 0.95
-    minBlinkSpeed: 0.5
-    maxBlinkSpeed: 2
-    minTimerSpeed: 2
-    maxTimerSpeed: 8
 --- !u!54 &660572448
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -19549,8 +19537,10 @@ MonoBehaviour:
   CM: {fileID: 0}
   rb: {fileID: 0}
   brakeStrength: 0
-  sirenSound: {fileID: 0}
+  sirenSound: {fileID: 1514595536}
   sirenClip: {fileID: 0}
+  hornSound: {fileID: 1514595540}
+  hornClip: {fileID: 0}
 --- !u!114 &1514595535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19567,6 +19557,8 @@ MonoBehaviour:
   steer: 0
   l: 0
   brake: 0
+  siren: 0
+  horn: 0
 --- !u!82 &1514595536
 AudioSource:
   m_ObjectHideFlags: 0
@@ -19582,7 +19574,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -19625,6 +19617,103 @@ AudioSource:
     - serializedVersion: 3
       time: 0
       value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1514595540
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514595523}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: f9997494680a94e20929609813ed3d73, type: 3}
+  m_Resource: {fileID: 8300000, guid: f9997494680a94e20929609813ed3d73, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -21883,6 +21972,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1132022550193720560, guid: af1c3e5a3edbe1d4193759238a03cab0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1514595536}
+    - targetCorrespondingSourceObject: {fileID: 1132022550193720560, guid: af1c3e5a3edbe1d4193759238a03cab0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1514595540}
     - targetCorrespondingSourceObject: {fileID: 2418001811037553654, guid: af1c3e5a3edbe1d4193759238a03cab0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 398790216}

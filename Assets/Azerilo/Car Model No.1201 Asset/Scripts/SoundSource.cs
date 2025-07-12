@@ -22,7 +22,7 @@ public interface ISoundSource
     SoundType GetSoundType();
 }
 
-// 앰뷸런 사운드 소스
+// 앰뷸런스 사운드 소스
 public class AmbulanceSoundSource : ISoundSource
 {
     private CarControllerAmbulance ambulance;
