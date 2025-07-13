@@ -1052,6 +1052,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 660572445}
+    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 660572455}
+    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 660572452}
+    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 660572454}
     - targetCorrespondingSourceObject: {fileID: 6840936910576188610, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 153389110}
@@ -3198,8 +3207,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c79378033e3e45df92ad8d0d41e0254, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  im: {fileID: 660572449}
-  lm: {fileID: 0}
   throttleWheels:
   - {fileID: 153389110}
   - {fileID: 1676790479}
@@ -3212,20 +3219,9 @@ MonoBehaviour:
   strengthCoefficient: 10000
   maxTurn: 20
   CM: {fileID: 0}
-  rb: {fileID: 660572448}
   brakeStrength: 2000
   ambulanceToDetect: {fileID: 1514595534}
   ambulanceVolumeThreshold: 0.3
-  rightLEDParent: {fileID: 297253257}
-  leftLEDParent: {fileID: 2059196036}
-  behindBlinkThreshold: 0.9
-  sideBlinkThreshold: 0.9
-  frontBlinkThreshold: 0.95
-  hudCanvas: {fileID: 1652590232}
-  hudAmbulanceLeft: {fileID: 1773452563}
-  hudAmbulanceRight: {fileID: 836709008}
-  hudBlinkInterval: 1
-  hudFadeSpeed: 2
 --- !u!54 &660572448
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3287,6 +3283,49 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
   m_PrefabInstance: {fileID: 189819617}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &660572452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660572441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rightLEDParent: {fileID: 297253257}
+  leftLEDParent: {fileID: 2059196036}
+--- !u!114 &660572454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660572441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20a2b18dc46a648e8852d4504fa977ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &660572455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660572441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24ce38d851f84d1aabe45d7dcfb0e9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hudCanvas: {fileID: 1652590232}
+  hudAmbulanceLeft: {fileID: 1773452563}
+  hudAmbulanceRight: {fileID: 836709008}
+  hudBlinkInterval: 1
+  hudFadeSpeed: 2
 --- !u!1001 &697398804
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19498,8 +19537,10 @@ MonoBehaviour:
   CM: {fileID: 0}
   rb: {fileID: 0}
   brakeStrength: 0
-  sirenSound: {fileID: 0}
+  sirenSound: {fileID: 1514595536}
   sirenClip: {fileID: 0}
+  hornSound: {fileID: 1514595540}
+  hornClip: {fileID: 0}
 --- !u!114 &1514595535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19516,6 +19557,8 @@ MonoBehaviour:
   steer: 0
   l: 0
   brake: 0
+  siren: 0
+  horn: 0
 --- !u!82 &1514595536
 AudioSource:
   m_ObjectHideFlags: 0
@@ -19531,7 +19574,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -19574,6 +19617,103 @@ AudioSource:
     - serializedVersion: 3
       time: 0
       value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1514595540
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514595523}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: f9997494680a94e20929609813ed3d73, type: 3}
+  m_Resource: {fileID: 8300000, guid: f9997494680a94e20929609813ed3d73, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -20522,8 +20662,8 @@ RectTransform:
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 836709007}
   - {fileID: 1773452562}
+  - {fileID: 836709007}
   m_Father: {fileID: 660572451}
   m_LocalEulerAnglesHint: {x: -15, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -21832,6 +21972,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1132022550193720560, guid: af1c3e5a3edbe1d4193759238a03cab0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1514595536}
+    - targetCorrespondingSourceObject: {fileID: 1132022550193720560, guid: af1c3e5a3edbe1d4193759238a03cab0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1514595540}
     - targetCorrespondingSourceObject: {fileID: 2418001811037553654, guid: af1c3e5a3edbe1d4193759238a03cab0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 398790216}

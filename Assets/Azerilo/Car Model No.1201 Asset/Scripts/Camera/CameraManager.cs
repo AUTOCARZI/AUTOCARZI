@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CameraManager : MonoBehaviour {
+public class CameraManager : MonoBehaviour
+{
     public GameObject focus;
     public float distance = 5f;
     public float height = 2f;
@@ -15,7 +14,8 @@ public class CameraManager : MonoBehaviour {
     private int camMode = 0;
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
         // Using new Input System
         Keyboard keyboard = Keyboard.current;
 
@@ -24,7 +24,8 @@ public class CameraManager : MonoBehaviour {
             camMode = (camMode + 1) % 2;
         }
 
-        switch (camMode) {
+        switch (camMode)
+        {
             case 1:
                 transform.position = focus.transform.position + focus.transform.TransformDirection(new Vector3(l, h2, d2));
                 transform.rotation = focus.transform.rotation;
