@@ -1054,7 +1054,7 @@ PrefabInstance:
       addedObject: {fileID: 660572445}
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 660572453}
+      addedObject: {fileID: 660572455}
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 660572452}
@@ -3297,23 +3297,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightLEDParent: {fileID: 297253257}
   leftLEDParent: {fileID: 2059196036}
---- !u!114 &660572453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 660572441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79de9eeb56ee447fab2402cfdd1fe5f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hudCanvas: {fileID: 1652590232}
-  hudAmbulanceLeft: {fileID: 836709008}
-  hudAmbulanceRight: {fileID: 1773452563}
-  hudBlinkInterval: 1
-  hudFadeSpeed: 2
 --- !u!114 &660572454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3326,6 +3309,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20a2b18dc46a648e8852d4504fa977ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &660572455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660572441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24ce38d851f84d1aabe45d7dcfb0e9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hudCanvas: {fileID: 1652590232}
+  hudAmbulanceLeft: {fileID: 1773452563}
+  hudAmbulanceRight: {fileID: 836709008}
+  hudBlinkInterval: 1
+  hudFadeSpeed: 2
 --- !u!1001 &697398804
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20662,8 +20662,8 @@ RectTransform:
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 836709007}
   - {fileID: 1773452562}
+  - {fileID: 836709007}
   m_Father: {fileID: 660572451}
   m_LocalEulerAnglesHint: {x: -15, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
