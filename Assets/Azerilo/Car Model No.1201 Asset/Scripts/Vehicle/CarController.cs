@@ -161,14 +161,23 @@ public class CarController : MonoBehaviour
         var ledStopEvent = new LEDControlEvent(0f, 0f, false, 0f, "");
         EventManager.Publish(ledStopEvent);
 
-        // HUD 중지
+        // HUD 중지 - 단, OneShot/Timed 모드는 자연스럽게 종료되도록 함
         if (!string.IsNullOrEmpty(currentActiveHUD))
         {
-            EventManager.Publish(new HUDControlEvent(currentActiveHUD, false));
-            currentActiveHUD = "";
+            // 경적과 같은 단발성 이벤트는 강제로 중단하지 않음
+            if (!currentActiveHUD.StartsWith("horn-"))
+            {
+                EventManager.Publish(new HUDControlEvent(currentActiveHUD, false));
+                currentActiveHUD = "";
+                Debug.Log("[CarController] Continuous HUD stopped - volume below threshold");
+            }
+            else
+            {
+                Debug.Log("[CarController] OneShot HUD (horn) will complete naturally");
+            }
         }
 
-        Debug.Log("[CarController] All emergency effects stopped - volume below threshold");
+        Debug.Log("[CarController] Emergency effects processing completed");
     }
 
     // 이벤트 핸들러
