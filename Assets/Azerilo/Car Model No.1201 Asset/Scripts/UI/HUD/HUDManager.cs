@@ -6,8 +6,19 @@ public class HUDManager : MonoBehaviour
 {
   [Header("HUD Elements")]
   public Canvas hudCanvas;
-  public RawImage hudAmbulanceLeft;
-  public RawImage hudAmbulanceRight;
+
+  [Header("Ambulance HUD Elements")]
+  public RawImage hudAmbulanceBehindRightMoveLeft;     // 우측 후방 → 좌측 이동
+  public RawImage hudAmbulanceBehindLeftMoveRight;     // 좌측 후방 → 우측 이동
+  public RawImage hudAmbulanceBehindMoveRight;         // 후방 → 우측 이동
+  public RawImage hudAmbulanceBehindMoveLeft;          // 후방 → 좌측 이동
+
+  [Header("Horn HUD Elements")]
+  public RawImage hudHornBehind;                       // 후방 경적
+  public RawImage hudHornBehindLeft;                   // 후방 좌측 경적
+  public RawImage hudHornBehindRight;                  // 후방 우측 경적
+
+  [Header("Animation Settings")]
   public float hudBlinkInterval = 1f;
   public float hudFadeSpeed = 2f;
 
@@ -46,10 +57,17 @@ public class HUDManager : MonoBehaviour
     if (hudCanvas != null)
     {
       hudCanvas.gameObject.SetActive(true);
-      RegisterHUD("ambulance-left", hudAmbulanceLeft);
-      RegisterHUD("ambulance-right", hudAmbulanceRight);
 
-      // 여기에 새로운 HUD!! 등록 -> SoundResponseManager에 대응되는 프로필 추가 필요
+      // 새로운 상황별 앰뷸런스 HUD 등록
+      RegisterHUD("ambulance-behind-right-move-left", hudAmbulanceBehindRightMoveLeft);
+      RegisterHUD("ambulance-behind-left-move-right", hudAmbulanceBehindLeftMoveRight);
+      RegisterHUD("ambulance-behind-move-right", hudAmbulanceBehindMoveRight);
+      RegisterHUD("ambulance-behind-move-left", hudAmbulanceBehindMoveLeft);
+
+      // 경적 HUD 등록
+      RegisterHUD("horn-behind", hudHornBehind);
+      RegisterHUD("horn-behind-left", hudHornBehindLeft);
+      RegisterHUD("horn-behind-right", hudHornBehindRight);
 
       Debug.Log("[HUDManager] HUD System initialized");
     }
