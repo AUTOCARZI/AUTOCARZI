@@ -19,6 +19,11 @@ public class CarController : MonoBehaviour
     public CarControllerAmbulance ambulanceToDetect;
     public float ambulanceVolumeThreshold = 0.3f;
 
+    [Header("Car Horn Detection")]
+    public AudioSource carHornSource;    
+    public Transform carHornTransform;    
+    public float carHornVolumeThreshold = 0.5f;
+
     [Header("Sound Response System")]
     public SoundResponseManager soundResponseManager = new SoundResponseManager();
 
@@ -93,8 +98,20 @@ public class CarController : MonoBehaviour
             soundSources[SoundType.Ambulance] = new AmbulanceSoundSource(ambulanceToDetect);
         }
 
-        // 경적 프로필 등록
-        // soundSources[SoundType.CarHorn] = new CarHornSoundSource(carHornSource, carHornTransform);
+        // 임시로 앰뷸런스를 경적 소스로 등록
+        if (carHornSource == null)
+        {
+            carHornSource = ambulanceToDetect.GetHornAudioSource();
+            Debug.Log("[CarController] Using ambulance horn as car horn source");
+        }
+
+        if (carHornTransform == null)
+        {
+            carHornTransform = ambulanceToDetect.transform;
+            Debug.Log("[CarController] Using ambulance transform as car horn transform");
+        }
+
+        soundSources[SoundType.CarHorn] = new CarHornSoundSource(carHornSource, carHornTransform);
 
         Debug.Log($"[CarController] Sound Response System initialized with {soundSources.Count} sources");
 

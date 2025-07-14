@@ -3510,6 +3510,9 @@ MonoBehaviour:
   brakeStrength: 2000
   ambulanceToDetect: {fileID: 1514595534}
   ambulanceVolumeThreshold: 0.3
+  carHornSource: {fileID: 0}
+  carHornTransform: {fileID: 0}
+  carHornVolumeThreshold: 0.5
 --- !u!54 &660572448
 Rigidbody:
   m_ObjectHideFlags: 0

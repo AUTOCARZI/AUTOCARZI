@@ -160,6 +160,50 @@ public class CarControllerAmbulance : MonoBehaviour
         return totalVolume;
     }
 
+    // NEW: Get separate siren volume
+    public float GetSirenVolumeFrom(Transform listener)
+    {
+        if (sirenSound && sirenSound.isPlaying)
+        {
+            return CalculateVolumeFromDistance(sirenSound, listener);
+        }
+        return 0f;
+    }
+
+    // NEW: Get separate horn volume
+    public float GetHornVolumeFrom(Transform listener)
+    {
+        if (hornSound && hornSound.isPlaying)
+        {
+            return CalculateVolumeFromDistance(hornSound, listener);
+        }
+        return 0f;
+    }
+
+    // NEW: Check if siren is playing
+    public bool IsSirenPlaying()
+    {
+        return sirenSound && sirenSound.isPlaying;
+    }
+
+    // NEW: Check if horn is playing
+    public bool IsHornPlaying()
+    {
+        return hornSound && hornSound.isPlaying;
+    }
+
+    // NEW: Get siren AudioSource
+    public AudioSource GetSirenAudioSource()
+    {
+        return sirenSound;
+    }
+
+    // NEW: Get horn AudioSource
+    public AudioSource GetHornAudioSource()
+    {
+        return hornSound;
+    }
+
     private float CalculateVolumeFromDistance(AudioSource audioSource, Transform listener)
     {
         float distance = Vector3.Distance(transform.position, listener.position);
