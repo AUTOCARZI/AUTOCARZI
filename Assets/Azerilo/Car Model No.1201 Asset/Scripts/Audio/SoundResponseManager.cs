@@ -38,11 +38,11 @@ public class SoundResponseManager
     // HUD 매핑 초기화
     profile.hudMapping = new Dictionary<string, string[]>
     {
-      ["behind-left"] = new[] { "ambulance-left" },
-      ["behind-right"] = new[] { "ambulance-right" },
-      ["behind"] = new[] { "ambulance-left", "ambulance-right" },
-      ["to the left"] = new[] { "ambulance-left" },
-      ["to the right"] = new[] { "ambulance-right" },
+      ["behind-left"] = new[] { "ambulance-behind-left-move-right" },
+      ["behind-right"] = new[] { "ambulance-behind-right-move-left" },
+      ["behind"] = new[] { "ambulance-behind-move-right", "ambulance-behind-move-left" },
+      ["to the left"] = new string[0],
+      ["to the right"] = new string[0],
       ["ahead"] = new string[0],
       ["ahead-left"] = new string[0],
       ["ahead-right"] = new string[0]
@@ -80,9 +80,9 @@ public class SoundResponseManager
     // 경적용 HUD 매핑 여기에!!
     profile.hudMapping = new Dictionary<string, string[]>
     {
-      ["behind-left"] = new string[0],
-      ["behind-right"] = new string[0],
-      ["behind"] = new string[0],
+      ["behind-left"] = new[] { "horn-behind-left" },
+      ["behind-right"] = new[] { "horn-behind-right" },
+      ["behind"] = new[] { "horn-behind" },
       ["to the left"] = new string[0],
       ["to the right"] = new string[0],
       ["ahead"] = new string[0],
