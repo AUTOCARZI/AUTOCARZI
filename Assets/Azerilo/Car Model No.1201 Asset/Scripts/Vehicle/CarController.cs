@@ -620,7 +620,6 @@ public class CarController : MonoBehaviour
             Debug.LogWarning("[CarController] Failed to capture or encode frame");
         }
 
-        // 모든 코드 경로에서 yield return 보장
         yield return null;
     }
 
@@ -680,7 +679,7 @@ public class CarController : MonoBehaviour
 
     void SendFragmentedFrame(byte[] headerBytes, byte[] frameData)
     {
-        int maxDataSize = maxPacketSize - headerBytes.Length - 8; // 8바이트는 분할 정보용
+        int maxDataSize = maxPacketSize - headerBytes.Length - 8;
         int totalFragments = Mathf.CeilToInt((float)frameData.Length / maxDataSize);
 
         Debug.Log($"[CarController] Fragmenting frame: {frameData.Length} bytes into {totalFragments} packets");
@@ -897,7 +896,7 @@ public struct FrameHeader
 [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
 public struct LaneDetectionResponseUDP
 {
-    public byte success; // bool 대신 byte 사용
+    public byte success;
     public float lane_offset;
     public float confidence;
     public uint timestamp;
