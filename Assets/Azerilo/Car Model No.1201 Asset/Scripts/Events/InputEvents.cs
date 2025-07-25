@@ -27,3 +27,16 @@ public class MovementControlEvent : GameEvent
     this.brake = brake;
   }
 }
+
+public class LaneWarningEvent : GameEvent
+{
+    public float laneOffset;
+    public float confidence;
+
+    public LaneWarningEvent(float offset, float conf)
+    {
+        laneOffset = offset;
+        confidence = conf;
+    }
+}
+

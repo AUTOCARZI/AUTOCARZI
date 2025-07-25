@@ -1,5 +1,10 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Net.Sockets;
+using System.Net;
+using System.Threading;
 
 [RequireComponent(typeof(InputManager))]
 [RequireComponent(typeof(Rigidbody))]
@@ -15,13 +20,46 @@ public class CarController : MonoBehaviour
     public Transform CM;
     public float brakeStrength;
 
+    [Header("Lane Detection Response")]
+    public float currentLaneOffset = 0f;
+    public bool isLaneDetectionActive = false;
+    public float laneOffsetThreshold = 0.3f;
+
+    [Header("UDP Video Streaming")]
+    public Camera laneDetectionCamera;
+    public string serverIP = "127.0.0.1";
+    public int videoPort = 8888;
+    public int responsePort = 8889;
+    public float targetFPS = 15f; // FPS 낮춤
+    public int imageWidth = 320; // 해상도 낮춤
+    public int imageHeight = 240; // 해상도 낮춤  
+    public int jpegQuality = 30; // 품질 더 낮춤
+    public int maxPacketSize = 1400; // 안전한 크기로 변경
+
+    // UDP 스트리밍 관련
+    private UdpClient videoClient;
+    private UdpClient responseClient;
+    private IPEndPoint serverEndPoint;
+    private Thread responseThread;
+    private bool isStreaming = false;
+    private bool usePNG = true;
+
+    // 카메라 관련
+    private RenderTexture renderTexture;
+    private Texture2D captureTexture;
+    private float captureInterval;
+    private float nextCaptureTime = 0f;
+
+    // 패킷 순번 관리
+    private uint sequenceNumber = 0;
+
     [Header("Audio Detection")]
     public CarControllerAmbulance ambulanceToDetect;
     public float ambulanceVolumeThreshold = 0.3f;
 
     [Header("Car Horn Detection")]
-    public AudioSource carHornSource;    
-    public Transform carHornTransform;    
+    public AudioSource carHornSource;
+    public Transform carHornTransform;
     public float carHornVolumeThreshold = 0.5f;
 
     [Header("Sound Response System")]
@@ -61,6 +99,8 @@ public class CarController : MonoBehaviour
         }
 
         InitializeSoundSystem();
+        InitializeLaneDetectionCamera();
+        InitializeUDPStreaming();
 
         // 모든 이벤트 구독
         EventManager.Subscribe<SoundEvent>(OnSoundEventReceived);
@@ -71,18 +111,43 @@ public class CarController : MonoBehaviour
 
     void OnDestroy()
     {
+        // 스트리밍 중단
+        isStreaming = false;
+
+        // 스레드 정리
+        if (responseThread != null && responseThread.IsAlive)
+        {
+            responseThread.Join(1000);
+        }
+
+        // UDP 클라이언트 정리
+        if (videoClient != null)
+        {
+            videoClient.Close();
+            videoClient.Dispose();
+        }
+
+        if (responseClient != null)
+        {
+            responseClient.Close();
+            responseClient.Dispose();
+        }
+
+        // RenderTexture 정리 (GetTemporary 사용)
+        if (renderTexture != null)
+        {
+            RenderTexture.ReleaseTemporary(renderTexture);
+            renderTexture = null;
+        }
+
+        if (captureTexture != null)
+        {
+            DestroyImmediate(captureTexture);
+        }
+
+        // 이벤트 구독 해제
         EventManager.Unsubscribe<SoundEvent>(OnSoundEventReceived);
         EventManager.Unsubscribe<CarInputEvent>(OnCarInputEventReceived);
-    }
-
-    void Update()
-    {
-        // 입력 이벤트 받기
-        bool headlightPressed = im.l;
-        var inputEvent = new CarInputEvent(im.throttle, im.steer, im.brake, headlightPressed);
-        EventManager.Publish(inputEvent);
-
-        CheckAllAudioSources();
     }
 
     void InitializeSoundSystem()
@@ -313,6 +378,7 @@ public class CarController : MonoBehaviour
     private void RouteToMovement(CarInputEvent inputEvent)
     {
         var movementEvent = new MovementControlEvent(inputEvent.throttle, inputEvent.steer, inputEvent.brake);
+
         EventManager.Publish(movementEvent);
     }
 
@@ -397,6 +463,358 @@ public class CarController : MonoBehaviour
         }
     }
 
+    void InitializeLaneDetectionCamera()
+    {
+        if (laneDetectionCamera == null)
+        {
+            GameObject cameraObj = new GameObject("LaneDetectionCamera");
+            cameraObj.transform.SetParent(this.transform);
+            cameraObj.transform.localPosition = new Vector3(0, 1.5f, 2f);
+            cameraObj.transform.localRotation = Quaternion.Euler(15f, 0, 0);
+
+            laneDetectionCamera = cameraObj.AddComponent<Camera>();
+            laneDetectionCamera.fieldOfView = 60f;
+            laneDetectionCamera.nearClipPlane = 0.1f;
+            laneDetectionCamera.farClipPlane = 100f;
+            laneDetectionCamera.clearFlags = CameraClearFlags.SolidColor;
+            laneDetectionCamera.backgroundColor = Color.black;
+            laneDetectionCamera.depthTextureMode = DepthTextureMode.None;
+            laneDetectionCamera.enabled = false;
+
+            // 선명도 개선 설정
+            laneDetectionCamera.allowHDR = false;           // HDR 비활성화
+            laneDetectionCamera.allowMSAA = false;          // 안티앨리어싱 비활성화
+            laneDetectionCamera.allowDynamicResolution = false;
+            laneDetectionCamera.useOcclusionCulling = false;
+
+            Debug.Log("[CarController] Camera anti-aliasing and post-processing disabled for sharpness");
+        }
+
+        // 고품질 RenderTexture 생성
+        RenderTextureDescriptor rtDesc = new RenderTextureDescriptor(imageWidth, imageHeight, RenderTextureFormat.RGB565, 0);
+        rtDesc.sRGB = false;
+        rtDesc.enableRandomWrite = false;
+        rtDesc.useMipMap = false;
+        rtDesc.autoGenerateMips = false;
+        rtDesc.msaaSamples = 1;  // 안티앨리어싱 완전 비활성화
+
+        renderTexture = RenderTexture.GetTemporary(rtDesc);
+        renderTexture.name = "LaneDetectionRT_Sharp";
+        renderTexture.filterMode = FilterMode.Point;  // 픽셀 완벽 필터링
+        renderTexture.anisoLevel = 0;
+
+        laneDetectionCamera.targetTexture = renderTexture;
+        captureTexture = new Texture2D(imageWidth, imageHeight, TextureFormat.RGB24, false);
+        captureTexture.filterMode = FilterMode.Point;  // 선명한 텍스처
+
+        captureInterval = 1f / targetFPS;
+
+        Debug.Log($"[CarController] Sharp Lane Detection Camera initialized - {imageWidth}x{imageHeight} @ {targetFPS}fps");
+    }
+
+    void InitializeUDPStreaming()
+    {
+        try
+        {
+            // 고품질 설정 강제 적용
+            if (!usePNG)
+            {
+                jpegQuality = Mathf.Clamp(jpegQuality, 80, 100);  // 최소 80 이상
+            }
+            maxPacketSize = 1400;
+
+            // 비디오 전송용 UDP 클라이언트
+            videoClient = new UdpClient();
+            serverEndPoint = new IPEndPoint(IPAddress.Parse(serverIP), videoPort);
+
+            Debug.Log($"[CarController] Created UDP client, local endpoint: {videoClient.Client.LocalEndPoint}");
+            Debug.Log($"[CarController] Target server: {serverEndPoint}");
+
+            // 응답 수신용 UDP 클라이언트
+            responseClient = new UdpClient(responsePort);
+            Debug.Log($"[CarController] Response client listening on: {responseClient.Client.LocalEndPoint}");
+
+            // 응답 수신 스레드 시작
+            responseThread = new Thread(ReceiveResponses);
+            responseThread.IsBackground = true;
+            responseThread.Start();
+
+            isStreaming = true;
+            string format = usePNG ? "PNG (lossless)" : $"JPEG (quality: {jpegQuality})";
+            Debug.Log($"[CarController] Sharp UDP streaming initialized");
+            Debug.Log($"[CarController] Settings: {imageWidth}x{imageHeight}, {format}, MaxPacket={maxPacketSize}");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[CarController] Failed to initialize UDP streaming: {e.Message}");
+        }
+    }
+
+    void Update()
+    {
+        // 기존 입력 및 오디오 처리
+        bool headlightPressed = im.l;
+        var inputEvent = new CarInputEvent(im.throttle, im.steer, im.brake, headlightPressed);
+        EventManager.Publish(inputEvent);
+
+        CheckAllAudioSources();
+
+        // UDP 비디오 스트리밍
+        ProcessVideoStreaming();
+    }
+
+    void ProcessVideoStreaming()
+    {
+        if (isStreaming && Time.time >= nextCaptureTime)
+        {
+            nextCaptureTime = Time.time + captureInterval;
+            StartCoroutine(CaptureAndStreamFrame());
+        }
+    }
+
+    IEnumerator CaptureAndStreamFrame()
+    {
+        if (laneDetectionCamera == null || renderTexture == null || !renderTexture.IsCreated())
+        {
+            yield break;
+        }
+
+        byte[] imageBytes = null;
+        bool captureSuccess = false;
+
+        // 캡처 부분 - 더 안전한 방법 사용
+        try
+        {
+            // 카메라 수동 렌더링
+            laneDetectionCamera.Render();
+
+            // 더 안전한 픽셀 읽기 방법
+            RenderTexture currentRT = RenderTexture.active;
+            RenderTexture.active = renderTexture;
+
+            captureTexture.ReadPixels(new Rect(0, 0, imageWidth, imageHeight), 0, 0, false);
+            captureTexture.Apply();
+
+            // 원래 RenderTexture로 복원
+            RenderTexture.active = currentRT;
+
+            // JPEG로 인코딩
+            imageBytes = captureTexture.EncodeToJPG(jpegQuality);
+            captureSuccess = (imageBytes != null && imageBytes.Length > 0);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"[CarController] Frame capture error: {e.Message}");
+            // 안전하게 RenderTexture.active 복원
+            RenderTexture.active = null;
+            captureSuccess = false;
+        }
+
+        // 전송 부분
+        if (captureSuccess)
+        {
+            SendFrameUDP(imageBytes);
+        }
+        else
+        {
+            Debug.LogWarning("[CarController] Failed to capture or encode frame");
+        }
+
+        yield return null;
+    }
+
+
+    void SendFrameUDP(byte[] frameData)
+    {
+        if (videoClient == null || !isStreaming) return;
+
+        try
+        {
+            // 헤더 정보 준비
+            var header = new FrameHeader
+            {
+                sequenceNumber = sequenceNumber++,
+                timestamp = (uint)(Time.time * 1000), // 밀리초
+                frameSize = (uint)frameData.Length,
+                imageWidth = (uint)imageWidth,
+                imageHeight = (uint)imageHeight,
+                vehicleSpeed = rb.linearVelocity.magnitude
+            };
+
+            Debug.Log($"[CarController] Sending frame {header.sequenceNumber}: {frameData.Length} bytes to {serverEndPoint}");
+
+            // 헤더를 바이트로 직렬화
+            byte[] headerBytes = StructToBytes(header);
+            Debug.Log($"[CarController] Header size: {headerBytes.Length} bytes");
+
+            // 거의 모든 이미지는 분할 전송이 필요할 것
+            int totalPacketSize = frameData.Length + headerBytes.Length;
+
+            Debug.Log($"[CarController] Frame size: {frameData.Length} bytes, Total: {totalPacketSize} bytes, Max: {maxPacketSize}");
+
+            if (totalPacketSize > maxPacketSize)
+            {
+                // 분할 전송 (일반 메서드로 호출)
+                SendFragmentedFrame(headerBytes, frameData);
+                Debug.Log($"[CarController] Sent fragmented frame: {frameData.Length} bytes");
+            }
+            else
+            {
+                // 단일 패킷으로 전송
+                byte[] packet = new byte[headerBytes.Length + frameData.Length];
+                Array.Copy(headerBytes, 0, packet, 0, headerBytes.Length);
+                Array.Copy(frameData, 0, packet, headerBytes.Length, frameData.Length);
+
+                int bytesSent = videoClient.Send(packet, packet.Length, serverEndPoint);
+                Debug.Log($"[CarController] Sent single packet: {packet.Length} bytes, confirmed: {bytesSent} bytes");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[CarController] UDP send error: {e.Message}");
+            Debug.LogError($"[CarController] Frame size was: {frameData.Length} bytes");
+            Debug.LogError($"[CarController] Server endpoint: {serverEndPoint}");
+        }
+    }
+
+    void SendFragmentedFrame(byte[] headerBytes, byte[] frameData)
+    {
+        int maxDataSize = maxPacketSize - headerBytes.Length - 8;
+        int totalFragments = Mathf.CeilToInt((float)frameData.Length / maxDataSize);
+
+        Debug.Log($"[CarController] Fragmenting frame: {frameData.Length} bytes into {totalFragments} packets");
+        Debug.Log($"[CarController] Max data per packet: {maxDataSize} bytes");
+
+        for (int i = 0; i < totalFragments; i++)
+        {
+            int offset = i * maxDataSize;
+            int fragmentSize = Mathf.Min(maxDataSize, frameData.Length - offset);
+
+            // 분할 패킷 생성
+            byte[] fragmentPacket = new byte[headerBytes.Length + 8 + fragmentSize];
+
+            // 헤더 복사
+            Array.Copy(headerBytes, 0, fragmentPacket, 0, headerBytes.Length);
+
+            // 분할 정보 추가 (fragment index, total fragments)
+            BitConverter.GetBytes(i).CopyTo(fragmentPacket, headerBytes.Length);
+            BitConverter.GetBytes(totalFragments).CopyTo(fragmentPacket, headerBytes.Length + 4);
+
+            // 프레임 데이터 조각 복사
+            Array.Copy(frameData, offset, fragmentPacket, headerBytes.Length + 8, fragmentSize);
+
+            try
+            {
+                int bytesSent = videoClient.Send(fragmentPacket, fragmentPacket.Length, serverEndPoint);
+                if (i == 0) // 첫 번째 패킷만 로그
+                    Debug.Log($"[CarController] Fragment {i + 1}/{totalFragments}: {fragmentPacket.Length} bytes sent, confirmed: {bytesSent} bytes to {serverEndPoint}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[CarController] Fragment {i + 1} send error: {e.Message} (Size: {fragmentPacket.Length})");
+                Debug.LogError($"[CarController] Target: {serverEndPoint}");
+            }
+        }
+
+        Debug.Log($"[CarController] Completed sending {totalFragments} fragments");
+    }
+
+    void ReceiveResponses()
+    {
+        IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+
+        while (isStreaming)
+        {
+            try
+            {
+                byte[] responseData = responseClient.Receive(ref remoteEndPoint);
+
+                // 메인 스레드에서 처리하도록 큐에 추가
+                lock (responseQueue)
+                {
+                    responseQueue.Enqueue(responseData);
+                }
+            }
+            catch (Exception e)
+            {
+                if (isStreaming) // 스트리밍 중단이 아닌 실제 에러인 경우만 로그
+                {
+                    Debug.LogError($"[CarController] UDP receive error: {e.Message}");
+                }
+            }
+        }
+    }
+
+    private Queue<byte[]> responseQueue = new Queue<byte[]>();
+
+    void LateUpdate()
+    {
+        // 큐에서 응답 처리 (메인 스레드)
+        lock (responseQueue)
+        {
+            while (responseQueue.Count > 0)
+            {
+                byte[] responseData = responseQueue.Dequeue();
+                ProcessLaneDetectionResponse(responseData);
+            }
+        }
+    }
+
+    void ProcessLaneDetectionResponse(byte[] responseData)
+    {
+        try
+        {
+            // 응답 데이터 파싱
+            var response = BytesToStruct<LaneDetectionResponseUDP>(responseData);
+
+            bool success = response.success != 0;
+            isLaneDetectionActive = success;
+
+            if (success)
+            {
+                currentLaneOffset = response.lane_offset;
+
+                Debug.Log($"[CarController] Lane Detection - Offset: {currentLaneOffset:F3}, " +
+                         $"Confidence: {response.confidence:F2}, Latency: {Time.time * 1000 - response.timestamp:F1}ms");
+
+                // 차선 이탈 경고
+                if (Mathf.Abs(currentLaneOffset) > laneOffsetThreshold)
+                {
+                    var laneWarningEvent = new LaneWarningEvent(currentLaneOffset, response.confidence);
+                    EventManager.Publish(laneWarningEvent);
+
+                    Debug.LogWarning($"[CarController] Lane departure detected! Offset: {currentLaneOffset:F3}");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[CarController] Failed to parse UDP response: {e.Message}");
+        }
+    }
+
+    byte[] StructToBytes<T>(T obj) where T : struct
+    {
+        int size = System.Runtime.InteropServices.Marshal.SizeOf(obj);
+        byte[] arr = new byte[size];
+        IntPtr ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(size);
+        System.Runtime.InteropServices.Marshal.StructureToPtr(obj, ptr, true);
+        System.Runtime.InteropServices.Marshal.Copy(ptr, arr, 0, size);
+        System.Runtime.InteropServices.Marshal.FreeHGlobal(ptr);
+        return arr;
+    }
+
+    T BytesToStruct<T>(byte[] arr) where T : struct
+    {
+        T obj = default(T);
+        int size = System.Runtime.InteropServices.Marshal.SizeOf(obj);
+        IntPtr ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(size);
+        System.Runtime.InteropServices.Marshal.Copy(arr, 0, ptr, size);
+        obj = (T)System.Runtime.InteropServices.Marshal.PtrToStructure(ptr, obj.GetType());
+        System.Runtime.InteropServices.Marshal.FreeHGlobal(ptr);
+        return obj;
+    }
+
     // ==================== PUBLIC API METHODS ====================
 
     // 런타임에 새 사운드 소스 추가
@@ -432,10 +850,55 @@ public class CarController : MonoBehaviour
         soundResponseManager.UpdateActivationThreshold(soundType, threshold);
     }
 
+    public void TestUDPConnection()
+    {
+        if (videoClient == null) return;
+
+        try
+        {
+            // 간단한 테스트 메시지 전송
+            string testMessage = "TEST_PACKET_FROM_UNITY";
+            byte[] testData = System.Text.Encoding.UTF8.GetBytes(testMessage);
+
+            Debug.Log($"[CarController] Sending test packet: '{testMessage}' ({testData.Length} bytes)");
+            Debug.Log($"[CarController] Local endpoint: {videoClient.Client.LocalEndPoint}");
+            Debug.Log($"[CarController] Target endpoint: {serverEndPoint}");
+
+            int bytesSent = videoClient.Send(testData, testData.Length, serverEndPoint);
+            Debug.Log($"[CarController] Test packet sent: {bytesSent} bytes confirmed");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[CarController] Test packet failed: {e.Message}");
+        }
+    }
+
     public float GetCurrentAmbulanceVolume() => currentAmbulanceVolume;
     public Vector3 GetAmbulanceDirection() => ambulanceDirection;
     public float GetAmbulanceDistance() => ambulanceDistance;
     public string GetAmbulanceRelativeDirection() => ambulanceRelativeDirection;
     public SoundResponseManager GetSoundResponseManager() => soundResponseManager;
     public Dictionary<SoundType, ISoundSource> GetSoundSources() => soundSources;
+}
+
+// UDP 전송용 구조체들
+[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
+public struct FrameHeader
+{
+    public uint sequenceNumber;
+    public uint timestamp;
+    public uint frameSize;
+    public uint imageWidth;
+    public uint imageHeight;
+    public float vehicleSpeed;
+}
+
+[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
+public struct LaneDetectionResponseUDP
+{
+    public byte success;
+    public float lane_offset;
+    public float confidence;
+    public uint timestamp;
+    public uint sequence_number;
 }
