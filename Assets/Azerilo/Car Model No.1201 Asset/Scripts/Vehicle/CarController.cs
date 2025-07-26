@@ -9,6 +9,7 @@ using System.Threading;
 [RequireComponent(typeof(InputManager))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(LightingManager))]
+[RequireComponent(typeof(MovementProcessor))]
 public class CarController : MonoBehaviour
 {
     [Header("Car Physics")]
@@ -552,14 +553,20 @@ public class CarController : MonoBehaviour
 
     void Update()
     {
-        // 기존 입력 및 오디오 처리
-        bool headlightPressed = im.l;
-        var inputEvent = new CarInputEvent(im.throttle, im.steer, im.brake, headlightPressed);
-        EventManager.Publish(inputEvent);
+        AutonomousDrivingController autonomousController = GetComponent<AutonomousDrivingController>();
+
+        // 자율 주행 모드 확인
+        bool isAutonomousActive = autonomousController != null && autonomousController.isAutonomousMode;
+
+        // 자율 주행 모드가 아닐 때만 입력 처리
+        if (!isAutonomousActive)
+        {
+            bool headlightPressed = im.l;
+            var inputEvent = new CarInputEvent(im.throttle, im.steer, im.brake, headlightPressed);
+            EventManager.Publish(inputEvent);
+        }
 
         CheckAllAudioSources();
-
-        // UDP 비디오 스트리밍
         ProcessVideoStreaming();
     }
 
