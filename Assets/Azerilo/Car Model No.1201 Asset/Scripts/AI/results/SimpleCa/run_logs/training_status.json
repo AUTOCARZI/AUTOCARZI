@@ -1,0 +1,29 @@
+{
+    "CarAgent": {
+        "checkpoints": [
+            {
+                "steps": 0,
+                "file_path": "results/SimpleCa/CarAgent/CarAgent-0.onnx",
+                "reward": null,
+                "creation_time": 1753633766.157771,
+                "auxillary_file_paths": [
+                    "results/SimpleCa/CarAgent/CarAgent-0.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 0,
+            "file_path": "results/SimpleCa/CarAgent.onnx",
+            "reward": null,
+            "creation_time": 1753633766.157771,
+            "auxillary_file_paths": [
+                "results/SimpleCa/CarAgent/CarAgent-0.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.11.0"
+    }
+}

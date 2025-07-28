@@ -39,8 +39,7 @@ class LaneDetector:
             [int(w * 0.7), int(h * 0.4)],    # 우상단
             [w, int(h * 0.6)],               # 우중단
             [w, h]                           # 우하단
-    ], dtype=np.int32)
-        
+        ], dtype=np.int32)
         
         mask = np.zeros_like(image)
         cv2.fillPoly(mask, [vertices], 255)
@@ -48,7 +47,7 @@ class LaneDetector:
         return cv2.bitwise_and(image, mask)
     
     def detect_lane_lines(self, image):
-        """차선 검출"""
+        """차선 검출 (기존 방식)"""
         processed = self.preprocess_image(image)
         roi_image = self.get_roi(processed)
         
@@ -63,6 +62,61 @@ class LaneDetector:
         
         return lines
     
+    def detect_yellow_lines(self, image):
+        """노간 차선 감지 (HSV 기반)"""
+        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        
+        # 노간색 범위 정의 (HSV) - 더 넓은 범위
+        lower_yellow = np.array([10, 50, 50])   # 더 넓은 범위
+        upper_yellow = np.array([40, 255, 255])  # 더 넓은 범위
+        
+        # 노간색 마스크 생성
+        yellow_mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
+        
+        # 노이즈 제거
+        kernel = np.ones((3, 3), np.uint8)
+        yellow_mask = cv2.morphologyEx(yellow_mask, cv2.MORPH_OPEN, kernel)
+        yellow_mask = cv2.morphologyEx(yellow_mask, cv2.MORPH_CLOSE, kernel)
+        
+        # 엣지 검출
+        yellow_edges = cv2.Canny(yellow_mask, 50, 150)
+        yellow_roi = self.get_roi(yellow_edges)
+        
+        # HoughLinesP로 노간 차선 검출
+        yellow_lines = cv2.HoughLinesP(
+            yellow_roi, 1, np.pi/180, 
+            threshold=self.hough_threshold,
+            minLineLength=self.min_line_length,
+            maxLineGap=self.max_line_gap
+        )
+        
+        return yellow_lines
+    
+    def detect_white_lines(self, image):
+        """흰 차선 감지 (밝기 기반)"""
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        
+        # 흰색 범위 (밝은 영역) - 더 넓은 범위
+        white_mask = cv2.inRange(gray, 150, 255)  # 150-255로 넓힘
+        
+        # 노이즈 제거
+        kernel = np.ones((3, 3), np.uint8)
+        white_mask = cv2.morphologyEx(white_mask, cv2.MORPH_OPEN, kernel)
+        
+        # 엣지 검출
+        white_edges = cv2.Canny(white_mask, 50, 150)
+        white_roi = self.get_roi(white_edges)
+        
+        # HoughLinesP로 흰 차선 검출
+        white_lines = cv2.HoughLinesP(
+            white_roi, 1, np.pi/180,
+            threshold=self.hough_threshold,
+            minLineLength=self.min_line_length,
+            maxLineGap=self.max_line_gap
+        )
+        
+        return white_lines
+    
     def separate_left_right_lines(self, lines, image_width):
         """좌측/우측 차선 분리"""
         left_lines = []
@@ -70,6 +124,8 @@ class LaneDetector:
         
         if lines is None:
             return left_lines, right_lines
+        
+        center_x = image_width // 2
         
         for line in lines:
             x1, y1, x2, y2 = line[0]
@@ -79,21 +135,162 @@ class LaneDetector:
                 
             slope = (y2 - y1) / (x2 - x1)
             
-            if slope < -0.5:
+            # 차선 위치와 기울기로 분류 (더 관대하게)
+            line_center_x = (x1 + x2) // 2
+            
+            if line_center_x < center_x and slope < -0.3:  # 왼쪽 + 음의 기울기
                 left_lines.append(line[0])
-            elif slope > 0.5:
+            elif line_center_x > center_x and slope > 0.3:  # 오른쪽 + 양의 기울기
                 right_lines.append(line[0])
         
         return left_lines, right_lines
     
+    def classify_line_color(self, image, line):
+        """차선의 색상 분류 (노간/흰색)"""
+        x1, y1, x2, y2 = line
+        
+        # 차선 위의 여러 점에서 색상 샘플링
+        num_samples = 5
+        yellow_votes = 0
+        white_votes = 0
+        
+        for i in range(num_samples):
+            t = i / (num_samples - 1)
+            x = int(x1 + t * (x2 - x1))
+            y = int(y1 + t * (y2 - y1))
+            
+            # 이미지 경계 체크
+            if 0 <= x < image.shape[1] and 0 <= y < image.shape[0]:
+                # HSV로 변환해서 노간색 체크
+                pixel_bgr = image[y, x]
+                pixel_hsv = cv2.cvtColor(np.uint8([[pixel_bgr]]), cv2.COLOR_BGR2HSV)[0][0]
+                
+                # 노간색 범위 체크
+                if 10 <= pixel_hsv[0] <= 40 and pixel_hsv[1] >= 50 and pixel_hsv[2] >= 50:
+                    yellow_votes += 1
+                # 흰색 범위 체크 (밝기 기반)
+                elif pixel_bgr[0] >= 150 and pixel_bgr[1] >= 150 and pixel_bgr[2] >= 150:
+                    white_votes += 1
+        
+        # 투표 결과로 색상 결정
+        if yellow_votes > white_votes:
+            return "yellow"
+        elif white_votes > 0:
+            return "white"
+        else:
+            return "unknown"
+    
+    def get_lane_center_offset_with_colors(self, image, lines):
+        """색상을 고려한 차선 중앙 오프셋 계산 (노간색 선 오른쪽)"""
+        if lines is None:
+            return None, 0.0, False, "unknown"
+        
+        height, width = image.shape[:2]
+        vehicle_center = width // 2
+        bottom_y = height - 50
+        
+        # 모든 차선을 색상별로 분류
+        yellow_lines = []
+        white_lines = []
+        
+        for line in lines:
+            color = self.classify_line_color(image, line[0])
+            if color == "yellow":
+                yellow_lines.append(line[0])
+            elif color == "white":
+                white_lines.append(line[0])
+        
+        print(f"[Lane] Classified lines - Yellow: {len(yellow_lines)}, White: {len(white_lines)}")
+        
+        # 노간 차선 위치 계산
+        yellow_x = None
+        if len(yellow_lines) > 0:
+            yellow_x = self.extrapolate_line(yellow_lines, bottom_y)
+        
+        # 흰 차선들 분리
+        white_left_lines, white_right_lines = self.separate_left_right_lines(
+            [[line] for line in white_lines], width
+        )
+        
+        left_white_x = None
+        right_white_x = None
+        
+        if len(white_left_lines) > 0:
+            left_white_x = self.extrapolate_line(white_left_lines, bottom_y)
+        if len(white_right_lines) > 0:
+            right_white_x = self.extrapolate_line(white_right_lines, bottom_y)
+        
+        print(f"[Lane] Positions - Yellow: {yellow_x}, Left White: {left_white_x}, Right White: {right_white_x}")
+        
+        # 방향 판단 및 중앙선 침범 체크 (노간색 선 오른쪽 기준)
+        vehicle_direction = "unknown"
+        centerline_violation = False
+        
+        if yellow_x is not None:
+            if yellow_x > vehicle_center:
+                # 노간 차선이 오른쪽 → 정방향 주행
+                vehicle_direction = "forward"
+                # 정방향에서는 노간 차선(오른쪽)을 넘어서면 침범
+                if vehicle_center > yellow_x - 80:  # 80픽셀 여유 (관대하게)
+                    centerline_violation = True
+                    print(f"[Lane] FORWARD: Crossed yellow centerline! Vehicle: {vehicle_center}, Yellow: {yellow_x}")
+            else:
+                # 노간 차선이 왼쪽 → 역방향 주행  
+                vehicle_direction = "backward"
+                # 역방향에서는 노간 차선(왼쪽)을 넘어서면 침범
+                if vehicle_center < yellow_x + 80:  # 80픽셀 여유 (관대하게)
+                    centerline_violation = True
+                    print(f"[Lane] BACKWARD: Crossed yellow centerline! Vehicle: {vehicle_center}, Yellow: {yellow_x}")
+        
+        # 차선 중앙 계산
+        lane_center = None
+        confidence = 0.0
+        
+        if vehicle_direction == "forward":
+            # 정방향: 왼쪽 흰 차선 + 노간(오른쪽)
+            if left_white_x is not None and yellow_x is not None:
+                lane_center = (left_white_x + yellow_x) // 2
+                confidence = 0.9
+            elif yellow_x is not None:
+                lane_center = yellow_x - 120  # 추정 (노간색에서 왼쪽으로 120픽셀)
+                confidence = 0.6
+            elif left_white_x is not None:
+                lane_center = left_white_x + 120  # 추정 (왼쪽 흰색에서 오른쪽으로 120픽셀)
+                confidence = 0.5
+        elif vehicle_direction == "backward":
+            # 역방향: 노간(왼쪽) + 오른쪽 흰 차선
+            if yellow_x is not None and right_white_x is not None:
+                lane_center = (yellow_x + right_white_x) // 2
+                confidence = 0.9
+            elif yellow_x is not None:
+                lane_center = yellow_x + 120  # 추정 (노간색에서 오른쪽으로 120픽셀)
+                confidence = 0.6
+            elif right_white_x is not None:
+                lane_center = right_white_x - 120  # 추정 (오른쪽 흰색에서 왼쪽으로 120픽셀)
+                confidence = 0.5
+        else:
+            # 방향 모름: 기존 방식 사용
+            return self.get_lane_center_offset(image, lines)
+        
+        if lane_center is None:
+            # 기존 방식 폴백
+            return self.get_lane_center_offset(image, lines)
+        
+        # 오프셋 계산
+        offset = (vehicle_center - lane_center) / (width / 2)
+        
+        print(f"[Lane] Direction: {vehicle_direction}, Offset: {offset:.3f}, Violation: {centerline_violation}")
+        
+        return offset, confidence, centerline_violation, vehicle_direction
+    
     def get_lane_center_offset(self, image, lines):
-        """차선 중앙에서의 오프셋 계산"""
+        """기존 차선 중앙 오프셋 계산 (폴백용)"""
         height, width = image.shape[:2]
         
         left_lines, right_lines = self.separate_left_right_lines(lines, width)
         
         if len(left_lines) == 0 and len(right_lines) == 0:
-            return None, 0.0
+            return None, 0.0, False, "unknown"
         
         bottom_y = height - 50
         
@@ -118,11 +315,11 @@ class LaneDetector:
             lane_center = right_x - 150
             confidence = 0.7
         else:
-            return None, 0.0
+            return None, 0.0, False, "unknown"
         
         offset = (vehicle_center - lane_center) / (width / 2)
         
-        return offset, confidence
+        return offset, confidence, False, "unknown"  # 중앙선 침범 없음, 방향 모름
     
     def extrapolate_line(self, lines, y):
         """여러 선분을 하나의 직선으로 외삽"""
@@ -172,9 +369,10 @@ class UDPLaneDetectionServer:
         
         self.running = False
         
-        print(f"[Server] UDP Lane Detection Server initialized")
+        print(f"[Server] UDP Lane Detection Server with Enhanced Color Recognition initialized")
         print(f"[Server] Video port: {video_port}, Response port: {response_port}")
         print(f"[Server] Save frames: {'ON' if save_frames else 'OFF'}")
+        print(f"[Server] Configuration: Yellow line on RIGHT, centerline crossing detection enabled")
     
     def start(self):
         """서버 시작"""
@@ -333,89 +531,70 @@ class UDPLaneDetectionServer:
                 # 프레임 저장 (선택적)
                 frame_num = header[0]
                 if self.save_frames:
-                    if frame_num < 50:  # 처음 50프레임 저장 (너무 많이 저장 방지)
+                    if frame_num < 20:  # 처음 20프레임 저장
                         save_path = f"{self.save_dir}/frame_{frame_num:04d}.jpg"
                         cv2.imwrite(save_path, image)
                         print(f"[Server] Saved: {save_path}")
-                    elif frame_num % 30 == 0:  # 이후 30프레임마다 샘플링
-                        save_path = f"{self.save_dir}/frame_{frame_num:04d}.jpg"
-                        cv2.imwrite(save_path, image)
-                        print(f"[Server] Sample saved: {save_path}")
                 
-                # 차선 감지 수행 (전처리 과정 저장)
+                # 차선 감지 수행
                 start_time = time.time()
                 
-                # 전처리 단계별 이미지 저장 (처음 5프레임)
-                if self.save_frames and frame_num < 5:
-                    # 1. 원본
-                    cv2.imwrite(f"{self.save_dir}/step1_original_{frame_num:04d}.jpg", image)
-                    
-                    # 2. 선명화
-                    kernel = np.array([[-1,-1,-1], [-1, 9,-1], [-1,-1,-1]])
-                    sharpened = cv2.filter2D(image, -1, kernel)
-                    cv2.imwrite(f"{self.save_dir}/step2_sharpened_{frame_num:04d}.jpg", sharpened)
-                    
-                    # 3. 그레이스케일
-                    gray = cv2.cvtColor(sharpened, cv2.COLOR_BGR2GRAY)
-                    cv2.imwrite(f"{self.save_dir}/step3_gray_{frame_num:04d}.jpg", gray)
-                    
-                    # 4. 대비 향상
-                    clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8,8))
-                    enhanced = clahe.apply(gray)
-                    cv2.imwrite(f"{self.save_dir}/step4_enhanced_{frame_num:04d}.jpg", enhanced)
-                    
-                    # 5. 엣지 검출
-                    blur = cv2.GaussianBlur(enhanced, (3, 3), 0)
-                    edges = cv2.Canny(blur, 30, 100)
-                    cv2.imwrite(f"{self.save_dir}/step5_edges_{frame_num:04d}.jpg", edges)
-                    
-                    # 6. ROI 적용
-                    roi_edges = self.lane_detector.get_roi(edges)
-                    cv2.imwrite(f"{self.save_dir}/step6_roi_{frame_num:04d}.jpg", roi_edges)
-                    
-                    print(f"[Server] 🔍 Saved preprocessing steps for frame {frame_num}")
-                
+                # 기존 방식으로 모든 차선 감지
                 lines = self.lane_detector.detect_lane_lines(image)
-                offset, confidence = self.lane_detector.get_lane_center_offset(image, lines)
+                
+                # 색상을 고려한 오프셋 계산
+                result = self.lane_detector.get_lane_center_offset_with_colors(image, lines)
+                
+                if len(result) == 4:
+                    offset, confidence, centerline_violation, direction = result
+                else:
+                    # 폴백: 기존 방식
+                    offset, confidence = result
+                    centerline_violation = False
+                    direction = "unknown"
+                
                 process_time = (time.time() - start_time) * 1000
                 
-                # 차선 감지 디버깅 정보
-                if lines is not None:
-                    print(f"[Server] Detected {len(lines)} lines")
+                # 디버그 이미지 저장 (처음 10프레임)
+                if self.save_frames and frame_num < 10:
+                    debug_image = image.copy()
                     
-                    # 차선이 그려진 이미지도 저장 (처음 10프레임)
-                    if self.save_frames and frame_num < 10:
-                        debug_image = image.copy()
-                        
-                        # 원본 차선 그리기 (초록색)
+                    # 모든 차선 그리기
+                    if lines is not None:
                         for line in lines:
                             x1, y1, x2, y2 = line[0]
-                            cv2.line(debug_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                        
-                        # ROI 영역 표시 (파란색)
-                        height, width = image.shape[:2]
-                        roi_points = np.array([
-                            [int(width * 0.1), height],
-                            [int(width * 0.4), int(height * self.lane_detector.roi_top_ratio)],
-                            [int(width * 0.6), int(height * self.lane_detector.roi_top_ratio)],
-                            [int(width * 0.9), height]
-                        ], dtype=np.int32)
-                        cv2.polylines(debug_image, [roi_points], True, (255, 0, 0), 2)
-                        
-                        # 차량 중앙선 표시 (빨간색)
-                        cv2.line(debug_image, (width//2, 0), (width//2, height), (0, 0, 255), 2)
-                        
-                        debug_path = f"{self.save_dir}/debug_lines_{frame_num:04d}.jpg"
-                        cv2.imwrite(debug_path, debug_image)
-                        print(f"[Server] Saved lines debug: {debug_path}")
-                else:
-                    print(f"[Server] No lines detected")
+                            # 색상 분류
+                            color_type = self.lane_detector.classify_line_color(image, line[0])
+                            if color_type == "yellow":
+                                cv2.line(debug_image, (x1, y1), (x2, y2), (0, 255, 255), 3)  # 노간색
+                            elif color_type == "white":
+                                cv2.line(debug_image, (x1, y1), (x2, y2), (255, 255, 255), 2)  # 흰색
+                            else:
+                                cv2.line(debug_image, (x1, y1), (x2, y2), (128, 128, 128), 1)  # 회색 (알 수 없음)
+                    
+                    # 차량 중앙선 표시 (빨간색)
+                    height, width = image.shape[:2]
+                    cv2.line(debug_image, (width//2, 0), (width//2, height), (0, 0, 255), 2)
+                    
+                    # 중앙선 침범 표시
+                    if centerline_violation:
+                        cv2.putText(debug_image, "CENTERLINE VIOLATION!", (10, 30), 
+                                   cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+                    
+                    # 방향 표시
+                    cv2.putText(debug_image, f"Direction: {direction}", (10, 60), 
+                               cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+                    
+                    debug_path = f"{self.save_dir}/debug_enhanced_{frame_num:04d}.jpg"
+                    cv2.imwrite(debug_path, debug_image)
+                    print(f"[Server] Saved enhanced debug: {debug_path}")
                 
                 # 결과 전송
                 success = offset is not None
                 if not success:
                     offset = 0.0
                     confidence = 0.0
+                    centerline_violation = False
                 
                 self.send_response(
                     client_addr, 
@@ -423,11 +602,13 @@ class UDPLaneDetectionServer:
                     offset, 
                     confidence, 
                     header[0],  # sequence number
-                    header[1]   # timestamp
+                    header[1],  # timestamp
+                    centerline_violation
                 )
                 
-                print(f"[Server] Frame {header[0]}: Offset={offset:.3f}, "
-                      f"Confidence={confidence:.2f}, Process={process_time:.1f}ms")
+                violation_msg = " 🚨 VIOLATION!" if centerline_violation else ""
+                print(f"[Server] Frame {header[0]}: Direction={direction}, Offset={offset:.3f}, "
+                      f"Confidence={confidence:.2f}, Process={process_time:.1f}ms{violation_msg}")
                 
             except queue.Empty:
                 continue
@@ -436,22 +617,24 @@ class UDPLaneDetectionServer:
                 import traceback
                 traceback.print_exc()
     
-    def send_response(self, client_addr, success, offset, confidence, seq_num, timestamp):
-        """응답 전송 (Unity 구조체와 호환)"""
+    def send_response(self, client_addr, success, offset, confidence, seq_num, timestamp, centerline_violation=False):
+        """응답 전송 (중앙선 정보 포함)"""
         try:
-            # Unity 구조체와 일치: byte, float, float, uint, uint
+            # Unity 구조체와 일치: byte, float, float, byte, uint, uint
             success_byte = 1 if success else 0
+            violation_byte = 1 if centerline_violation else 0
             
             # 타임스탬프를 uint32 범위로 제한 (상대적 시간 사용)
             current_time_ms = int(time.time() * 1000)
             timestamp_uint32 = current_time_ms & 0xFFFFFFFF  # uint32로 마스킹
             
             response_data = struct.pack(
-                '<BffII',  # Little-endian: byte, float, float, uint, uint
+                '<BffBII',  # Little-endian: byte, float, float, byte, uint, uint
                 success_byte,
                 offset,
                 confidence,
-                timestamp_uint32,  # 안전한 범위로 제한된 타임스탬프
+                violation_byte,  # 중앙선 침범 정보
+                timestamp_uint32,
                 seq_num
             )
             
@@ -459,7 +642,10 @@ class UDPLaneDetectionServer:
             response_addr = (client_addr[0], self.response_port)
             self.response_socket.sendto(response_data, response_addr)
             
-            print(f"[Server] Response sent to {response_addr}: success={success}, offset={offset:.3f}, confidence={confidence:.2f}")
+            if centerline_violation:
+                print(f"[Server] ⚠️ CENTERLINE VIOLATION sent to {response_addr}")
+            else:
+                print(f"[Server] Response sent to {response_addr}: success={success}, offset={offset:.3f}")
             
         except Exception as e:
             print(f"[Server] Response send error: {e}")
@@ -477,7 +663,12 @@ class UDPLaneDetectionServer:
 
 def main():
     """메인 함수"""
-    print("=== UDP Lane Detection Server ===")
+    print("=== UDP Lane Detection Server with Enhanced Color Recognition ===")
+    print("- Uses existing lane detection method")
+    print("- Adds color classification (yellow/white)")
+    print("- Automatic direction detection")
+    print("- Centerline violation detection")
+    print("- Configuration: YELLOW line on RIGHT side")
     print("Press Ctrl+C to stop the server")
     
     # 서버 시작 (프레임 저장 활성화)

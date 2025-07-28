@@ -1,0 +1,42 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1753664152",
+        "python_version": "3.9.23 (main, Jun  5 2025, 08:49:36) \n[Clang 14.0.6 ]",
+        "command_line_arguments": "/opt/homebrew/Caskroom/miniconda/base/envs/mlagents/bin/mlagents-learn config.yaml --run-id=car_tra25 --time-scale=1.0",
+        "mlagents_version": "0.30.0",
+        "mlagents_envs_version": "0.30.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "1.11.0",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1753664212"
+    },
+    "total": 60.695109165999995,
+    "count": 1,
+    "self": 0.011221372999997925,
+    "children": {
+        "run_training.setup": {
+            "total": 0.016640833999999938,
+            "count": 1,
+            "self": 0.016640833999999938
+        },
+        "TrainerController.start_learning": {
+            "total": 60.667246958999996,
+            "count": 1,
+            "self": 0.0003132919999941919,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 60.666788167,
+                    "count": 1,
+                    "self": 60.666788167
+                },
+                "TrainerController._save_models": {
+                    "total": 0.00014550000000213004,
+                    "count": 1,
+                    "self": 0.00014550000000213004
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+behaviors:
+  CarAgent:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 64          # 512 → 64 (8배 느리게)
+      buffer_size: 640        # 5120 → 640 (8배 느리게)
+      learning_rate: 1.0e-4   # 3.0e-4 → 1.0e-4 (3배 느리게)
+    network_settings:
+      hidden_units: 128       # 그대로
+      num_layers: 2           # 그대로
+    max_steps: 500000         # 그대로
+    time_horizon: 32          # 64 → 32 (절반)
+    summary_freq: 1000        # 5000 → 1000 (자주 확인)
