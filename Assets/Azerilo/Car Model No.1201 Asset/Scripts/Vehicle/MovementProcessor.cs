@@ -17,7 +17,13 @@ public class MovementProcessor : MonoBehaviour
 
     private void OnMovementControl(MovementControlEvent movementEvent)
     {
-        // Apply throttle
+        ApplyThrottle(movementEvent);
+        ApplySteering(movementEvent);
+        UpdateWheelMeshes();
+    }
+
+    private void ApplyThrottle(MovementControlEvent movementEvent)
+    {
         foreach (WheelCollider wheel in carController.throttleWheels)
         {
             if (movementEvent.brake)
@@ -31,15 +37,20 @@ public class MovementProcessor : MonoBehaviour
                 wheel.brakeTorque = 0f;
             }
         }
+    }
 
-        // Apply steering
+    private void ApplySteering(MovementControlEvent movementEvent)
+    {
         foreach (GameObject wheel in carController.steeringWheels)
         {
-            wheel.GetComponent<WheelCollider>().steerAngle = carController.maxTurn * movementEvent.steer;
+            float steerAngle = carController.maxTurn * movementEvent.steer;
+            wheel.GetComponent<WheelCollider>().steerAngle = steerAngle;
             wheel.transform.localEulerAngles = new Vector3(0f, movementEvent.steer * carController.maxTurn, 0f);
         }
+    }
 
-        // Update wheel meshes
+    private void UpdateWheelMeshes()
+    {
         Rigidbody rb = carController.GetComponent<Rigidbody>();
         foreach (GameObject mesh in carController.meshes)
         {
