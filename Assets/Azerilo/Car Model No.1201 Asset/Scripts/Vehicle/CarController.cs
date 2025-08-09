@@ -241,7 +241,7 @@ public class CarController : MonoBehaviour
     private void StopAllEmergencyEffects()
     {
         // LED 중지
-        var ledStopEvent = new LEDControlEvent(0f, 0f, false, 0f, "");
+        var ledStopEvent = new LEDControlEvent(0f, 0f, false, 0f);
         EventManager.Publish(ledStopEvent);
 
         // HUD 중지 - 단, OneShot/Timed 모드는 자연스럽게 종료되도록 함
@@ -332,7 +332,7 @@ public class CarController : MonoBehaviour
         }
     }
 
-    // 모듈화된 LED 라우팅
+    
     private void RouteToLED(SoundEvent soundEvent)
     {
         string directionStr = ConvertToDirectionString(soundEvent.direction);
@@ -362,19 +362,22 @@ public class CarController : MonoBehaviour
             float blinkSpeed = profile.ledBlinkSpeed;
             float timerSpeed = profile.ledTimerSpeed;
 
-            var ledEvent = new LEDControlEvent(blinkSpeed, timerSpeed, true, soundEvent.volume, directionStr);
+            // SoundType을 포함하여 LEDControlEvent 생성 (색상은 LEDManager에서 자동 결정)
+            var ledEvent = new LEDControlEvent(blinkSpeed, timerSpeed, true, soundEvent.volume, directionStr, soundEvent.soundType);
             EventManager.Publish(ledEvent);
 
-            Debug.Log($"[CarController] LED Event: Speed={blinkSpeed:F2}, Timer={timerSpeed:F2} (From {soundEvent.soundType} profile)");
+            Debug.Log($"[CarController] LED Event: Speed={blinkSpeed:F2}, Timer={timerSpeed:F2}, SoundType={soundEvent.soundType} (Color will be auto-assigned)");
         }
         else
         {
-            var ledEvent = new LEDControlEvent(0f, 0f, false, soundEvent.volume, directionStr);
+            // 깜빡임 중지 시에도 SoundType 전달
+            var ledEvent = new LEDControlEvent(0f, 0f, false, soundEvent.volume, directionStr, soundEvent.soundType);
             EventManager.Publish(ledEvent);
 
-            Debug.Log($"[CarController] LED Event: STOP (Level: {volumeLevel.name})");
+            Debug.Log($"[CarController] LED Event: STOP (Level: {volumeLevel.name}, SoundType: {soundEvent.soundType})");
         }
     }
+    
 
     private void RouteToMovement(CarInputEvent inputEvent)
     {
@@ -492,7 +495,7 @@ public class CarController : MonoBehaviour
         }
 
         // 고품질 RenderTexture 생성
-        RenderTextureDescriptor rtDesc = new RenderTextureDescriptor(imageWidth, imageHeight, RenderTextureFormat.RGB565, 0);
+        RenderTextureDescriptor rtDesc = new RenderTextureDescriptor(imageWidth, imageHeight, RenderTextureFormat.RGB565, 24);
         rtDesc.sRGB = false;
         rtDesc.enableRandomWrite = false;
         rtDesc.useMipMap = false;

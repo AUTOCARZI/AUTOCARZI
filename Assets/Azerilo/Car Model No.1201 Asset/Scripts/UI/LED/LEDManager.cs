@@ -7,13 +7,27 @@ public class LEDManager : MonoBehaviour
     public Transform rightLEDParent;
     public Transform leftLEDParent;
 
+    [Header("Sound Type Colors")]
+    public Color ambulanceColor = Color.red;
+    public Color carHornColor = Color.yellow;
+    public Color defaultColor = Color.black;
+
     private LEDNode[] allLEDs;
-    private bool isCurrentlyBlinking = false; // 현재 깜빡임 상태 추적
+    private bool isCurrentlyBlinking = false;
+    private Color currentLEDColor = Color.white;
+
+    // SoundType별 색상 매핑
+    private Dictionary<SoundType, Color> soundColorMap;
 
     void Start()
     {
         Debug.Log("[LEDManager] LEDManager Starting...");
+        
+        // 색상 매핑 초기화
+        InitializeColorMapping();
+        
         FindAllLEDs();
+        SetAllLEDsColor(defaultColor);
 
         Debug.Log("[LEDManager] Subscribing to LEDControlEvent...");
         EventManager.Subscribe<LEDControlEvent>(OnLEDControl);
@@ -26,21 +40,41 @@ public class LEDManager : MonoBehaviour
         EventManager.Unsubscribe<LEDControlEvent>(OnLEDControl);
     }
 
+    private void InitializeColorMapping()
+    {
+        soundColorMap = new Dictionary<SoundType, Color>
+        {
+            [SoundType.None] = defaultColor,
+            [SoundType.Ambulance] = ambulanceColor,
+            [SoundType.CarHorn] = carHornColor,
+        };
+
+        Debug.Log($"[LEDManager] Initialized {soundColorMap.Count} sound type colors");
+    }
+
     private void OnLEDControl(LEDControlEvent ledEvent)
     {
-        Debug.Log($"[LEDManager] Received LEDControlEvent: Blink={ledEvent.shouldBlink}, Speed={ledEvent.blinkSpeed:F2}, TimerSpeed={ledEvent.timerSpeed:F2}, Volume={ledEvent.volume:F2}, Direction={ledEvent.direction}");
+        Debug.Log($"[LEDManager] Received LEDControlEvent: Blink={ledEvent.shouldBlink}, Speed={ledEvent.blinkSpeed:F2}, TimerSpeed={ledEvent.timerSpeed:F2}, Volume={ledEvent.volume:F2}, Direction={ledEvent.direction}, SoundType={ledEvent.soundType}, Color={ledEvent.ledColor}");
+
+        // 색상 설정 (SoundType 또는 직접 색상)
+        Color targetColor = defaultColor;
+        
+        targetColor = soundColorMap[ledEvent.soundType];
+        Debug.Log($"[LEDManager] Using {ledEvent.soundType} color: {targetColor}");
+
+        SetAllLEDsColor(targetColor);
 
         if (ledEvent.shouldBlink)
         {
-            if (!isCurrentlyBlinking) // 이미 깜빡이고 있지 않을 때만 시작
+            if (!isCurrentlyBlinking)
             {
-                Debug.Log($"[LEDManager] Starting LED chained blinking for direction: {ledEvent.direction}");
+                Debug.Log($"[LEDManager] Starting LED chained blinking for direction: {ledEvent.direction} with color: {targetColor}");
                 SetupChainedBlinking(ledEvent.blinkSpeed, ledEvent.timerSpeed, ledEvent.volume, ledEvent.direction);
                 isCurrentlyBlinking = true;
             }
             else
             {
-                Debug.Log($"[LEDManager] Already blinking - updating parameters");
+                Debug.Log($"[LEDManager] Already blinking - updating parameters and color");
                 UpdateBlinkingParameters(ledEvent.blinkSpeed, ledEvent.timerSpeed);
             }
         }
@@ -90,6 +124,9 @@ public class LEDManager : MonoBehaviour
             led.isFirstNode = false;
             led.prevNode = null;
             led.SetTimingSettings(0.8f, blinkSpeed, timerSpeed, timerSpeed);
+            
+            // LED에 색상 설정 메서드가 있다면 호출
+            // led.SetColor(currentLEDColor);
         }
 
         // Setup chain
@@ -107,7 +144,7 @@ public class LEDManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"[LEDManager] LEDs chained blinking setup complete! Direction: {direction}, Volume: {volume:F2}");
+        Debug.Log($"[LEDManager] LEDs chained blinking setup complete! Direction: {direction}, Volume: {volume:F2}, Color: {currentLEDColor}");
     }
 
     private void UpdateBlinkingParameters(float blinkSpeed, float timerSpeed)
@@ -126,7 +163,7 @@ public class LEDManager : MonoBehaviour
     {
         if (allLEDs == null)
         {
-            Debug.LogWarning("[LEDManager] ⚠️ No LEDs to stop!");
+            Debug.LogWarning("[LEDManager] No LEDs to stop!");
             return;
         }
 
@@ -134,24 +171,80 @@ public class LEDManager : MonoBehaviour
 
         foreach (LEDNode led in allLEDs)
         {
-            // 완전히 리셋
             led.isFirstNode = false;
             led.prevNode = null;
-
-            // 정상 상태로 복원 (매우 긴 offTime으로 사실상 정지)
             led.SetTimingSettings(0.1f, 999f, 1.0f, 1.0f);
-
-            // LED가 켜져있다면 강제로 끄기 (LEDNode에 이런 메서드가 있다면)
-            // led.ForceOff(); // 만약 LEDNode에 이런 메서드가 있다면 사용
         }
 
         Debug.Log("[LEDManager] All LEDs force stopped and reset to normal state");
     }
 
-    // 현재 깜빡임 상태 확인용 (디버깅)
+    private void SetAllLEDsColor(Color color)
+    {
+        currentLEDColor = color;
+
+        if (allLEDs == null) return;
+
+        foreach (LEDNode led in allLEDs)
+        {
+            // LEDNode에 색상 설정 메서드가 있다고 가정
+            // 실제 구현은 LEDNode의 구조에 따라 다를 수 있습니다
+            
+            // 방법 1: LEDNode에 SetColor 메서드가 있는 경우
+            // led.SetColor(color);
+            
+            // 방법 2: LEDNode가 Light 컴포넌트를 가지고 있는 경우
+            Light ledLight = led.GetComponent<Light>();
+            if (ledLight != null)
+            {
+                ledLight.color = color;
+            }
+            
+            // 방법 3: LEDNode가 Renderer를 가지고 있는 경우 (Material 색상 변경)
+            Renderer ledRenderer = led.GetComponent<Renderer>();
+            if (ledRenderer != null && ledRenderer.material != null)
+            {
+                ledRenderer.material.color = color;
+                
+                // Emissive Material인 경우
+                if (ledRenderer.material.HasProperty("_EmissionColor"))
+                {
+                    ledRenderer.material.SetColor("_EmissionColor", color);
+                }
+            }
+        }
+
+        Debug.Log($"[LEDManager] Set all LEDs color to: {color}");
+    }
+
+    // Public API methods
+    public void SetLEDColorForSoundType(SoundType soundType)
+    {
+        if (soundColorMap.ContainsKey(soundType))
+        {
+            SetAllLEDsColor(soundColorMap[soundType]);
+            Debug.Log($"[LEDManager] Set LEDs to {soundType} color: {soundColorMap[soundType]}");
+        }
+        else
+        {
+            SetAllLEDsColor(defaultColor);
+            Debug.Log($"[LEDManager] Unknown sound type {soundType}, using default color");
+        }
+    }
+
+    public void SetCustomSoundTypeColor(SoundType soundType, Color color)
+    {
+        soundColorMap[soundType] = color;
+        Debug.Log($"[LEDManager] Updated {soundType} color to: {color}");
+    }
+
+    public Color GetSoundTypeColor(SoundType soundType)
+    {
+        return soundColorMap.ContainsKey(soundType) ? soundColorMap[soundType] : defaultColor;
+    }
+
     public bool IsBlinking() => isCurrentlyBlinking;
 
-    // 강제 정지용 public 메서드 (외부에서 호출 가능)
     public void ForceStopBlinking()
     {
         Debug.Log("[LEDManager] External force stop requested");
