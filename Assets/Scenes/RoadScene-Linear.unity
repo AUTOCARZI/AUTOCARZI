@@ -129,6 +129,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400002, guid: b058c42fc7d431541b009cba82d306a8, type: 3}
   m_PrefabInstance: {fileID: 697398804}
   m_PrefabAsset: {fileID: 0}
+--- !u!20 &19577567 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 3961750721292997307, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
+  m_PrefabInstance: {fileID: 189819617}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &21613045 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100002, guid: b058c42fc7d431541b009cba82d306a8, type: 3}
@@ -393,16 +398,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 45313169}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.00015465914, y: -0.0043201246, z: -0.001230581, w: 0.9999899}
+  m_LocalPosition: {x: 0, y: 0, z: -0.000042146836}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1652590229}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.018, y: -0.495, z: -0.141}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.000014901159, y: 0.000073000476}
   m_SizeDelta: {x: 1200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &45313171
@@ -871,7 +876,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.54
+      value: -3.61
       objectReference: {fileID: 0}
     - target: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_LocalPosition.y
@@ -879,35 +884,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 21.5
+      value: 32.48
       objectReference: {fileID: 0}
     - target: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9604396
+      value: 0.9999917
       objectReference: {fileID: 0}
     - target: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.001559147
       objectReference: {fileID: 0}
     - target: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.27848822
+      value: -0.0031996416
       objectReference: {fileID: 0}
     - target: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.0019662033
       objectReference: {fileID: 0}
     - target: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 0.179
       objectReference: {fileID: 0}
     - target: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 32.34
+      value: -0.366
       objectReference: {fileID: 0}
     - target: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 0.225
       objectReference: {fileID: 0}
     - target: {fileID: 1043613200462545649, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_LocalPosition.x
@@ -979,7 +984,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4061938992692591023, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4381663640965761718, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: maxIntensity
@@ -3190,7 +3195,7 @@ MonoBehaviour:
   currentLaneOffset: 0
   isLaneDetectionActive: 0
   laneOffsetThreshold: 0.3
-  laneDetectionCamera: {fileID: 0}
+  laneDetectionCamera: {fileID: 19577567}
   serverIP: 127.0.0.1
   videoPort: 8888
   responsePort: 8889
@@ -3279,6 +3284,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightLEDParent: {fileID: 297253257}
   leftLEDParent: {fileID: 2059196036}
+  ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
+  carHornColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  defaultColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &660572454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3322,23 +3330,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 660572441}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef2c9c0c6166546019e1f579fe16c6f6, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b43f7eb4acad49b4a106b7b2447d427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isAutonomousMode: 1
-  targetSpeed: 50
-  safeFollowingDistance: 15
-  emergencyBrakeDistance: 8
-  speedControlSensitivity: 0.5
-  steeringKp: 2
-  steeringKi: 0.1
-  steeringKd: 0.5
+  targetSpeed: 80
+  safeFollowingDistance: 12
+  emergencyBrakeDistance: 6
+  speedControlSensitivity: 1.2
+  accelerationSmoothness: 1.5
+  maxThrottleRate: 1
+  steeringKp: 2.5
+  steeringKi: 0.15
+  steeringKd: 0.7
   maxSteeringAngle: 1
-  forwardRayDistance: 50
+  forwardRayDistance: 30
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 4294967295
-  frontRayCount: 7
+  frontRayCount: 5
   raycastOrigin: {fileID: 660572451}
   raycastAngleRange: 10
   manualOverrideDelay: 2
