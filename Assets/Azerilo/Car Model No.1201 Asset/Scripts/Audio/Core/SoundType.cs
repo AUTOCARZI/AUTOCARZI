@@ -1,5 +1,6 @@
 public enum SoundType
 {
-  Ambulance,
-  CarHorn,
+    None,        
+    Ambulance,   
+    CarHorn,    
 }

@@ -4,84 +4,76 @@ using UnityEngine;
 [System.Serializable]
 public class SoundResponseProfile
 {
-  [Header("Basic Settings")]
-  public SoundType soundType = SoundType.Ambulance;
-  public float activationThreshold = 0.3f;
+    public SoundType soundType;
+    public float activationThreshold = 0.3f;
+    
+    [Header("Visual Response")]
+    public bool enableHUD = true;
+    public bool enableLED = true;
+    public Color ledColor = Color.white;  // 새로 추가: LED 색상
+    
+    [Header("Timing")]
+    public float hudBlinkSpeed = 1.0f;
+    public float ledBlinkSpeed = 1.0f;
+    public float ledTimerSpeed = 1.0f;
 
-  [Header("Visual Response Settings")]
-  public bool enableHUD = true;
-  public bool enableLED = true;
-  public float hudBlinkSpeed = 1.0f;
-  public float ledBlinkSpeed = 1.0f;
-  public float ledTimerSpeed = 1.0f;
-
-  [Header("Direction-based Thresholds")]
-  public Dictionary<string, float> directionThresholds;
-
-  [Header("Volume Response Levels")]
-  public Dictionary<string, VolumeResponseLevel> volumeLevels;
-
-  [Header("HUD Mapping")]
-  public Dictionary<string, string[]> hudMapping;
-
-  public SoundResponseProfile()
-  {
-    InitializeDefaults();
-  }
-
-  private void InitializeDefaults()
-  {
-    // 방향별 임계값 초기화
-    directionThresholds = new Dictionary<string, float>
+    // 방향별 임계값
+    public Dictionary<string, float> directionThresholds = new Dictionary<string, float>
     {
-      ["behind"] = 0.85f,
-      ["behind-left"] = 0.90f,
-      ["behind-right"] = 0.90f,
-      ["to the left"] = 0.90f,
-      ["to the right"] = 0.90f,
-      ["ahead"] = 0.95f,
-      ["ahead-left"] = 0.95f,
-      ["ahead-right"] = 0.95f
+        ["behind"] = 0.4f,
+        ["behind-left"] = 0.5f,
+        ["behind-right"] = 0.5f,
+        ["to the left"] = 0.6f,
+        ["to the right"] = 0.6f,
+        ["ahead"] = 0.7f,
+        ["ahead-left"] = 0.7f,
+        ["ahead-right"] = 0.7f
     };
 
-    // 볼륨 레벨 초기화
-    volumeLevels = new Dictionary<string, VolumeResponseLevel>
+    // 볼륨 레벨별 응답
+    public Dictionary<string, VolumeResponseLevel> volumeLevels = new Dictionary<string, VolumeResponseLevel>
     {
-      ["none"] = new VolumeResponseLevel("None", 0.0f, 0.3f, false, false),
-      ["low"] = new VolumeResponseLevel("Low", 0.3f, 0.6f, true, false),
-      ["medium"] = new VolumeResponseLevel("Medium", 0.6f, 0.85f, true, true),
-      ["high"] = new VolumeResponseLevel("High", 0.85f, 0.95f, true, true),
-      ["critical"] = new VolumeResponseLevel("Critical", 0.95f, 1.0f, true, true)
+        ["none"] = new VolumeResponseLevel("none", 0f, 0.2f, false, false),
+        ["low"] = new VolumeResponseLevel("low", 0.2f, 0.5f, true, false),
+        ["medium"] = new VolumeResponseLevel("medium", 0.5f, 0.8f, true, true),
+        ["high"] = new VolumeResponseLevel("high", 0.8f, 1.0f, true, true)
     };
-  }
+
+    // HUD 매핑
+    public Dictionary<string, string[]> hudMapping = new Dictionary<string, string[]>();
+
+    public SoundResponseProfile()
+    {
+        // 기본값들은 위에서 설정
+    }
+
+    public SoundResponseProfile(SoundType type, Color color)
+    {
+        soundType = type;
+        ledColor = color;
+    }
 }
 
 [System.Serializable]
 public class VolumeResponseLevel
 {
-  public string name;
-  public float minVolume;
-  public float maxVolume;
-  public bool showHUD;
-  public bool activateLED;
+    public string name;
+    public float minVolume;
+    public float maxVolume;
+    public bool showHUD;
+    public bool activateLED;
 
-  public VolumeResponseLevel(string name, float minVolume, float maxVolume, bool showHUD, bool activateLED)
-  {
-    this.name = name;
-    this.minVolume = minVolume;
-    this.maxVolume = maxVolume;
-    this.showHUD = showHUD;
-    this.activateLED = activateLED;
-  }
+    public VolumeResponseLevel(string name, float minVolume, float maxVolume, bool showHUD, bool activateLED)
+    {
+        this.name = name;
+        this.minVolume = minVolume;
+        this.maxVolume = maxVolume;
+        this.showHUD = showHUD;
+        this.activateLED = activateLED;
+    }
 
-  public bool IsInRange(float volume)
-  {
-    return volume >= minVolume && volume <= maxVolume;
-  }
-
-  public float GetIntensityRatio(float volume)
-  {
-    if (!IsInRange(volume)) return 0f;
-    return (volume - minVolume) / (maxVolume - minVolume);
-  }
+    public bool IsInRange(float volume)
+    {
+        return volume >= minVolume && volume <= maxVolume;
+    }
 }
