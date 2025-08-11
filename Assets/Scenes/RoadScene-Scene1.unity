@@ -1228,6 +1228,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114202, guid: 69b40ef7ee16c834c844b3fa26e0fdda, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 160098, guid: 69b40ef7ee16c834c844b3fa26e0fdda, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1268,6 +1272,22 @@ PrefabInstance:
       propertyPath: Camera
       value: 
       objectReference: {fileID: 1035243447}
+    - target: {fileID: 19831730, guid: 69b40ef7ee16c834c844b3fa26e0fdda, type: 3}
+      propertyPath: emitterVelocityMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19831730, guid: 69b40ef7ee16c834c844b3fa26e0fdda, type: 3}
+      propertyPath: CollisionModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19831730, guid: 69b40ef7ee16c834c844b3fa26e0fdda, type: 3}
+      propertyPath: CollisionModule.m_Bounce.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 19831730, guid: 69b40ef7ee16c834c844b3fa26e0fdda, type: 3}
+      propertyPath: CollisionModule.m_Dampen.scalar
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 19928108, guid: 69b40ef7ee16c834c844b3fa26e0fdda, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
@@ -2961,8 +2981,8 @@ BoxCollider:
   m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.6350403, y: 0.6909866, z: 4.276384}
-  m_Center: {x: 0.07044101, y: 0.154506, z: 0.18286704}
+  m_Size: {x: 1.6350403, y: 1.1491262, z: 4.276384}
+  m_Center: {x: 0.07044097, y: 0.38357612, z: 0.18286705}
 --- !u!114 &660572446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3124,12 +3144,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hudCanvas: {fileID: 1652590232}
   hudAmbulanceBehindRightMoveLeft: {fileID: 521176683}
-  hudAmbulanceBehindLeftMoveRight: {fileID: 125658889}
-  hudAmbulanceBehindMoveRight: {fileID: 45313171}
-  hudAmbulanceBehindMoveLeft: {fileID: 1749142214}
-  hudHornBehind: {fileID: 1773452563}
-  hudHornBehindLeft: {fileID: 515064991}
-  hudHornBehindRight: {fileID: 836709008}
+  hudAmbulanceFront: {fileID: 0}
+  hudRainSlowingDown: {fileID: 0}
+  hudHeavyRainSlowingDown: {fileID: 0}
+  hudBypassTraffic: {fileID: 0}
+  hudBypassAccident: {fileID: 1773452563}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
 --- !u!114 &660572456
