@@ -39,8 +39,8 @@ public class SoundResponseManager
         profile.hudMapping = new Dictionary<string, string[]>
         {
             ["behind-left"] = new[] { "ambulance-behind-left-move-right" },
-            ["behind-right"] = new[] { "ambulance-behind-right-move-left" },
-            ["behind"] = new[] { "ambulance-behind-move-right", "ambulance-behind-move-left" },
+            ["behind-right"] = new string[0],
+            ["behind"] = new string[0],
             ["to the left"] = new string[0],
             ["to the right"] = new string[0],
             ["ahead"] = new string[0],
@@ -76,19 +76,6 @@ public class SoundResponseManager
             ["ahead"] = 0.8f,
             ["ahead-left"] = 0.8f,
             ["ahead-right"] = 0.8f
-        };
-
-        // 경적용 HUD 매핑
-        profile.hudMapping = new Dictionary<string, string[]>
-        {
-            ["behind-left"] = new[] { "horn-behind-left" },
-            ["behind-right"] = new[] { "horn-behind-right" },
-            ["behind"] = new[] { "horn-behind" },
-            ["to the left"] = new string[0],
-            ["to the right"] = new string[0],
-            ["ahead"] = new string[0],
-            ["ahead-left"] = new string[0],
-            ["ahead-right"] = new string[0]
         };
 
         Debug.Log($"[SoundResponseManager] Created CarHorn profile with color: {profile.ledColor}");

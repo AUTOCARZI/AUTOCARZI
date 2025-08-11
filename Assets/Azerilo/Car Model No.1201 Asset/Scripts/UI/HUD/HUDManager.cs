@@ -8,15 +8,16 @@ public class HUDManager : MonoBehaviour
   public Canvas hudCanvas;
 
   [Header("Ambulance HUD Elements")]
-  public RawImage hudAmbulanceBehindRightMoveLeft;     // 우측 후방 → 좌측 이동
-  public RawImage hudAmbulanceBehindLeftMoveRight;     // 좌측 후방 → 우측 이동
-  public RawImage hudAmbulanceBehindMoveRight;         // 후방 → 우측 이동
-  public RawImage hudAmbulanceBehindMoveLeft;          // 후방 → 좌측 이동
+  public RawImage hudAmbulanceBehindRightMoveLeft;     // 후방 앰뷸런스
+  public RawImage hudAmbulanceFront;                   // 전방 앰뷸런스
 
-  [Header("Horn HUD Elements")]
-  public RawImage hudHornBehind;                       // 후방 경적
-  public RawImage hudHornBehindLeft;                   // 후방 좌측 경적
-  public RawImage hudHornBehindRight;                  // 후방 우측 경적
+  [Header("Rain HUD Elements")]
+  public RawImage hudRainSlowingDown;                   // 우천으로 인한 감속
+  public RawImage hudHeavyRainSlowingDown;              // 폭우로 인한 감속
+
+  [Header("Bypass HUD Elements")]
+  public RawImage hudBypassTraffic;                    // 교통 정체로 인한 우회
+  public RawImage hudBypassAccident;                   // 사고로 인한 우회
 
   [Header("Animation Settings")]
   public float hudBlinkInterval = 1f;
@@ -35,11 +36,6 @@ public class HUDManager : MonoBehaviour
     EventManager.Subscribe<HUDControlEvent>(OnHUDControl);
 
     Debug.Log("[HUDManager] HUDManager initialization complete");
-
-    // 테스트 이벤트 발행해보기
-    Debug.Log("[HUDManager] Testing event system...");
-    var testEvent = new HUDControlEvent("test", true, "test");
-    EventManager.Publish(testEvent);
   }
 
   void OnDestroy()
@@ -58,16 +54,17 @@ public class HUDManager : MonoBehaviour
     {
       hudCanvas.gameObject.SetActive(true);
 
-      // 새로운 상황별 앰뷸런스 HUD 등록 (지속형)
+      // 상황별 앰뷸런스 HUD(지속형)
       RegisterHUD("ambulance-behind-right-move-left", hudAmbulanceBehindRightMoveLeft, HUDMode.Continuous);
-      RegisterHUD("ambulance-behind-left-move-right", hudAmbulanceBehindLeftMoveRight, HUDMode.Continuous);
-      RegisterHUD("ambulance-behind-move-right", hudAmbulanceBehindMoveRight, HUDMode.Continuous);
-      RegisterHUD("ambulance-behind-move-left", hudAmbulanceBehindMoveLeft, HUDMode.Continuous);
+      RegisterHUD("ambulance-front", hudAmbulanceFront, HUDMode.Continuous);
 
-      // 경적 HUD 등록 (단발형 - 3회 깜빡임, 최소 2초)
-      RegisterHUD("horn-behind", hudHornBehind, HUDMode.OneShot, 2.0f, 3);
-      RegisterHUD("horn-behind-left", hudHornBehindLeft, HUDMode.OneShot, 2.0f, 3);
-      RegisterHUD("horn-behind-right", hudHornBehindRight, HUDMode.OneShot, 2.0f, 3);
+      // 상황별 우천 HUD(단발형)
+      RegisterHUD("rain-slowing-down", hudRainSlowingDown, HUDMode.OneShot, 2.0f, 3);
+      RegisterHUD("heavy-rain-slowing-down", hudHeavyRainSlowingDown, HUDMode.OneShot, 2.0f, 3);
+
+      // 상황별 우회 HUD(단발형)
+      RegisterHUD("bypass-traffic", hudBypassTraffic, HUDMode.OneShot, 2.0f, 3);
+      RegisterHUD("bypass-accident", hudBypassAccident, HUDMode.OneShot, 2.0f, 3);
 
       Debug.Log("[HUDManager] HUD System initialized");
     }
