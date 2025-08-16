@@ -164,11 +164,6 @@ public class AutonomousDrivingController : MonoBehaviour
     float steerInput = CalculateSteeringInput();
     bool brakeInput = ShouldApplyBrakes();
 
-    if (ShouldApplyMinimumThrottle())
-    {
-      throttleInput = Mathf.Max(throttleInput, MIN_THROTTLE_WHEN_NO_LANE);
-    }
-
     SendAutonomousInput(throttleInput, steerInput, brakeInput);
   }
 
@@ -247,7 +242,18 @@ public class AutonomousDrivingController : MonoBehaviour
       return 0f;
     }
 
-    return MIN_THROTTLE_WHEN_NO_LANE;
+    if (speedError > 5f)
+    {
+      return 0.8f;
+    }
+    else if (speedError > 0f)
+    {
+      return 0.6f;
+    }
+    else
+    {
+      return 0.3f;
+    }
   }
 
   float CalculateSteeringInput()

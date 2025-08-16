@@ -43,9 +43,9 @@ public class SoundResponseManager
             ["behind"] = new string[0],
             ["to the left"] = new string[0],
             ["to the right"] = new string[0],
-            ["ahead"] = new string[0],
-            ["ahead-left"] = new string[0],
-            ["ahead-right"] = new string[0]
+            ["ahead"] = new[] { "ambulance-front" }, // ScenarioA용 전방 HUD
+            ["ahead-left"] = new[] { "ambulance-front" },
+            ["ahead-right"] = new[] { "ambulance-front" }
         };
 
         Debug.Log($"[SoundResponseManager] Created Ambulance profile with color: {profile.ledColor}");

@@ -23,6 +23,8 @@ public class CarControllerAmbulance : MonoBehaviour
     public AudioSource hornSound;
     public AudioClip hornClip;
 
+
+
     void Start()
     {
         im = GetComponent<InputManagerAmbulance>();
@@ -32,7 +34,6 @@ public class CarControllerAmbulance : MonoBehaviour
             rb.centerOfMass = CM.position;
         }
 
-        // Setup audio sources
         SetupAudioSources();
     }
 
