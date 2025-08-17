@@ -11,12 +11,12 @@ public class InputManagerAmbulance : MonoBehaviour
     public bool horn;
 
     [Header("Autonomous Mode")]
-    public bool isAutonomousMode = false;
+    public bool isAutoMode = false;
 
     void Update()
     {
         // Skip keyboard input if in autonomous mode
-        if (isAutonomousMode) return;
+        if (isAutoMode) return;
 
         Keyboard keyboard = Keyboard.current;
         if (keyboard != null)
