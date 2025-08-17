@@ -9,13 +9,12 @@ public class InputManagerAmbulance : MonoBehaviour
     public bool brake;
     public bool siren;
     public bool horn;
-
+    
     [Header("Auto Mode for Scenario")]
     public bool isAutoMode = false;
     public float autoThrottle = 0f;
     public bool autoSiren = false;
-
-
+    
     void Update()
     {
         if (isAutoMode)
