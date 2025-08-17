@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public class CarController_Scene_B : MonoBehaviour
+public class ScenarioBController : MonoBehaviour
 {
     private Rigidbody rb;
     private AutonomousDrivingController autonomousController;
