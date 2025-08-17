@@ -10,5 +10,4 @@
 .DS_Store
 *.csproj
 .vs/
-*.meta
 *.dwlt
