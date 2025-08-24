@@ -8,7 +8,7 @@ public class AutonomousDrivingController : MonoBehaviour
   public bool isAutonomousMode = false;
 
   [Header("Speed Control")]
-  public float targetSpeed = 30f;
+  public float targetSpeed = 80f;
   public float safeFollowingDistance = 12f;
   public float emergencyBrakeDistance = 6f;
   public float speedControlSensitivity = 1.2f;
