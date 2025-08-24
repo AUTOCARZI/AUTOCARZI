@@ -165,19 +165,26 @@ public class CarController : MonoBehaviour
         }
 
         // 임시로 앰뷸런스를 경적 소스로 등록
-        if (carHornSource == null)
+        if (carHornSource == null && ambulanceToDetect != null)
         {
             carHornSource = ambulanceToDetect.GetHornAudioSource();
             Debug.Log("[CarController] Using ambulance horn as car horn source");
         }
 
-        if (carHornTransform == null)
+        if (carHornTransform == null && ambulanceToDetect != null)
         {
             carHornTransform = ambulanceToDetect.transform;
             Debug.Log("[CarController] Using ambulance transform as car horn transform");
         }
 
-        soundSources[SoundType.CarHorn] = new CarHornSoundSource(carHornSource, carHornTransform);
+        if (carHornSource != null && carHornTransform != null)
+        {
+            soundSources[SoundType.CarHorn] = new CarHornSoundSource(carHornSource, carHornTransform);
+        }
+        else
+        {
+            Debug.LogWarning("[CarController] Could not initialize CarHorn sound source - missing components");
+        }
 
         Debug.Log($"[CarController] Sound Response System initialized with {soundSources.Count} sources");
 

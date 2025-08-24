@@ -6226,6 +6226,8 @@ MonoBehaviour:
   steeringKi: 0.15
   steeringKd: 0.7
   maxSteeringAngle: 1
+  allowSteeringOverride: 0
+  steeringOverrideValue: 0
   forwardRayDistance: 30
   obstacleLayer:
     serializedVersion: 2
@@ -15411,7 +15413,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1788160177}
-  - component: {fileID: 1788160176}
   - component: {fileID: 1788160175}
   m_Layer: 0
   m_Name: ScenarioAController
@@ -15443,29 +15444,6 @@ MonoBehaviour:
   emergencyStopSpeed: 0
   slowDownSpeed: 15
   scenarioEndDistance: 100
---- !u!114 &1788160176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1788160174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20e79ea7c32f74c37aa180a2502246fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  car: {fileID: 0}
-  ambulance: {fileID: 0}
-  stopLine: {fileID: 0}
-  sirenVolumeThreshold: 0.3
-  stopLineDetectionDistance: 5
-  invertStopLineDirection: 0
-  ambulanceSpeed: 0.8
-  normalSpeed: 80
-  emergencyStopSpeed: 0
-  slowDownSpeed: 15
-  scenarioEndDistance: 200
 --- !u!4 &1788160177
 Transform:
   m_ObjectHideFlags: 0
