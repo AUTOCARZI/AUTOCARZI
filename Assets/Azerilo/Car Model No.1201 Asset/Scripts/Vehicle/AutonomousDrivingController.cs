@@ -21,6 +21,10 @@ public class AutonomousDrivingController : MonoBehaviour
   public float steeringKd = 0.7f;
   public float maxSteeringAngle = 1f;
 
+  [Header("Steering Override")]
+  public bool allowSteeringOverride = false;
+  public float steeringOverrideValue = 0f;
+
   [Header("Obstacle Detection")]
   public float forwardRayDistance = 30f;
   public LayerMask obstacleLayer = -1;
@@ -258,8 +262,20 @@ public class AutonomousDrivingController : MonoBehaviour
 
   float CalculateSteeringInput()
   {
-    float targetOffset = 0f;
-    float steerOutput = steeringPID.Calculate(targetOffset, carController.currentLaneOffset, Time.deltaTime);
+    float steerOutput;
+    
+    if (allowSteeringOverride)
+    {
+      // 조향 오버라이드가 활성화된 경우 수동 조향 값 사용
+      steerOutput = steeringOverrideValue;
+    }
+    else
+    {
+      // 기본 자율주행 조향 (차선 유지)
+      float targetOffset = 0f;
+      steerOutput = steeringPID.Calculate(targetOffset, carController.currentLaneOffset, Time.deltaTime);
+    }
+    
     return Mathf.Clamp(steerOutput, -maxSteeringAngle, maxSteeringAngle);
   }
 
@@ -281,6 +297,21 @@ public class AutonomousDrivingController : MonoBehaviour
   {
     var autonomousInput = new CarInputEvent(throttle, steer, brake, false);
     EventManager.Publish(autonomousInput);
+  }
+
+  public void SetSteeringOverride(bool enabled, float steerValue = 0f)
+  {
+    allowSteeringOverride = enabled;
+    steeringOverrideValue = steerValue;
+    
+    if (enabled)
+    {
+      Debug.Log($"[AutonomousDriving] 조향 오버라이드 활성화: {steerValue}");
+    }
+    else
+    {
+      Debug.Log("[AutonomousDriving] 조향 오버라이드 비활성화 - 차선 유지 모드");
+    }
   }
 
   public void ToggleAutonomousMode()

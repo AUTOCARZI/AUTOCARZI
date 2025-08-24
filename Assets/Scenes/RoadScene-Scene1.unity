@@ -19894,6 +19894,9 @@ MonoBehaviour:
   brake: 0
   siren: 0
   horn: 0
+  isAutoMode: 0
+  autoThrottle: 0
+  autoSiren: 0
 --- !u!82 &1514595536
 AudioSource:
   m_ObjectHideFlags: 0
