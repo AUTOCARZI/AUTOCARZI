@@ -1999,7 +1999,6 @@ MonoBehaviour:
   leftLEDParent: {fileID: 1198124840}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
   carHornColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  policeWhistleColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &373086291
 MonoBehaviour:
@@ -2096,10 +2095,12 @@ MonoBehaviour:
   jpegQuality: 30
   maxPacketSize: 1400
   ambulanceToDetect: {fileID: 0}
+  ambulanceVolumeThreshold: 0.3
   carHornSource: {fileID: 0}
   carHornTransform: {fileID: 0}
-  policeWhistleSource: {fileID: 683292813}
-  policeWhistleTransform: {fileID: 683292812}
+  carHornVolumeThreshold: 0.5
+  policeWhistleSource: {fileID: 0}
+  policeWhistleTransform: {fileID: 0}
 --- !u!54 &373086295
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3843,11 +3844,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   whistleAudioSource: {fileID: 683292813}
---- !u!4 &683292812 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d8ec10890dd234f1fa359c16f1e12254, type: 3}
-  m_PrefabInstance: {fileID: 683292809}
-  m_PrefabAsset: {fileID: 0}
 --- !u!82 &683292813
 AudioSource:
   m_ObjectHideFlags: 0

@@ -63,6 +63,10 @@ public class CarController : MonoBehaviour
     public Transform carHornTransform;
     public float carHornVolumeThreshold = 0.5f;
 
+    [Header("Police Whistle Detection")]
+    public AudioSource policeWhistleSource;
+    public Transform policeWhistleTransform;
+
     [Header("Sound Response System")]
     public SoundResponseManager soundResponseManager = new SoundResponseManager();
 
@@ -165,19 +169,25 @@ public class CarController : MonoBehaviour
         }
 
         // 임시로 앰뷸런스를 경적 소스로 등록
-        if (carHornSource == null)
+        if (carHornSource == null && ambulanceToDetect)
         {
             carHornSource = ambulanceToDetect.GetHornAudioSource();
             Debug.Log("[CarController] Using ambulance horn as car horn source");
         }
 
-        if (carHornTransform == null)
+        if (carHornTransform == null && ambulanceToDetect)
         {
             carHornTransform = ambulanceToDetect.transform;
             Debug.Log("[CarController] Using ambulance transform as car horn transform");
         }
 
         soundSources[SoundType.CarHorn] = new CarHornSoundSource(carHornSource, carHornTransform);
+
+        if (policeWhistleSource != null && policeWhistleTransform != null)
+        {
+            soundSources[SoundType.PoliceWhistle] = new PoliceWhistleSoundSource(policeWhistleSource, policeWhistleTransform);
+            Debug.Log("[CarController] Police whistle sound source registered");
+        }
 
         Debug.Log($"[CarController] Sound Response System initialized with {soundSources.Count} sources");
 
@@ -243,6 +253,7 @@ public class CarController : MonoBehaviour
         // LED 중지
         var ledStopEvent = new LEDControlEvent(0f, 0f, false, 0f);
         EventManager.Publish(ledStopEvent);
+        Debug.Log("[CarController] LED Stop Event Published");
 
         // HUD 중지 - 단, OneShot/Timed 모드는 자연스럽게 종료되도록 함
         if (!string.IsNullOrEmpty(currentActiveHUD))

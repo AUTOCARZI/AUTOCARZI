@@ -21,4 +21,8 @@ public class PoliceOfficer : MonoBehaviour
         
         Debug.Log("[PoliceOfficer] Whistle looping started!");
     }
+    public void StopWhistling()
+    {
+        whistleAudioSource.loop = false;
+    }
 }

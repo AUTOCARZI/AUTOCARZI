@@ -4,11 +4,13 @@ public class ScenarioDController : MonoBehaviour
 {
     private Rigidbody rb;
     private AutonomousDrivingController autonomousController;
+    private PoliceOfficer police;
     
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         autonomousController = GetComponent<AutonomousDrivingController>();
+        police = FindObjectOfType<PoliceOfficer>();
     }
     
     void OnTriggerEnter(Collider other)
@@ -24,6 +26,7 @@ public class ScenarioDController : MonoBehaviour
         } else if (other.CompareTag("Auto"))
         {
             autonomousController.SetAutonomousMode(true);
+            police.StopWhistling();
             Destroy(other.gameObject);
         }
     }

@@ -19,6 +19,9 @@ public class SoundResponseManager
         var hornProfile = CreateCarHornProfile();
         RegisterProfile(hornProfile);
 
+        var policeProfile =  CreatePoliceWhistleProfile();
+        RegisterProfile(policeProfile);
+
         Debug.Log($"[SoundResponseManager] Initialized {soundProfiles.Count} sound profiles with colors");
     }
 
@@ -79,6 +82,37 @@ public class SoundResponseManager
         };
 
         Debug.Log($"[SoundResponseManager] Created CarHorn profile with color: {profile.ledColor}");
+        return profile;
+    }
+
+    private SoundResponseProfile CreatePoliceWhistleProfile()
+    {
+        var profile = new SoundResponseProfile()
+        {
+            soundType = SoundType.PoliceWhistle,
+            activationThreshold = 0.4f,  
+            enableHUD = true,
+            enableLED = true,
+            hudBlinkSpeed = 1.2f,        
+            ledBlinkSpeed = 1.8f,        
+            ledTimerSpeed = 2.0f,
+        };
+
+        profile.directionThresholds = new Dictionary<string, float>
+        {
+            ["behind"] = 0.45f,
+            ["behind-left"] = 0.40f,
+            ["behind-right"] = 0.40f,
+            ["to the left"] = 0.35f,
+            ["to the right"] = 0.35f,
+            ["ahead"] = 0.50f,           
+            ["ahead-left"] = 0.45f,
+            ["ahead-right"] = 0.45f
+        };
+
+        // HUD mappings for police whistle directions
+
+        Debug.Log($"[SoundResponseManager] Created PoliceWhistle profile with color: {profile.ledColor}");
         return profile;
     }
 
