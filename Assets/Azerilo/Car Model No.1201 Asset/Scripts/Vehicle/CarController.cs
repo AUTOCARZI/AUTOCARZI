@@ -181,7 +181,14 @@ public class CarController : MonoBehaviour
             Debug.Log("[CarController] Using ambulance transform as car horn transform");
         }
 
-        soundSources[SoundType.CarHorn] = new CarHornSoundSource(carHornSource, carHornTransform);
+        if (carHornSource != null && carHornTransform != null)
+        {
+            soundSources[SoundType.CarHorn] = new CarHornSoundSource(carHornSource, carHornTransform);
+        }
+        else
+        {
+            Debug.LogWarning("[CarController] Could not initialize CarHorn sound source - missing components");
+        }
 
         if (policeWhistleSource != null && policeWhistleTransform != null)
         {

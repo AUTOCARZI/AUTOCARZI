@@ -42,7 +42,11 @@ public class HUDManager : MonoBehaviour
   {
     Debug.Log("[HUDManager] HUDManager OnDestroy - Unsubscribing events");
     EventManager.Unsubscribe<HUDControlEvent>(OnHUDControl);
-    Cleanup();
+
+    if (gameObject.activeInHierarchy)
+    {
+      Cleanup();
+    }
   }
 
   private void InitializeHUD()
@@ -243,9 +247,12 @@ public class HUDManager : MonoBehaviour
 
   public void Cleanup()
   {
-    foreach (string key in hudElements.Keys)
+    if (hudElements != null)
     {
-      StopBlinking(key);
+      foreach (string key in hudElements.Keys)
+      {
+        StopBlinking(key);
+      }
     }
   }
 }
