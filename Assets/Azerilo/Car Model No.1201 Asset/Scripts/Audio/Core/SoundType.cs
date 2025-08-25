@@ -2,5 +2,6 @@ public enum SoundType
 {
     None,        
     Ambulance,   
-    CarHorn,    
+    CarHorn,  
+    PoliceWhistle,  
 }
