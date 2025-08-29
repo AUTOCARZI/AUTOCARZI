@@ -19,7 +19,7 @@ public class SoundResponseManager
         var hornProfile = CreateCarHornProfile();
         RegisterProfile(hornProfile);
 
-        var policeProfile =  CreatePoliceWhistleProfile();
+        var policeProfile = CreatePoliceWhistleProfile();
         RegisterProfile(policeProfile);
 
         Debug.Log($"[SoundResponseManager] Initialized {soundProfiles.Count} sound profiles with colors");
@@ -30,10 +30,10 @@ public class SoundResponseManager
         var profile = new SoundResponseProfile()
         {
             soundType = SoundType.Ambulance,
-            activationThreshold = 0.3f,
+            activationThreshold = 0.15f,
             enableHUD = true,
             enableLED = true,
-            hudBlinkSpeed = 1.0f,
+            hudBlinkSpeed = 0f,
             ledBlinkSpeed = 1.0f,
             ledTimerSpeed = 1.0f
         };
@@ -41,12 +41,12 @@ public class SoundResponseManager
         // HUD 매핑 초기화
         profile.hudMapping = new Dictionary<string, string[]>
         {
-            ["behind-left"] = new[] { "ambulance-behind-left-move-right" },
-            ["behind-right"] = new string[0],
-            ["behind"] = new string[0],
+            ["behind-left"] = new[] { "ambulance-behind-right-move-left" },
+            ["behind-right"] = new[] { "ambulance-behind-right-move-left" },
+            ["behind"] = new[] { "ambulance-behind-right-move-left" },
             ["to the left"] = new string[0],
             ["to the right"] = new string[0],
-            ["ahead"] = new[] { "ambulance-front" }, // ScenarioA용 전방 HUD
+            ["ahead"] = new[] { "ambulance-front" },
             ["ahead-left"] = new[] { "ambulance-front" },
             ["ahead-right"] = new[] { "ambulance-front" }
         };
@@ -90,11 +90,11 @@ public class SoundResponseManager
         var profile = new SoundResponseProfile()
         {
             soundType = SoundType.PoliceWhistle,
-            activationThreshold = 0.4f,  
+            activationThreshold = 0.4f,
             enableHUD = true,
             enableLED = true,
-            hudBlinkSpeed = 1.2f,        
-            ledBlinkSpeed = 1.8f,        
+            hudBlinkSpeed = 1.2f,
+            ledBlinkSpeed = 1.8f,
             ledTimerSpeed = 2.0f,
         };
 
@@ -105,7 +105,7 @@ public class SoundResponseManager
             ["behind-right"] = 0.40f,
             ["to the left"] = 0.35f,
             ["to the right"] = 0.35f,
-            ["ahead"] = 0.50f,           
+            ["ahead"] = 0.50f,
             ["ahead-left"] = 0.45f,
             ["ahead-right"] = 0.45f
         };
