@@ -13,10 +13,10 @@ public class ScenarioCController : MonoBehaviour
   public float rightTurnSpeed = 30;
 
   [Header("Scenario Control")]
-  public float bypassEventDelay = 0f;
+  public float straightDistance = 20f;
   public float laneChangeDistance = 20f;
   public float laneCorrectionDistance = 9f;
-  public float rightTurnDelay = 2f;
+  public float rightTurnDelay = 2.5f;
   public float rightTurnDistance = 15f;
 
   private Vector3 stateStartPosition;
@@ -104,13 +104,16 @@ public class ScenarioCController : MonoBehaviour
 
   IEnumerator ExecuteScenarioCoroutine()
   {
-    TriggerBypassTrafficEvent();
     yield return StartCoroutine(ExecuteDistanceBasedScenario());
     EndScenario();
   }
 
   IEnumerator ExecuteDistanceBasedScenario()
   {
+    SetCarState(CarState.Normal);
+    yield return StartCoroutine(WaitForDistance(straightDistance));
+
+    TriggerBypassTrafficEvent();
     SetCarState(CarState.LaneChanging);
     yield return StartCoroutine(WaitForDistance(laneChangeDistance));
 
@@ -149,7 +152,6 @@ public class ScenarioCController : MonoBehaviour
     currentCarState = CarState.Normal;
 
     SetCarState(CarState.Normal);
-    HideBypassTrafficEvent();
   }
 
   void RestoreOriginalSettings()
@@ -222,14 +224,6 @@ public class ScenarioCController : MonoBehaviour
     }
   }
 
-  void HideBypassTrafficEvent()
-  {
-    if (hudManager != null)
-    {
-      EventManager.Publish(new HUDControlEvent("bypass-traffic", false));
-    }
-  }
-
   void Update()
   {
     if (!scenarioStarted || scenarioEnded) return;
@@ -290,7 +284,6 @@ public class ScenarioCController : MonoBehaviour
     currentCarState = CarState.Normal;
 
     RestoreOriginalSettings();
-    HideBypassTrafficEvent();
 
     StartCoroutine(StartScenarioCoroutine());
   }
@@ -303,6 +296,5 @@ public class ScenarioCController : MonoBehaviour
     currentCarState = CarState.Normal;
 
     RestoreOriginalSettings();
-    HideBypassTrafficEvent();
   }
 }

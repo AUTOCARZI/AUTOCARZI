@@ -60,15 +60,15 @@ public class HUDManager : MonoBehaviour
 
       // 상황별 앰뷸런스 HUD(지속형)
       RegisterHUD("ambulance-behind-right-move-left", hudAmbulanceBehindRightMoveLeft, HUDMode.Continuous);
-      RegisterHUD("ambulance-front", hudAmbulanceFront, HUDMode.Continuous);
+      RegisterHUD("ambulance-front", hudAmbulanceFront, HUDMode.Static);  // 깜빡임 제거
 
-      // 상황별 우천 HUD(단발형)
-      RegisterHUD("rain-slowing-down", hudRainSlowingDown, HUDMode.OneShot, 2.0f, 3);
-      RegisterHUD("heavy-rain-slowing-down", hudHeavyRainSlowingDown, HUDMode.OneShot, 2.0f, 3);
+      // 상황별 우천 HUD(정적형 - 깜빡임 없음)
+      RegisterHUD("rain-slowing-down", hudRainSlowingDown, HUDMode.Static);  // 깜빡임 제거
+      RegisterHUD("heavy-rain-slowing-down", hudHeavyRainSlowingDown, HUDMode.Static);  // 깜빡임 제거
 
       // 상황별 우회 HUD(단발형)
-      RegisterHUD("bypass-traffic", hudBypassTraffic, HUDMode.OneShot, 2.0f, 3);
-      RegisterHUD("bypass-accident", hudBypassAccident, HUDMode.OneShot, 2.0f, 3);
+      RegisterHUD("bypass-traffic", hudBypassTraffic, HUDMode.OneShot, 3.0f, 3);
+      RegisterHUD("bypass-accident", hudBypassAccident, HUDMode.Continuous);
 
       Debug.Log("[HUDManager] HUD System initialized");
     }
@@ -94,7 +94,7 @@ public class HUDManager : MonoBehaviour
     }
   }
 
-  public void RegisterHUD(string key, RawImage rawImage, HUDMode mode = HUDMode.Continuous, float minDuration = 2.0f, int minCycles = 3)
+  public void RegisterHUD(string key, RawImage rawImage, HUDMode mode = HUDMode.Continuous, float minDuration = 3.0f, int minCycles = 3)
   {
     if (rawImage != null)
     {
@@ -135,8 +135,17 @@ public class HUDManager : MonoBehaviour
     // HUD 표시 시작
     element.StartDisplay();
 
-    Debug.Log($"[HUDManager] Starting blink for {key} (Mode: {element.mode})");
-    blinkingCoroutines[key] = StartCoroutine(BlinkCoroutine(key));
+    Debug.Log($"[HUDManager] Starting display for {key} (Mode: {element.mode})");
+    
+    // Static 모드일 때는 깜빡임 없이 바로 표시
+    if (element.mode == HUDMode.Static)
+    {
+      blinkingCoroutines[key] = StartCoroutine(StaticDisplay(key));
+    }
+    else
+    {
+      blinkingCoroutines[key] = StartCoroutine(BlinkCoroutine(key));
+    }
   }
 
   public void StopBlinking(string key)
@@ -148,8 +157,8 @@ public class HUDManager : MonoBehaviour
 
     HUDElement element = hudElements[key];
 
-    // 모드에 따라 중단 가능 여부 확인
-    if (!element.CanStop())
+    // Static 모드는 언제든지 중단 가능
+    if (element.mode != HUDMode.Static && !element.CanStop())
     {
       Debug.Log($"[HUDManager] Cannot stop {key} yet (Mode: {element.mode}, Cycles: {element.currentBlinkCount}/{element.targetBlinkCycles})");
       return;
@@ -157,7 +166,7 @@ public class HUDManager : MonoBehaviour
 
     if (blinkingCoroutines.ContainsKey(key) && blinkingCoroutines[key] != null)
     {
-      Debug.Log($"[HUDManager] Stopping blink for {key}");
+      Debug.Log($"[HUDManager] Stopping display for {key}");
       StopCoroutine(blinkingCoroutines[key]);
       blinkingCoroutines[key] = null;
     }
@@ -243,6 +252,24 @@ public class HUDManager : MonoBehaviour
 
     color.a = targetAlpha;
     image.color = color;
+  }
+
+  // Static 모드용 - 깜빡임 없이 지속 표시
+  private System.Collections.IEnumerator StaticDisplay(string key)
+  {
+    if (!hudElements.ContainsKey(key)) yield break;
+
+    HUDElement element = hudElements[key];
+    element.rawImage.gameObject.SetActive(true);
+
+    // 바로 완전히 표시
+    yield return FadeToAlpha(element.rawImage, 1f);
+
+    // Static 모드는 무한히 지속 (StopBlinking이 호출될 때까지)
+    while (true)
+    {
+      yield return null;
+    }
   }
 
   public void Cleanup()

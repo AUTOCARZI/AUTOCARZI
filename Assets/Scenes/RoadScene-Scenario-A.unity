@@ -2644,7 +2644,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 38.7
+      value: 39.8
       objectReference: {fileID: 0}
     - target: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6092,6 +6092,8 @@ MonoBehaviour:
   carHornSource: {fileID: 0}
   carHornTransform: {fileID: 0}
   carHornVolumeThreshold: 0.5
+  policeWhistleSource: {fileID: 0}
+  policeWhistleTransform: {fileID: 0}
 --- !u!54 &660572448
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6169,6 +6171,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 2059196036}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
   carHornColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  policeWhistleColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &660572454
 MonoBehaviour:
@@ -11455,7 +11458,7 @@ Transform:
   m_GameObject: {fileID: 1368670212}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.61, y: 0.1, z: -6.76}
+  m_LocalPosition: {x: 2.61, y: 0.1, z: -7.45}
   m_LocalScale: {x: 4.3359375, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15436,14 +15439,17 @@ MonoBehaviour:
   car: {fileID: 660572447}
   ambulance: {fileID: 1514595534}
   stopLine: {fileID: 1368670213}
-  sirenVolumeThreshold: 0.4
+  sirenVolumeThreshold: 0.1
   stopLineDetectionDistance: 10
   invertStopLineDirection: 0
   ambulanceSpeed: 4
   normalSpeed: 50
   emergencyStopSpeed: 0
   slowDownSpeed: 15
+  straightDistance: 15
   scenarioEndDistance: 100
+  throttleValue: 0.8
+  brakeValue: 1
 --- !u!4 &1788160177
 Transform:
   m_ObjectHideFlags: 0

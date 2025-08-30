@@ -9,18 +9,19 @@ public class ScenarioAController : MonoBehaviour
   public Transform stopLine;
 
   [Header("Detection Settings")]
-  public float sirenVolumeThreshold = 0.4f;
+  public float sirenVolumeThreshold = 0.1f;
   public float stopLineDetectionDistance = 10f;
   [Tooltip("stopLine의 forward 방향이 진행 방향의 '앞'을 가리키도록 배치하세요. 방향이 반대라면 체크하여 반전합니다.")]
   public bool invertStopLineDirection = false;
 
   [Header("Movement Settings")]
   public float ambulanceSpeed = 4.0f;     // 앰뷸런스 이동 속도
-  public float normalSpeed = 50f;         // 일반 자율주행 속도
+  public float normalSpeed = 15f;         // 일반 자율주행 속도
   public float emergencyStopSpeed = 0f;   // 응급 정지 시 속도
   public float slowDownSpeed = 15f;       // 사이렌 인지 후 감속 속도
 
   [Header("Scenario Control")]
+  public float straightDistance = 15f;    // 직진 거리
   public float scenarioEndDistance = 80f;  // 앰뷸런스가 이 거리만큼 멀어지면 시나리오 종료
 
 
@@ -32,6 +33,14 @@ public class ScenarioAController : MonoBehaviour
     EmergencySlowDown,  // 사이렌 감지로 감속
     EmergencyStopped    // 정지선에서 정지
   }
+
+  [Header("Movement Control")]
+  public float throttleValue = 0.8f;
+  public float brakeValue = 1.0f;
+
+  private Vector3 stateStartPosition;
+  private float distanceTraveled;
+  private bool isMovingForward = true;
 
   private AutonomousDrivingController carAutonomous;
   private HUDManager hudManager;
@@ -74,11 +83,11 @@ public class ScenarioAController : MonoBehaviour
   {
     if (carAutonomous != null)
     {
-      carAutonomous.isAutonomousMode = true;
-      carAutonomous.targetSpeed = normalSpeed;
+      carAutonomous.isAutonomousMode = false;
       carAutonomous.enableEmergencyBraking = false;
     }
     StartAmbulanceMovement();
+    StartCoroutine(ExecuteScenarioCoroutine());
   }
 
   void StartAmbulanceMovement()
@@ -93,14 +102,47 @@ public class ScenarioAController : MonoBehaviour
     }
   }
 
+  IEnumerator ExecuteScenarioCoroutine()
+  {
+    yield return StartCoroutine(ExecuteDistanceBasedScenario());
+    EndScenario();
+  }
+
+  IEnumerator ExecuteDistanceBasedScenario()
+  {
+    SetCarState(CarState.Normal);
+    yield return StartCoroutine(MoveForwardDistance(straightDistance));
+
+    SetCarState(CarState.EmergencyStopped);
+    yield return new WaitForSeconds(3f);
+
+    SetCarState(CarState.Normal);
+    yield return StartCoroutine(MoveForwardDistance(straightDistance));
+
+    SetCarState(CarState.Normal);
+  }
+
+  IEnumerator MoveForwardDistance(float targetDistance)
+  {
+    if (car == null) yield break;
+
+    stateStartPosition = car.transform.position;
+    distanceTraveled = 0f;
+
+    while (distanceTraveled < targetDistance)
+    {
+      Vector3 currentPosition = car.transform.position;
+      distanceTraveled = Vector3.Distance(stateStartPosition, currentPosition);
+      yield return null;
+    }
+  }
+
   void Update()
   {
     if (!scenarioStarted || scenarioEnded) return;
 
-    CheckSirenDetection();
-    CheckStopLineProximity();
-    CheckStopLineCrossed();
     CheckScenarioEndCondition();
+    SendManualInput();
   }
 
   void CheckScenarioEndCondition()
@@ -128,27 +170,6 @@ public class ScenarioAController : MonoBehaviour
     }
   }
 
-  void CheckSirenDetection()
-  {
-    if (ambulance == null) return;
-
-    bool sirenPlaying = ambulance.IsSirenPlaying();
-    float perceivedVolume = 0f;
-
-    if (sirenPlaying)
-    {
-      perceivedVolume = ambulance.GetSirenVolumeFrom(car.transform);
-    }
-
-    if (perceivedVolume > sirenVolumeThreshold && currentCarState == CarState.Normal && IsCarBeforeStopLine())
-    {
-      SetCarState(CarState.EmergencySlowDown);
-    }
-    else if (perceivedVolume <= sirenVolumeThreshold * 0.5f && currentCarState != CarState.Normal)
-    {
-      SetCarState(CarState.Normal);
-    }
-  }
 
   // 정지선을 통과했는지 확인하고 통과 시 즉시 정상 주행으로 복귀
   void CheckStopLineCrossed()
@@ -200,28 +221,48 @@ public class ScenarioAController : MonoBehaviour
     switch (newState)
     {
       case CarState.Normal:
-        if (carAutonomous != null)
-        {
-          carAutonomous.targetSpeed = normalSpeed;
-        }
-        HideAmbulanceHUD();
+        isMovingForward = true;
         break;
 
       case CarState.EmergencySlowDown:
-        if (carAutonomous != null)
-        {
-          carAutonomous.targetSpeed = slowDownSpeed;
-        }
-        ShowAmbulanceHUD();
+        isMovingForward = true;
         break;
 
       case CarState.EmergencyStopped:
-        if (carAutonomous != null)
-        {
-          carAutonomous.targetSpeed = emergencyStopSpeed;
-        }
+        isMovingForward = false;
         break;
     }
+  }
+
+  void SendManualInput()
+  {
+    float throttle = 0f;
+    float steer = 0f;
+    bool brake = false;
+
+    switch (currentCarState)
+    {
+      case CarState.Normal:
+        if (isMovingForward)
+        {
+          throttle = throttleValue;
+        }
+        break;
+
+      case CarState.EmergencySlowDown:
+        if (isMovingForward)
+        {
+          throttle = throttleValue * 0.5f;
+        }
+        break;
+
+      case CarState.EmergencyStopped:
+        brake = true;
+        break;
+    }
+
+    var inputEvent = new CarInputEvent(throttle, steer, brake, false);
+    EventManager.Publish(inputEvent);
   }
 
   void EndScenario()
@@ -231,7 +272,7 @@ public class ScenarioAController : MonoBehaviour
     scenarioEnded = true;
     currentCarState = CarState.Normal;
 
-    HideAmbulanceHUD();
+    // HideAmbulanceHUD();
     RestoreOriginalSettings();
 
     // 앰뷸런스 자동 모드 해제
@@ -249,94 +290,12 @@ public class ScenarioAController : MonoBehaviour
   {
     if (carAutonomous != null)
     {
+      carAutonomous.isAutonomousMode = true;
       carAutonomous.targetSpeed = normalSpeed;
       carAutonomous.enableEmergencyBraking = true;
     }
+    isMovingForward = false;
   }
 
-  void ShowAmbulanceHUD()
-  {
-    if (hudManager != null) EventManager.Publish(new HUDControlEvent("ambulance-front", true));
-  }
 
-  void HideAmbulanceHUD()
-  {
-    if (hudManager != null) EventManager.Publish(new HUDControlEvent("ambulance-front", false));
-  }
-
-  // 디버그용 기즈모
-  void OnDrawGizmos()
-  {
-    if (stopLine != null)
-    {
-      // 정지선 표시
-      Gizmos.color = Color.red;
-      Gizmos.DrawWireCube(stopLine.position, new Vector3(5f, 0.1f, 1f));
-
-      // 정지선 감지 범위
-      Gizmos.color = Color.yellow;
-      Gizmos.DrawWireSphere(stopLine.position, stopLineDetectionDistance);
-    }
-
-    if (ambulance != null && car != null)
-    {
-      // Car와 Ambulance 연결선
-      Gizmos.color = currentCarState != CarState.Normal ? Color.red : Color.green;
-      Gizmos.DrawLine(car.transform.position, ambulance.transform.position);
-    }
-
-    // 차량 상태 표시
-    if (currentCarState != CarState.Normal && car != null)
-    {
-      Gizmos.color = currentCarState == CarState.EmergencyStopped ? Color.red : Color.orange;
-      Gizmos.DrawWireSphere(car.transform.position, 3f);
-    }
-  }
-
-  // 시나리오 강제 재시작 (디버그용)
-  [ContextMenu("Restart Scenario")]
-  public void RestartScenario()
-  {
-    currentCarState = CarState.Normal;
-    scenarioStarted = false;
-    scenarioEnded = false;
-
-    HideAmbulanceHUD();
-
-    // 앰뷸런스 자동 모드 해제
-    if (ambulance != null)
-    {
-      var ambulanceInput = ambulance.GetComponent<InputManagerAmbulance>();
-      if (ambulanceInput != null)
-      {
-        ambulanceInput.SetAutoMode(false);
-      }
-    }
-
-    StartCoroutine(StartScenarioCoroutine());
-  }
-
-  // 시나리오 정지 (디버그용)
-  [ContextMenu("Stop Scenario")]
-  public void StopScenario()
-  {
-    scenarioStarted = false;
-    scenarioEnded = true;
-    currentCarState = CarState.Normal;
-
-    HideAmbulanceHUD();
-    RestoreOriginalSettings();
-
-    // 앰뷸런스 자동 모드 해제
-    if (ambulance != null)
-    {
-      var ambulanceInput = ambulance.GetComponent<InputManagerAmbulance>();
-      if (ambulanceInput != null)
-      {
-        ambulanceInput.SetAutoMode(false);
-      }
-    }
-
-
-  }
 }
