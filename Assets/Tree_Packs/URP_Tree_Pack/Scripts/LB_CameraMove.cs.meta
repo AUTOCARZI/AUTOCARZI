@@ -1,2 +1,18 @@
 fileFormatVersion: 2
-guid: 72cdddb65384a42a9aac676079afc695
+guid: 96cec0ad715c2a042bd9921922d2ed22
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 253340
+  packageName: URP Tree Models
+  packageVersion: 1.2.3
+  assetPath: Assets/Tree_Packs/URP_Tree_Pack/Scripts/LB_CameraMove.cs
+  uploadId: 755976
