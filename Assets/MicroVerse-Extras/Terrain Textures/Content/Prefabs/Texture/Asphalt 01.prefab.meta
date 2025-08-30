@@ -1,15 +1,7 @@
 fileFormatVersion: 2
-guid: 795edbdb07774ed45a56ddf8853f9b3c
+guid: 02c881fd139444b27b12784da08d82cb
 PrefabImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 271990
-  packageName: Terrain Textures - FREE
-  packageVersion: 1.1.0
-  assetPath: Assets/MicroVerse-Extras/Terrain Textures/Content/Prefabs/Texture/Asphalt
-    01.prefab
-  uploadId: 687417

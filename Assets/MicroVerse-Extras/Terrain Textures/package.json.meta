@@ -1,14 +1,7 @@
 fileFormatVersion: 2
-guid: b6ac0aba9cc73244bb778dc867499b8b
+guid: 6d832b5da3f5a493fa842facb8127791
 TextScriptImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 271990
-  packageName: Terrain Textures - FREE
-  packageVersion: 1.1.0
-  assetPath: Assets/MicroVerse-Extras/Terrain Textures/package.json
-  uploadId: 687417

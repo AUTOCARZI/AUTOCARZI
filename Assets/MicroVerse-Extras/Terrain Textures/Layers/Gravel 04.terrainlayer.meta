@@ -1,15 +1,8 @@
 fileFormatVersion: 2
-guid: 6c6a2ac491c532845877aa54e3aa54a9
+guid: d41f28ddf19114ddfbede4199bc08b48
 NativeFormatImporter:
   externalObjects: {}
-  mainObjectFileID: 8574412962073106934
+  mainObjectFileID: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 271990
-  packageName: Terrain Textures - FREE
-  packageVersion: 1.1.0
-  assetPath: Assets/MicroVerse-Extras/Terrain Textures/Layers/Gravel 04.terrainlayer
-  uploadId: 687417

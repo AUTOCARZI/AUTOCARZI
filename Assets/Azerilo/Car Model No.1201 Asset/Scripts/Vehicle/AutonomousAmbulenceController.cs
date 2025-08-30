@@ -73,7 +73,7 @@ public class AutonomousAmbulanceController : MonoBehaviour
         yield return new WaitForSeconds(startDelay);
         
         isAutonomousActive = true;
-        inputManager.isAutoMode = true;
+        inputManager.isAutonomousMode = true;
         
         if (!sirenActivated)
         {
@@ -271,7 +271,7 @@ public class AutonomousAmbulanceController : MonoBehaviour
         if (!isAutonomousActive)
         {
             enableAutonomousMode = true;
-            inputManager.isAutoMode = true;
+            inputManager.isAutonomousMode = true;
             StartCoroutine(StartAutonomousMode());
         }
     }
@@ -280,7 +280,7 @@ public class AutonomousAmbulanceController : MonoBehaviour
     {
         isAutonomousActive = false;
         enableAutonomousMode = false;
-        inputManager.isAutoMode = false;
+        inputManager.isAutonomousMode = false;
         
         inputManager.throttle = 0f;
         inputManager.steer = 0f;

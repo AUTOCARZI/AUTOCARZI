@@ -1,15 +1,7 @@
 fileFormatVersion: 2
-guid: a39c32cfddaefb74ebbe18cb99f3dd0f
+guid: 3e0c713e81b174b7d9da5dcd808e12ce
 PrefabImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 271990
-  packageName: Terrain Textures - FREE
-  packageVersion: 1.1.0
-  assetPath: Assets/MicroVerse-Extras/Terrain Textures/Content/Prefabs/Texture/Grass
-    09.prefab
-  uploadId: 687417

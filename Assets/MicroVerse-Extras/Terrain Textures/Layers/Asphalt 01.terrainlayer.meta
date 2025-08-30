@@ -1,15 +1,8 @@
 fileFormatVersion: 2
-guid: 5eeab13281c2b0447bda4a7424a06d91
+guid: 45e345559114f45b0bde9155e03b2fae
 NativeFormatImporter:
   externalObjects: {}
-  mainObjectFileID: 8574412962073106934
+  mainObjectFileID: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 271990
-  packageName: Terrain Textures - FREE
-  packageVersion: 1.1.0
-  assetPath: Assets/MicroVerse-Extras/Terrain Textures/Layers/Asphalt 01.terrainlayer
-  uploadId: 687417

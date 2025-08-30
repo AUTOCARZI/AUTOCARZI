@@ -1,15 +1,8 @@
 fileFormatVersion: 2
-guid: d2d63726104cf684ca41229dc6cc3bf9
+guid: e7dc012103c544263a4e561194028e59
 NativeFormatImporter:
   externalObjects: {}
-  mainObjectFileID: 8574412962073106934
+  mainObjectFileID: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 271990
-  packageName: Terrain Textures - FREE
-  packageVersion: 1.1.0
-  assetPath: Assets/MicroVerse-Extras/Terrain Textures/Layers/Scrubs 01.terrainlayer
-  uploadId: 687417
