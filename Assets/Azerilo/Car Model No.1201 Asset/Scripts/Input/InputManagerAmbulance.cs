@@ -9,43 +9,50 @@ public class InputManagerAmbulance : MonoBehaviour
     public bool brake;
     public bool siren;
     public bool horn;
-
-
+    
+    [Header("Auto Mode for Scenario")]
+    public bool isAutoMode = false;
+    public float autoThrottle = 0f;
+    public bool autoSiren = false;
+    
     void Update()
     {
+        if (isAutoMode)
+        {
+            throttle = autoThrottle;
+            steer = 0f; // 직진
+            brake = false;
+            siren = autoSiren;
+            horn = false;
+            return;
+        }
 
         Keyboard keyboard = Keyboard.current;
         if (keyboard != null)
         {
-            // Reset values
             throttle = 0;
             steer = 0;
             horn = false;
-
-            // Check throttle (forward/backward)
             if (keyboard.wKey.isPressed)
                 throttle = 1f;
             else if (keyboard.sKey.isPressed)
                 throttle = -1f;
-
-            // Check steering (left/right)
             if (keyboard.aKey.isPressed)
                 steer = -1f;
             else if (keyboard.dKey.isPressed)
                 steer = 1f;
-
-            // Check L key for headlights
             l = keyboard.lKey.wasPressedThisFrame;
-
-            // Check brake key (B)
             brake = keyboard.bKey.isPressed;
-
-            // Check Z key for siren toggle
             if (keyboard.zKey.wasPressedThisFrame)
                 siren = !siren;
-
-            // Check H key for horn
             horn = keyboard.hKey.isPressed;
         }
+    }
+
+    public void SetAutoMode(bool autoMode, float throttleValue = 0f, bool sirenOn = false)
+    {
+        isAutoMode = autoMode;
+        autoThrottle = throttleValue;
+        autoSiren = sirenOn;
     }
 }
