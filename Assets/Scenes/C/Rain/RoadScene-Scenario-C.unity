@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0.28235295, g: 0.28235295, b: 0.28235295, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.02
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -25,8 +25,8 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubtractiveShadowColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -4162,7 +4162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 1
   rightLEDParent: {fileID: 366387926}
   leftLEDParent: {fileID: 884306671}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
@@ -4588,7 +4587,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 1
   rightLEDParent: {fileID: 68509072}
   leftLEDParent: {fileID: 1156942844}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
@@ -18492,7 +18490,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 1
   rightLEDParent: {fileID: 297253257}
   leftLEDParent: {fileID: 2059196036}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
@@ -19466,7 +19463,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 1
   rightLEDParent: {fileID: 311177881}
   leftLEDParent: {fileID: 575833833}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
@@ -20701,7 +20697,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 1
   rightLEDParent: {fileID: 585849511}
   leftLEDParent: {fileID: 1458358573}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
@@ -22903,7 +22898,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 1
   rightLEDParent: {fileID: 62946850}
   leftLEDParent: {fileID: 174005920}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
@@ -25249,7 +25243,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 1
   rightLEDParent: {fileID: 2067721903}
   leftLEDParent: {fileID: 210990553}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
@@ -26524,7 +26517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 1
   rightLEDParent: {fileID: 309994531}
   leftLEDParent: {fileID: 1951740227}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
@@ -41958,7 +41950,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 1
   rightLEDParent: {fileID: 426008507}
   leftLEDParent: {fileID: 1785805319}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
@@ -48274,7 +48265,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 1
   rightLEDParent: {fileID: 1546108104}
   leftLEDParent: {fileID: 75358430}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
@@ -49617,7 +49607,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 1
   rightLEDParent: {fileID: 1929403644}
   leftLEDParent: {fileID: 764756264}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
@@ -52441,7 +52430,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 1
   rightLEDParent: {fileID: 1285714037}
   leftLEDParent: {fileID: 1289888780}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
