@@ -30,7 +30,7 @@ public class SoundResponseManager
         var profile = new SoundResponseProfile()
         {
             soundType = SoundType.Ambulance,
-            activationThreshold = 0.15f,
+            activationThreshold = 0.85f,
             enableHUD = true,
             enableLED = true,
             hudBlinkSpeed = 0f,

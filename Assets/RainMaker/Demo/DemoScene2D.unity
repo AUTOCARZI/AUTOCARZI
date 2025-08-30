@@ -94,7 +94,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: d3775a593f7634dc9a4e48991aa9ce40, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 4bca930a0108949cbbf23c23a1fb37cb, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -271,7 +271,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -561,10 +561,6 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 21271342, guid: a4bf6bd342cbc4e4cab59a122194d93d, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -572,7 +568,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: a4bf6bd342cbc4e4cab59a122194d93d, type: 3}
 --- !u!4 &555438551 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 9223372036854775806, guid: a4bf6bd342cbc4e4cab59a122194d93d, type: 3}
+  m_CorrespondingSourceObject: {fileID: 426620, guid: a4bf6bd342cbc4e4cab59a122194d93d, type: 3}
   m_PrefabInstance: {fileID: 2122704512}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &583057741
@@ -659,10 +655,6 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 21271342, guid: a4bf6bd342cbc4e4cab59a122194d93d, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1524,10 +1516,6 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 21271342, guid: a4bf6bd342cbc4e4cab59a122194d93d, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
