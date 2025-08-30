@@ -23,6 +23,8 @@ public class CarControllerAmbulance : MonoBehaviour
     public AudioSource hornSound;
     public AudioClip hornClip;
 
+
+
     void Start()
     {
         im = GetComponent<InputManagerAmbulance>();
@@ -32,7 +34,6 @@ public class CarControllerAmbulance : MonoBehaviour
             rb.centerOfMass = CM.position;
         }
 
-        // Setup audio sources
         SetupAudioSources();
     }
 
@@ -49,8 +50,8 @@ public class CarControllerAmbulance : MonoBehaviour
             sirenSound.loop = true;
             sirenSound.volume = 1f;
             sirenSound.spatialBlend = 1f; // Full 3D
-            sirenSound.minDistance = 10f;
-            sirenSound.maxDistance = 100f;
+            sirenSound.minDistance = 20f;
+            sirenSound.maxDistance = 150f;
             sirenSound.playOnAwake = false; // 시작할 때 자동 재생 안함
         }
 
