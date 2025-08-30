@@ -1,8 +1,15 @@
 fileFormatVersion: 2
-guid: 15f4a030cb1bb43dd91a91267afb85b6
+guid: 212bc52a4b9cdc2498c134dd46c48fb3
 NativeFormatImporter:
   externalObjects: {}
-  mainObjectFileID: 0
+  mainObjectFileID: 8574412962073106934
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 271990
+  packageName: Terrain Textures - FREE
+  packageVersion: 1.1.0
+  assetPath: Assets/MicroVerse-Extras/Terrain Textures/Layers/Plantlet 02.terrainlayer
+  uploadId: 687417

@@ -1,8 +1,15 @@
 fileFormatVersion: 2
-guid: c23a7369d954a41f1ae7760a80f468ca
+guid: acae3a13020e22e45bc0cbc8bb127d7e
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 253340
+  packageName: URP Tree Models
+  packageVersion: 1.2.3
+  assetPath: Assets/Tree_Packs/URP_Tree_Pack/Settings/SampleSceneProfile.asset
+  uploadId: 755976

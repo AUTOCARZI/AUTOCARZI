@@ -1,28 +1,23 @@
 fileFormatVersion: 2
-guid: 3359e9d10af08ca46ae396298dbd1ed9
-timeCreated: 1428512481
-licenseType: Store
+guid: c0b40dc4b98a64040a4afec95cfbe248
 AudioImporter:
-  serializedVersion: 6
+  externalObjects: {}
+  serializedVersion: 8
   defaultSettings:
+    serializedVersion: 2
     loadType: 0
     sampleRateSetting: 0
-    sampleRateOverride: 0
+    sampleRateOverride: 44100
     compressionFormat: 1
     quality: 1
     conversionMode: 0
+    preloadAudioData: 0
   platformSettingOverrides: {}
-  forceToMono: 1
-  preloadAudioData: 0
+  forceToMono: 0
+  normalize: 1
   loadInBackground: 0
+  ambisonic: 0
   3D: 1
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 34938
-  packageName: Rain Maker - 2D and 3D Rain Particle System for Unity
-  packageVersion: 2.1.2
-  assetPath: Assets/RainMaker/Prefab/rain_medium.ogg
-  uploadId: 500403
