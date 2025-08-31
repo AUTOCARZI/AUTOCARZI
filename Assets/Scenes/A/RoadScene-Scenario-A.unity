@@ -6586,7 +6586,7 @@ MonoBehaviour:
   - {fileID: 153389109}
   - {fileID: 1200897953}
   meshes: []
-  strengthCoefficient: 10000
+  strengthCoefficient: 12000
   maxTurn: 20
   CM: {fileID: 0}
   brakeStrength: 2000
@@ -12453,7 +12453,7 @@ MonoBehaviour:
     - {fileID: 333669825}
     lightStatus: 3
     lightSubStatus: 0
-  fixedTimeRegularLightLength: 13
+  fixedTimeRegularLightLength: 50
   fixedTimeLeftTurnLightLength: 5
   fixedTimeAllRedLightLength: 1
   fixedTimeYellowLightLength: 2

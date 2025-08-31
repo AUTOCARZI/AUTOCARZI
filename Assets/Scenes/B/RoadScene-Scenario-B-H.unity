@@ -7889,7 +7889,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 0
   rightLEDParent: {fileID: 1426827844}
   leftLEDParent: {fileID: 1596477737}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
@@ -10365,7 +10364,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 1
   rightLEDParent: {fileID: 297253257}
   leftLEDParent: {fileID: 2059196036}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
@@ -19789,9 +19787,9 @@ MonoBehaviour:
     - {fileID: 913955535}
     lightStatus: 3
     lightSubStatus: 0
-  fixedTimeRegularLightLength: 10
+  fixedTimeRegularLightLength: 5
   fixedTimeLeftTurnLightLength: 5
-  fixedTimeAllRedLightLength: 1
+  fixedTimeAllRedLightLength: 20
   fixedTimeYellowLightLength: 2
 --- !u!4 &1342462129
 Transform:
@@ -27087,7 +27085,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLEDEnabled: 1
   rightLEDParent: {fileID: 1929403644}
   leftLEDParent: {fileID: 764756264}
   ambulanceColor: {r: 0, g: 0.07107735, b: 1, a: 1}
