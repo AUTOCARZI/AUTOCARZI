@@ -45502,17 +45502,17 @@ MonoBehaviour:
   normalSpeed: 15
   laneChangeSpeed: 15
   laneCorrectionSpeed: 30
-  rightTurnSpeed: 30
+  rightTurnSpeed: 20
   straightDistance: 20
-  laneChangeDistance: 20
-  laneCorrectionDistance: 9
-  rightTurnDelay: 2.5
-  rightTurnDistance: 15
+  laneChangeDistance: 21
+  laneCorrectionDistance: 8
+  rightTurnDelay: 2
+  rightTurnDistance: 20
   laneChangeSteer: 0.5
   laneCorrectionSteer: -1
-  rightTurnSteer: 1
+  rightTurnSteer: 5
   laneChangeThrottle: 0.8
-  rightTurnThrottle: 0.6
+  rightTurnThrottle: 1
 --- !u!1001 &1697053066
 PrefabInstance:
   m_ObjectHideFlags: 0

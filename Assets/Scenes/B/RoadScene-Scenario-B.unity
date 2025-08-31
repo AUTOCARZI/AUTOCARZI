@@ -19787,9 +19787,9 @@ MonoBehaviour:
     - {fileID: 913955535}
     lightStatus: 3
     lightSubStatus: 0
-  fixedTimeRegularLightLength: 10
+  fixedTimeRegularLightLength: 5
   fixedTimeLeftTurnLightLength: 5
-  fixedTimeAllRedLightLength: 1
+  fixedTimeAllRedLightLength: 20
   fixedTimeYellowLightLength: 2
 --- !u!4 &1342462129
 Transform:

@@ -11721,6 +11721,52 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 752780573}
   m_Mesh: {fileID: 4300002, guid: 03821f42d9a93d34e85f60f448147567, type: 3}
+--- !u!1 &761185886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 761185888}
+  - component: {fileID: 761185887}
+  m_Layer: 0
+  m_Name: RainSceneController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &761185887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761185886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f10ca52766bdf40e9a31a854efad15af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableAutoRainEvent: 1
+  delayBeforeEvent: 2
+--- !u!4 &761185888
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761185886}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.59314, y: 22.00692, z: -0.34459}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &764756263
 GameObject:
   m_ObjectHideFlags: 0
@@ -19787,9 +19833,9 @@ MonoBehaviour:
     - {fileID: 913955535}
     lightStatus: 3
     lightSubStatus: 0
-  fixedTimeRegularLightLength: 10
+  fixedTimeRegularLightLength: 5
   fixedTimeLeftTurnLightLength: 5
-  fixedTimeAllRedLightLength: 1
+  fixedTimeAllRedLightLength: 20
   fixedTimeYellowLightLength: 2
 --- !u!4 &1342462129
 Transform:
@@ -29996,3 +30042,4 @@ SceneRoots:
   - {fileID: 778377809}
   - {fileID: 1990372134}
   - {fileID: 1825393005}
+  - {fileID: 761185888}

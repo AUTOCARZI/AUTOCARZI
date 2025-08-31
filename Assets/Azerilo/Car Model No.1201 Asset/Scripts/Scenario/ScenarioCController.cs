@@ -10,14 +10,14 @@ public class ScenarioCController : MonoBehaviour
   public float normalSpeed = 15;
   public float laneChangeSpeed = 15f;
   public float laneCorrectionSpeed = 30f;
-  public float rightTurnSpeed = 30;
+  public float rightTurnSpeed = 20;
 
   [Header("Scenario Control")]
   public float straightDistance = 20f;
-  public float laneChangeDistance = 20f;
-  public float laneCorrectionDistance = 9f;
-  public float rightTurnDelay = 2.5f;
-  public float rightTurnDistance = 15f;
+  public float laneChangeDistance = 21f;
+  public float laneCorrectionDistance = 8f;
+  public float rightTurnDelay = 2f;
+  public float rightTurnDistance = 20f;
 
   private Vector3 stateStartPosition;
   private float distanceTraveled;
@@ -33,9 +33,9 @@ public class ScenarioCController : MonoBehaviour
   [Header("Movement Control")]
   public float laneChangeSteer = 0.5f;
   public float laneCorrectionSteer = -1.0f;
-  public float rightTurnSteer = 1.0f;
+  public float rightTurnSteer = 5.0f;
   public float laneChangeThrottle = 0.8f;
-  public float rightTurnThrottle = 0.6f;
+  public float rightTurnThrottle = 1.0f;
 
   private AutonomousDrivingController carAutonomous;
   private HUDManager hudManager;
