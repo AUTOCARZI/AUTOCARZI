@@ -8,9 +8,7 @@ public class LEDManager : MonoBehaviour
     public Transform leftLEDParent;
 
     [Header("Sound Type Colors")]
-    public Color ambulanceColor = Color.blue;
-    public Color carHornColor = Color.blue;
-    public Color policeWhistleColor = Color.blue;
+    public Color LEDColor = Color.blue;
     public Color defaultColor = Color.black;
 
     private LEDNode[] allLEDs;
@@ -46,9 +44,10 @@ public class LEDManager : MonoBehaviour
         soundColorMap = new Dictionary<SoundType, Color>
         {
             [SoundType.None] = defaultColor,
-            [SoundType.Ambulance] = ambulanceColor,
-            [SoundType.CarHorn] = carHornColor,
-            [SoundType.PoliceWhistle] = policeWhistleColor,
+            [SoundType.Default] = LEDColor,
+            [SoundType.Ambulance] = LEDColor,
+            [SoundType.CarHorn] = LEDColor,
+            [SoundType.PoliceWhistle] = LEDColor,
         };
 
         Debug.Log($"[LEDManager] Initialized {soundColorMap.Count} sound type colors");

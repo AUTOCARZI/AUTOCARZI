@@ -39,6 +39,7 @@ public class ScenarioCController : MonoBehaviour
 
   private AutonomousDrivingController carAutonomous;
   private HUDManager hudManager;
+  private LEDManager ledManager;
   private CarState currentCarState = CarState.Normal;
   private bool isManualControlActive = false;
   private bool scenarioStarted = false;
@@ -68,6 +69,7 @@ public class ScenarioCController : MonoBehaviour
 
     carAutonomous = car.GetComponent<AutonomousDrivingController>();
     hudManager = FindFirstObjectByType<HUDManager>();
+    ledManager = FindFirstObjectByType<LEDManager>();
 
     if (carAutonomous == null)
     {
@@ -76,9 +78,9 @@ public class ScenarioCController : MonoBehaviour
       return;
     }
 
-    if (hudManager == null)
+    if (hudManager == null || ledManager == null )
     {
-      Debug.LogError("[ScenarioC] HUDManager를 찾을 수 없습니다!");
+      Debug.LogError("[ScenarioC] 매니저를 찾을 수 없습니다!");
     }
   }
 
@@ -119,7 +121,8 @@ public class ScenarioCController : MonoBehaviour
 
     SetCarState(CarState.LaneCorrecting);
     yield return StartCoroutine(WaitForDistance(laneCorrectionDistance));
-
+    
+    TriggerBypassTrafficEndEvent();
     SetCarState(CarState.Normal);
     yield return new WaitForSeconds(rightTurnDelay);
 
@@ -218,9 +221,18 @@ public class ScenarioCController : MonoBehaviour
 
   void TriggerBypassTrafficEvent()
   {
-    if (hudManager != null)
+    if (hudManager != null && ledManager != null )
     {
       EventManager.Publish(new HUDControlEvent("bypass-traffic", true));
+      EventManager.Publish(new LEDControlEvent(1.0f, 1.0f, true, 0, "", SoundType.Default)); 
+    }
+  }
+
+  void TriggerBypassTrafficEndEvent()
+  {
+    if (ledManager != null )
+    {
+      EventManager.Publish(new LEDControlEvent(0f, 0f, false, 0, "", SoundType.None)); 
     }
   }
 
