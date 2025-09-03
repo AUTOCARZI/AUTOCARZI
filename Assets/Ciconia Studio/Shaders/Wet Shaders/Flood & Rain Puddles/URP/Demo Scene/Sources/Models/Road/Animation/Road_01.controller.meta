@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f7a8deb3f5da1ad4cbbb3f598ff08243
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 38748
+  packageName: 'URP - Wet Shaders : Flood and Rainy Puddles'
+  packageVersion: 2022.3
+  assetPath: Assets/Ciconia Studio/Shaders/Wet Shaders/Flood & Rain Puddles/URP/Demo
+    Scene/Sources/Models/Road/Animation/Road_01.controller
+  uploadId: 642343
