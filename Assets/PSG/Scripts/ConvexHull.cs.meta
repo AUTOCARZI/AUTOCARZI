@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 5e64e92e70612fb43b5476821549040a
+timeCreated: 1588500576
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 123369
+  packageName: Procedural Shape Generation
+  packageVersion: 1.3
+  assetPath: Assets/PSG/Scripts/ConvexHull.cs
+  uploadId: 369444

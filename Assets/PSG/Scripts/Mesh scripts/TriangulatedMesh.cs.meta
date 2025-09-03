@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 7ec1c365141104b4db9cec58540eee6c
+timeCreated: 1573317191
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 123369
+  packageName: Procedural Shape Generation
+  packageVersion: 1.3
+  assetPath: Assets/PSG/Scripts/Mesh scripts/TriangulatedMesh.cs
+  uploadId: 369444

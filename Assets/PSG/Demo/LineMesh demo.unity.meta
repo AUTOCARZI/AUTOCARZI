@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 492df94e939745c4db0452a79df14e3f
+timeCreated: 1478779882
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 123369
+  packageName: Procedural Shape Generation
+  packageVersion: 1.3
+  assetPath: Assets/PSG/Demo/LineMesh demo.unity
+  uploadId: 369444

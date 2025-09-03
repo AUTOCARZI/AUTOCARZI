@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 36436cbc5461e594fa53c573f2e0c217
+timeCreated: 1503423566
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 123369
+  packageName: Procedural Shape Generation
+  packageVersion: 1.3
+  assetPath: Assets/PSG/Demo/MeshCreator demo.unity
+  uploadId: 369444
