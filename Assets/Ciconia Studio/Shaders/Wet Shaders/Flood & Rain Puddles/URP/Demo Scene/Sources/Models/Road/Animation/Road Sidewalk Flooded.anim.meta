@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ecf2efc465713d843a50810f6d8f87d0
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 38748
+  packageName: 'URP - Wet Shaders : Flood and Rainy Puddles'
+  packageVersion: 2022.3
+  assetPath: Assets/Ciconia Studio/Shaders/Wet Shaders/Flood & Rain Puddles/URP/Demo
+    Scene/Sources/Models/Road/Animation/Road Sidewalk Flooded.anim
+  uploadId: 642343

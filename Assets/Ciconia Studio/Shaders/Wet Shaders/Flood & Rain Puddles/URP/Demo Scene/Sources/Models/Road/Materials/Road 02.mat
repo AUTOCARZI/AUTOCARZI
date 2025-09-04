@@ -1,0 +1,211 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Road 02
+  m_Shader: {fileID: 4800000, guid: 8e37a7f05e3ae6d469500613c3547feb, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _CHANNELSELECTIONMASK_RED
+  - _DETAILWAVE_ON
+  - _MAINWAVE_ON
+  - _SOURCEMASK_DETAILMASK
+  - _USEMAINBASECOLORMAP_ON
+  m_InvalidKeywords:
+  - _DUPLICATETEXTUREATLASNORMAL_ON
+  - _EMISSION
+  - _METALLICGLOSSMAP
+  - _NORMALMAP
+  - _PARALLAXMAP
+  - _SOURCE_METALLICALPHA
+  - _USEAOFROMMAINPROPERTIES_ON
+  - _USEEMISSIONFROMMAINPROPERTIES_ON
+  - _USEMAINALBEDOMAP_ON
+  - _USEMAINNORMALMAPASNORMALDIRECTION_ON
+  m_LightmapFlags: 2
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 7da9299edd8bc9044ada172d9d7631c9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: e03240bebc43fc947a6c3f6ce50589e6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Cubemap:
+        m_Texture: {fileID: 8900000, guid: a38fe65b39f8f984a9707ab648ef37e7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 2800000, guid: 7da9299edd8bc9044ada172d9d7631c9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 2800000, guid: 8c38d2e72ca280f4783343ec9c4418f7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 2800000, guid: 74628682a23b3884488091ab815fcc3a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GradientTex:
+        m_Texture: {fileID: 2800000, guid: e89949843abf7004e84edac7b109710b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7da9299edd8bc9044ada172d9d7631c9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 2800000, guid: 1f5d298325759e34fac3def1ee0040f9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMapMAHS:
+        m_Texture: {fileID: 2800000, guid: 622f19481742fbc438fd407b5db2aea3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 2800000, guid: 09d7c6c66e5f2c24b8179ada9201af36, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 2800000, guid: 4aa9dd429c198f148866a558a55662ec, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureAtlasNormal:
+        m_Texture: {fileID: 2800000, guid: a6e49a766b3568e4eb66b720e93376e5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 1}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaCutoff: 0.5
+    - _AoIntensity: 1
+    - _AoIntensity1: 1
+    - _BlendMainNormal: 0
+    - _BlurReflection: 0
+    - _Brightness: 1
+    - _BumpScale: 0.7
+    - _ChannelSelectionMask: 0
+    - _ContrastDetailMap: 5
+    - _Cutoff: 0.5
+    - _DetailBrightness: 1
+    - _DetailNormalMapScale: 1
+    - _DetailSaturation: 0
+    - _DetailWave: 1
+    - _Distortion: 0.1
+    - _Distortion2: 0
+    - _Distortion3: 1
+    - _DstBlend: 0
+    - _DuplicateTextureAtlasNormal: 1
+    - _EmissionIntensity: 1
+    - _EnvironmentReflections: 1
+    - _Evotuution: 1
+    - _ExcludeMask: 0
+    - _FBDetailsNormal: 4.55
+    - _FlipBTilingNormal: 6
+    - _GlossMapScale: 1
+    - _Glossiness: 1
+    - _Glossiness2: 0.95
+    - _Glossiness3: 2
+    - _GlossyReflections: 1
+    - _Intensity: 1
+    - _IntensityMask: 1
+    - _IntensityScaleNormal1: 0.4
+    - _IntensityScaleNormal2: 0.4
+    - _InvertABaseColor: 0
+    - _InvertABaseColor1: 0
+    - _InvertMask: 0
+    - _Life: 117.26
+    - _MainWave: 1
+    - _Metallic: 1
+    - _Metallic2: 0
+    - _Metallic3: 0
+    - _MipBias: 0
+    - _MipX: 0.00001
+    - _MipY: 0.0001
+    - _Mode: 0
+    - _NormalWaveIntensity1: 0.05
+    - _NormalWaveIntensity2: 0.05
+    - _OcclusionStrength: 1
+    - _Parallax: 0.01
+    - _QueueControl: -1
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _ReflectionIntensity: 0.2
+    - _Refraction: 1
+    - _Refraction1: 1
+    - _RotationAngle1: 0
+    - _RotationAngle2: 180
+    - _Saturation: 0
+    - _ScaleFBDetailsNormal: 0.5
+    - _Size: 1
+    - _Smoothness: 0.6
+    - _SmoothnessTextureChannel: 0
+    - _Source: 0
+    - _SourceMask: 0
+    - _SpecularHighlights: 1
+    - _SplashSpeed: 0.315
+    - _SpreadDetailMap: 0.622
+    - _SrcBlend: 1
+    - _Tiling: 135
+    - _TilingWave1: 3
+    - _TilingWave2: 3
+    - _TranslationSpeed1: 0.5
+    - _TranslationSpeed2: 0.5
+    - _UVSec: 0
+    - _UseAoFromMainProperties: 1
+    - _UseEmissionFromMainProperties: 1
+    - _UseMainAlbedo: 0
+    - _UseMainAlbedoMap: 1
+    - _UseMainBaseColorMap: 1
+    - _UseMainNormalMapasNormalDirection: 1
+    - _VisualizeMask: 0
+    - _ZWrite: 1
+    - __dirty: 0
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorCubemap: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorCubemap1: {r: 1, g: 1, b: 1, a: 1}
+    - _DetailColor: {r: 1, g: 1, b: 1, a: 0}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _GlobalXYTilingXYZWOffsetXY: {r: 1, g: 1, b: 0, a: 0}
+    - _GlobalXYTilingXYZWOffsetXY1: {r: 1, g: 1, b: 0, a: 0}
+    - _OffsetFBDetailsNormal: {r: 1, g: 1, b: 0, a: 0}
+    - _XColumnsYRowsZSpeedWStrartFrame: {r: 8, g: 8, b: 0.25, a: 0}
+    - _XColumnsYRowsZSpeedWStrartFrameNormal: {r: 8, g: 8, b: 0.2, a: 0}
+  m_BuildTextureStacks: []

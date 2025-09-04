@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f16cf4fe5e3404e4e9138ae3f20460a8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 38748
+  packageName: 'URP - Wet Shaders : Flood and Rainy Puddles'
+  packageVersion: 2022.3
+  assetPath: Assets/Ciconia Studio/Shaders/Wet Shaders/Flood & Rain Puddles/URP/Demo
+    Scene/Sources/Models/Road/Materials/Road 01_Sidewalk Lite.mat
+  uploadId: 642343

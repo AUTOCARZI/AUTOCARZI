@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 486b58f749fa6bc4fbb94b048bf5f261
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 38748
+  packageName: 'URP - Wet Shaders : Flood and Rainy Puddles'
+  packageVersion: 2022.3
+  assetPath: Assets/Ciconia Studio/Shaders/Wet Shaders/_Shared Files/Models/Windows/Materials/Frame.mat
+  uploadId: 642343
