@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 169727e6310a9844aaffe8ca54e773cd
+timeCreated: 1478639386
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 123369
+  packageName: Procedural Shape Generation
+  packageVersion: 1.3
+  assetPath: Assets/PSG/Demo/Test scene.unity
+  uploadId: 369444

@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: a04e6af937660c14b8fd5ed79dd6b444
+timeCreated: 1478635748
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 123369
+  packageName: Procedural Shape Generation
+  packageVersion: 1.3
+  assetPath: Assets/PSG/Scripts/ExtensionMethods.cs
+  uploadId: 369444

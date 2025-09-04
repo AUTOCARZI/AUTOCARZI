@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: faa04a02dd0701444a081e06ac887ca6
+timeCreated: 1482257232
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 123369
+  packageName: Procedural Shape Generation
+  packageVersion: 1.3
+  assetPath: Assets/PSG/Demo/Car demo.unity
+  uploadId: 369444
