@@ -7,8 +7,8 @@ public class CameraManager : MonoBehaviour
     public float distance = 5f;
     public float height = 2f;
     public float dampening = 1f;
-    public float h2 = 0f;
-    public float d2 = 0f;
+    public float h2 = 1.1f;
+    public float d2 = 0.85f;
     public float l = 0f;
 
     private int camMode = 0;
