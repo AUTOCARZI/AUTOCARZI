@@ -19,6 +19,11 @@ public class ScenarioBController : MonoBehaviour
         {
             Debug.LogError("[ScenarioB] HUDManager를 찾을 수 없습니다!");
         }
+
+        if (autonomousController != null)
+        {
+            autonomousController.SetAutonomousMode(true);
+        }
     }
 
     void OnTriggerEnter(Collider other)
