@@ -2,13 +2,23 @@ using UnityEngine;
 
 public class ScenarioDController : MonoBehaviour
 {
+    [Header("Detection Settings")]
+    public bool rainMode = false;
+
     private Rigidbody rb;
     private AutonomousDrivingController autonomousController;
     private PoliceOfficer police;
     private HUDManager hudManager;
+    private CarController carController;
     
     [Header("Detection Settings")]
     public float whistleVolumeThreshold = 0.4f;
+    
+    [Header("Movement Settings")]
+    public float defaultSpeed = 10f; 
+    public float maxSpeed = 20f;
+    public bool enableDefaultMovement = true;
+    public bool hitWall = false;
     
     // 차량 상태
     private enum CarState
@@ -17,6 +27,7 @@ public class ScenarioDController : MonoBehaviour
         WhistleDetected // 호루라기 감지
     }
     
+    public bool isTurningRight = false;
     private CarState currentCarState = CarState.Normal;
     private bool scenarioStarted = false;
     private bool scenarioEnded = false;
@@ -25,6 +36,7 @@ public class ScenarioDController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         autonomousController = GetComponent<AutonomousDrivingController>();
+        carController = GetComponent<CarController>();
         police = FindFirstObjectByType<PoliceOfficer>();
         hudManager = FindFirstObjectByType<HUDManager>();
         
@@ -38,8 +50,13 @@ public class ScenarioDController : MonoBehaviour
             Debug.LogError("[ScenarioD] PoliceOfficer를 찾을 수 없습니다!");
         }
         
+        if (carController == null)
+        {
+            Debug.LogError("[ScenarioD] CarController를 찾을 수 없습니다!");
+        }
+        
         scenarioStarted = true;
-        Debug.Log("[ScenarioD] 시나리오 시작 - 호루라기 감지 대기 중");
+        Debug.Log("[ScenarioD] 시나리오 시작 - 호루라기 감지 대기 중, 기본 전진 모드");
     }
     
     void Update()
@@ -47,6 +64,21 @@ public class ScenarioDController : MonoBehaviour
         if (!scenarioStarted || scenarioEnded) return;
 
         CheckWhistleDetection();
+        HandleDefaultMovement();
+    }
+    
+    void HandleDefaultMovement()
+    {
+        if (!enableDefaultMovement) return;
+    
+        bool isAutonomousActive = autonomousController != null && autonomousController.isAutonomousMode;
+    
+        if (rainMode && !isAutonomousActive && !hitWall){
+            float steerInput = isTurningRight ? 1f : 0f;
+            Debug.Log($"[ScenarioD] Movement - Throttle: 0.5, Steer: {steerInput}, isTurningRight: {isTurningRight}");
+            var movementEvent = new MovementControlEvent(0.4f, steerInput, false);
+            EventManager.Publish(movementEvent);
+        }
     }
     
     void CheckWhistleDetection()
@@ -113,31 +145,44 @@ public class ScenarioDController : MonoBehaviour
     {   
         Debug.Log($"[ScenarioD] 충돌 감지: {other.name}, 태그: {other.tag}");
         
-        if (other.CompareTag("Wall"))
-        {
-            Debug.Log("[ScenarioD] Wall 충돌 - 자율주행 비활성화");
-            autonomousController.SetAutonomousMode(false);
-            
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-            
-            Destroy(other.gameObject);
-        } 
-        else if (other.CompareTag("Auto"))
-        {
-            Debug.Log("[ScenarioD] Auto 충돌 - 시나리오 종료");
-            autonomousController.SetAutonomousMode(true);
-            
-            if (police != null)
-            {
-                police.StopWhistling();
-            }
-            
-            // 시나리오 종료
-            EndScenario();
-            
-            Destroy(other.gameObject);
+        if (rainMode){
+            if (other.CompareTag("Step"))
+            {     
+                Debug.Log("[ScenarioD] Step collision confirmed - starting turn");
+                StartCoroutine(TurnRightForDuration(3f));
+            } 
         }
+
+        if (other.CompareTag("Wall"))
+            {
+                Debug.Log("[ScenarioD] Wall 충돌 - 자율주행 비활성화, 기본 움직임 활성화");
+
+                if (autonomousController != null)
+                {
+                    autonomousController.SetAutonomousMode(false);
+                }
+            
+                // Reset velocity but allow default movement to take over
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            
+                // Enable default movement
+                enableDefaultMovement = true;
+                hitWall = true;
+            
+                Destroy(other.gameObject);
+            } 
+    }
+    
+    System.Collections.IEnumerator TurnRightForDuration(float duration)
+    {
+        isTurningRight = true;
+        Debug.Log($"[ScenarioD] {duration}초간 우회전 시작");
+        
+        yield return new WaitForSeconds(duration);
+        
+        isTurningRight = false;
+        Debug.Log("[ScenarioD] 우회전 완료 - 직진으로 복귀");
     }
     
     void EndScenario()
@@ -146,6 +191,7 @@ public class ScenarioDController : MonoBehaviour
 
         scenarioEnded = true;
         currentCarState = CarState.Normal;
+        enableDefaultMovement = false; // Stop default movement when scenario ends
         
         Debug.Log("[ScenarioD] 시나리오 종료");
         HideBypassAccidentHUD();
@@ -173,5 +219,22 @@ public class ScenarioDController : MonoBehaviour
             Debug.Log("[ScenarioD] bypass-accident HUD 숨김 이벤트 발행");
             EventManager.Publish(new HUDControlEvent("bypass-accident", false));
         }
+    }
+    
+    public void SetDefaultMovement(bool enabled)
+    {
+        enableDefaultMovement = enabled;
+        Debug.Log($"[ScenarioD] Default movement set to: {enabled}");
+    }
+    
+    public void SetDefaultSpeed(float speed)
+    {
+        defaultSpeed = Mathf.Max(0f, speed);
+        Debug.Log($"[ScenarioD] Default speed set to: {defaultSpeed}");
+    }
+    
+    public bool IsDefaultMovementEnabled()
+    {
+        return enableDefaultMovement;
     }
 }
