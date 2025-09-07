@@ -9,7 +9,7 @@ public class PoliceOfficer : MonoBehaviour
         if (whistleAudioSource == null)
             whistleAudioSource = GetComponent<AudioSource>();
         
-        Invoke("StartWhistling", 17f);
+        Invoke("StartWhistling", 14f);
         
         Debug.Log("[PoliceOfficer] Whistle will start in 2 seconds...");
     }
