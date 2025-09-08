@@ -57,7 +57,6 @@ public class ScenarioCController : MonoBehaviour
     // 즉시 수동제어 활성화
     isManualControlActive = true;
     currentCarState = CarState.Normal;
-    Debug.Log("[ScenarioC] Start에서 즉시 수동제어 활성화");
 
     StartCoroutine(StartScenarioCoroutine());
   }
@@ -66,7 +65,6 @@ public class ScenarioCController : MonoBehaviour
   {
     if (car == null)
     {
-      Debug.LogError("[ScenarioC] Car 참조가 설정되지 않았습니다!");
       enabled = false;
       return;
     }
@@ -74,22 +72,11 @@ public class ScenarioCController : MonoBehaviour
     carAutonomous = car.GetComponent<AutonomousDrivingController>();
     hudManager = FindFirstObjectByType<HUDManager>();
     ledManager = FindFirstObjectByType<LEDManager>();
-
-    if (carAutonomous == null)
-    {
-      Debug.LogWarning("[ScenarioC] AutonomousDrivingController를 찾을 수 없습니다! Manual driving으로만 동작합니다.");
-    }
-
-    if (hudManager == null || ledManager == null )
-    {
-      Debug.LogError("[ScenarioC] 매니저를 찾을 수 없습니다!");
-    }
   }
 
   IEnumerator StartScenarioCoroutine()
   {
     scenarioStarted = true;
-    Debug.Log("[ScenarioC] 시나리오 시작됨 - scenarioStarted = true");
     yield return new WaitForSeconds(0.5f);
 
     StartScenario();
@@ -97,15 +84,12 @@ public class ScenarioCController : MonoBehaviour
 
   void StartScenario()
   {
-    Debug.Log("[ScenarioC] StartScenario 호출됨");
-    
     if (carAutonomous != null)
     {
       carAutonomous.SetAutonomousMode(false);
       carAutonomous.enableEmergencyBraking = false;
     }
 
-    Debug.Log("[ScenarioC] ExecuteScenarioCoroutine 시작");
     StartCoroutine(ExecuteScenarioCoroutine());
   }
 
@@ -117,9 +101,6 @@ public class ScenarioCController : MonoBehaviour
 
   IEnumerator ExecuteDistanceBasedScenario()
   {
-    Debug.Log("[ScenarioC] ExecuteDistanceBasedScenario 시작");
-    SetCarState(CarState.Normal);
-    Debug.Log("[ScenarioC] SetCarState(Normal) 호출됨");
     yield return StartCoroutine(WaitForDistance(straightDistance));
 
     TriggerBypassTrafficEvent();
@@ -178,7 +159,6 @@ public class ScenarioCController : MonoBehaviour
   {
     if (currentCarState == newState) return;
 
-    Debug.Log($"[ScenarioC] SetCarState: {currentCarState} → {newState}");
     currentCarState = newState;
 
     switch (newState)
@@ -189,7 +169,6 @@ public class ScenarioCController : MonoBehaviour
           carAutonomous.SetAutonomousMode(false);
         }
         isManualControlActive = true;
-        Debug.Log("[ScenarioC] Normal state - isManualControlActive = true");
         break;
 
       case CarState.LaneChanging:
@@ -198,7 +177,6 @@ public class ScenarioCController : MonoBehaviour
           carAutonomous.SetAutonomousMode(false);
         }
         isManualControlActive = true;
-        Debug.Log("[ScenarioC] LaneChanging state - isManualControlActive = true");
         break;
 
       case CarState.LaneCorrecting:
@@ -207,7 +185,6 @@ public class ScenarioCController : MonoBehaviour
           carAutonomous.SetAutonomousMode(false);
         }
         isManualControlActive = true;
-        Debug.Log("[ScenarioC] LaneCorrecting state - isManualControlActive = true");
         break;
 
       case CarState.RightTurning:
@@ -216,7 +193,6 @@ public class ScenarioCController : MonoBehaviour
           carAutonomous.SetAutonomousMode(false);
         }
         isManualControlActive = true;
-        Debug.Log("[ScenarioC] RightTurning state - isManualControlActive = true");
         break;
     }
   }
@@ -242,12 +218,9 @@ public class ScenarioCController : MonoBehaviour
   {
     if (!scenarioStarted || scenarioEnded) 
     {
-      Debug.Log($"[ScenarioC] Update blocked - scenarioStarted: {scenarioStarted}, scenarioEnded: {scenarioEnded}");
       return;
     }
 
-    Debug.Log($"[ScenarioC] Update - isManualControlActive: {isManualControlActive}, currentCarState: {currentCarState}");
-    
     if (isManualControlActive)
     {
       SendManualInput();
@@ -283,7 +256,6 @@ public class ScenarioCController : MonoBehaviour
         break;
     }
 
-    Debug.Log($"[ScenarioC] SendManualInput - State: {currentCarState}, Throttle: {throttle}, Steer: {steer}");
     var movementEvent = new MovementControlEvent(throttle, steer, brake);
     EventManager.Publish(movementEvent);
   }
