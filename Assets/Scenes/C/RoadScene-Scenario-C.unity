@@ -2326,12 +2326,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1839258761}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1839258760}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1839258759}
     - targetCorrespondingSourceObject: {fileID: 6840936910576188610, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 495736587}
@@ -4101,12 +4095,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 136204062}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 136204061}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 136204060}
     - targetCorrespondingSourceObject: {fileID: 6840936910576188610, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 919063764}
@@ -4150,43 +4138,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
   m_PrefabInstance: {fileID: 136204050}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &136204060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 136204051}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightLEDParent: {fileID: 366387926}
-  leftLEDParent: {fileID: 884306671}
-  LEDColor: {r: 0, g: 0, b: 1, a: 1}
-  defaultColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!114 &136204061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 136204051}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c24ce38d851f84d1aabe45d7dcfb0e9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hudCanvas: {fileID: 150146270}
-  hudAmbulanceBehindRightMoveLeft: {fileID: 742469908}
-  hudAmbulanceFront: {fileID: 2125391621}
-  hudRainSlowingDown: {fileID: 237323888}
-  hudHeavyRainSlowingDown: {fileID: 286815397}
-  hudBypassTraffic: {fileID: 784702841}
-  hudBypassAccident: {fileID: 270013561}
-  hudBlinkInterval: 1
-  hudFadeSpeed: 2
 --- !u!65 &136204062
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4524,12 +4475,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 138395325}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 138395324}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 138395323}
     - targetCorrespondingSourceObject: {fileID: 6840936910576188610, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2147160096}
@@ -4573,43 +4518,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
   m_PrefabInstance: {fileID: 138395313}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &138395323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 138395314}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightLEDParent: {fileID: 68509072}
-  leftLEDParent: {fileID: 1156942844}
-  LEDColor: {r: 0, g: 0, b: 1, a: 1}
-  defaultColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!114 &138395324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 138395314}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c24ce38d851f84d1aabe45d7dcfb0e9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hudCanvas: {fileID: 1075327806}
-  hudAmbulanceBehindRightMoveLeft: {fileID: 607399931}
-  hudAmbulanceFront: {fileID: 1059310636}
-  hudRainSlowingDown: {fileID: 600371223}
-  hudHeavyRainSlowingDown: {fileID: 1258946784}
-  hudBypassTraffic: {fileID: 220145866}
-  hudBypassAccident: {fileID: 752081831}
-  hudBlinkInterval: 1
-  hudFadeSpeed: 2
 --- !u!65 &138395325
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6386,12 +6294,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 660572445}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 660572455}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 660572452}
     - targetCorrespondingSourceObject: {fileID: 6840936910576188610, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 153389110}
@@ -18644,43 +18546,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
   m_PrefabInstance: {fileID: 189819617}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &660572452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 660572441}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightLEDParent: {fileID: 297253257}
-  leftLEDParent: {fileID: 2059196036}
-  LEDColor: {r: 0, g: 0, b: 1, a: 1}
-  defaultColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!114 &660572455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 660572441}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c24ce38d851f84d1aabe45d7dcfb0e9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hudCanvas: {fileID: 1652590232}
-  hudAmbulanceBehindRightMoveLeft: {fileID: 521176683}
-  hudAmbulanceFront: {fileID: 1596231349}
-  hudRainSlowingDown: {fileID: 115608427}
-  hudHeavyRainSlowingDown: {fileID: 1370568665}
-  hudBypassTraffic: {fileID: 320683173}
-  hudBypassAccident: {fileID: 802972967}
-  hudBlinkInterval: 1
-  hudFadeSpeed: 2
 --- !u!1 &663355448
 GameObject:
   m_ObjectHideFlags: 0
@@ -19566,12 +19431,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 686719126}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 686719125}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 686719124}
     - targetCorrespondingSourceObject: {fileID: 6840936910576188610, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1578859640}
@@ -19615,43 +19474,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
   m_PrefabInstance: {fileID: 686719114}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &686719124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 686719115}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightLEDParent: {fileID: 311177881}
-  leftLEDParent: {fileID: 575833833}
-  LEDColor: {r: 0, g: 0, b: 1, a: 1}
-  defaultColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!114 &686719125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 686719115}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c24ce38d851f84d1aabe45d7dcfb0e9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hudCanvas: {fileID: 1404875223}
-  hudAmbulanceBehindRightMoveLeft: {fileID: 683030920}
-  hudAmbulanceFront: {fileID: 2016675534}
-  hudRainSlowingDown: {fileID: 1595182255}
-  hudHeavyRainSlowingDown: {fileID: 1774658237}
-  hudBypassTraffic: {fileID: 754941223}
-  hudBypassAccident: {fileID: 1800923410}
-  hudBlinkInterval: 1
-  hudFadeSpeed: 2
 --- !u!65 &686719126
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20935,12 +20757,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 721735488}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 721735487}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 721735486}
     - targetCorrespondingSourceObject: {fileID: 6840936910576188610, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 65272967}
@@ -20984,43 +20800,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
   m_PrefabInstance: {fileID: 721735476}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &721735486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 721735477}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightLEDParent: {fileID: 585849511}
-  leftLEDParent: {fileID: 1458358573}
-  LEDColor: {r: 0, g: 0, b: 1, a: 1}
-  defaultColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!114 &721735487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 721735477}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c24ce38d851f84d1aabe45d7dcfb0e9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hudCanvas: {fileID: 1081990425}
-  hudAmbulanceBehindRightMoveLeft: {fileID: 543833522}
-  hudAmbulanceFront: {fileID: 1486188159}
-  hudRainSlowingDown: {fileID: 829043623}
-  hudHeavyRainSlowingDown: {fileID: 33500961}
-  hudBypassTraffic: {fileID: 1227649352}
-  hudBypassAccident: {fileID: 1557773875}
-  hudBlinkInterval: 1
-  hudFadeSpeed: 2
 --- !u!65 &721735488
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23134,12 +22913,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 787030480}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 787030479}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 787030478}
     - targetCorrespondingSourceObject: {fileID: 6840936910576188610, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1787162592}
@@ -23183,43 +22956,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
   m_PrefabInstance: {fileID: 787030468}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &787030478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 787030469}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightLEDParent: {fileID: 62946850}
-  leftLEDParent: {fileID: 174005920}
-  LEDColor: {r: 0, g: 0, b: 1, a: 1}
-  defaultColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!114 &787030479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 787030469}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c24ce38d851f84d1aabe45d7dcfb0e9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hudCanvas: {fileID: 987804330}
-  hudAmbulanceBehindRightMoveLeft: {fileID: 2115035397}
-  hudAmbulanceFront: {fileID: 48009915}
-  hudRainSlowingDown: {fileID: 1156581537}
-  hudHeavyRainSlowingDown: {fileID: 917062453}
-  hudBypassTraffic: {fileID: 1153521498}
-  hudBypassAccident: {fileID: 640421618}
-  hudBlinkInterval: 1
-  hudFadeSpeed: 2
 --- !u!65 &787030480
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25592,9 +25328,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 878460966}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 878460965}
     - targetCorrespondingSourceObject: {fileID: 6840936910576188610, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1491130433}
@@ -25643,40 +25376,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
   m_PrefabInstance: {fileID: 878460957}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &878460965
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 878460958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef2c9c0c6166546019e1f579fe16c6f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isAutonomousMode: 1
-  targetSpeed: 10
-  safeFollowingDistance: 12
-  emergencyBrakeDistance: 6
-  speedControlSensitivity: 1.2
-  accelerationSmoothness: 1.5
-  maxThrottleRate: 1
-  steeringKp: 2.5
-  steeringKi: 0.15
-  steeringKd: 0.7
-  maxSteeringAngle: 1
-  allowSteeringOverride: 1
-  steeringOverrideValue: 0
-  forwardRayDistance: 30
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  frontRayCount: 5
-  raycastOrigin: {fileID: 0}
-  raycastAngleRange: 10
-  manualOverrideDelay: 2
-  enableEmergencyBraking: 1
 --- !u!114 &878460966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26912,12 +26611,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 921769754}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 921769753}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 921769752}
     - targetCorrespondingSourceObject: {fileID: 6840936910576188610, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1458601239}
@@ -26961,43 +26654,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
   m_PrefabInstance: {fileID: 921769742}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &921769752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 921769743}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightLEDParent: {fileID: 309994531}
-  leftLEDParent: {fileID: 1951740227}
-  LEDColor: {r: 0, g: 0, b: 1, a: 1}
-  defaultColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!114 &921769753
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 921769743}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c24ce38d851f84d1aabe45d7dcfb0e9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hudCanvas: {fileID: 896990361}
-  hudAmbulanceBehindRightMoveLeft: {fileID: 582710070}
-  hudAmbulanceFront: {fileID: 2140798695}
-  hudRainSlowingDown: {fileID: 164876579}
-  hudHeavyRainSlowingDown: {fileID: 1422996956}
-  hudBypassTraffic: {fileID: 1246478095}
-  hudBypassAccident: {fileID: 1796984735}
-  hudBlinkInterval: 1
-  hudFadeSpeed: 2
 --- !u!65 &921769754
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -42767,12 +42423,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1563549578}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1563549577}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1563549576}
     - targetCorrespondingSourceObject: {fileID: 6840936910576188610, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1721817350}
@@ -42816,43 +42466,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
   m_PrefabInstance: {fileID: 1563549566}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1563549576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1563549567}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightLEDParent: {fileID: 426008507}
-  leftLEDParent: {fileID: 1785805319}
-  LEDColor: {r: 0, g: 0, b: 1, a: 1}
-  defaultColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!114 &1563549577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1563549567}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c24ce38d851f84d1aabe45d7dcfb0e9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hudCanvas: {fileID: 352221205}
-  hudAmbulanceBehindRightMoveLeft: {fileID: 1877532886}
-  hudAmbulanceFront: {fileID: 1658080903}
-  hudRainSlowingDown: {fileID: 627818698}
-  hudHeavyRainSlowingDown: {fileID: 1177121553}
-  hudBypassTraffic: {fileID: 508154466}
-  hudBypassAccident: {fileID: 1754435197}
-  hudBlinkInterval: 1
-  hudFadeSpeed: 2
 --- !u!65 &1563549578
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -46378,15 +45991,15 @@ MonoBehaviour:
   normalSpeed: 15
   laneChangeSpeed: 15
   laneCorrectionSpeed: 30
-  rightTurnSpeed: 20
+  rightTurnSpeed: 30
   straightDistance: 20
   laneChangeDistance: 21
-  laneCorrectionDistance: 8
-  rightTurnDelay: 2
-  rightTurnDistance: 20
+  laneCorrectionDistance: 9
+  beforeRightTurnDistance: 13
+  rightTurnDistance: 10
   laneChangeSteer: 0.5
   laneCorrectionSteer: -1
-  rightTurnSteer: 5
+  rightTurnSteer: 2.5
   laneChangeThrottle: 0.8
   rightTurnThrottle: 1
 --- !u!1001 &1697053066
@@ -49080,12 +48693,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1790190781}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1790190780}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1790190779}
     - targetCorrespondingSourceObject: {fileID: 6840936910576188610, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1674593959}
@@ -49129,43 +48736,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
   m_PrefabInstance: {fileID: 1790190769}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1790190779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1790190770}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightLEDParent: {fileID: 1546108104}
-  leftLEDParent: {fileID: 75358430}
-  LEDColor: {r: 0, g: 0, b: 1, a: 1}
-  defaultColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!114 &1790190780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1790190770}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c24ce38d851f84d1aabe45d7dcfb0e9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hudCanvas: {fileID: 1923406721}
-  hudAmbulanceBehindRightMoveLeft: {fileID: 1878586827}
-  hudAmbulanceFront: {fileID: 447823359}
-  hudRainSlowingDown: {fileID: 416330299}
-  hudHeavyRainSlowingDown: {fileID: 1933627272}
-  hudBypassTraffic: {fileID: 2037441636}
-  hudBypassAccident: {fileID: 1162140888}
-  hudBlinkInterval: 1
-  hudFadeSpeed: 2
 --- !u!65 &1790190781
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -50469,43 +50039,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
   m_PrefabInstance: {fileID: 89765529}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1839258759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1839258756}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightLEDParent: {fileID: 1929403644}
-  leftLEDParent: {fileID: 764756264}
-  LEDColor: {r: 0, g: 0, b: 1, a: 1}
-  defaultColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!114 &1839258760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1839258756}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c24ce38d851f84d1aabe45d7dcfb0e9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hudCanvas: {fileID: 948882305}
-  hudAmbulanceBehindRightMoveLeft: {fileID: 79599925}
-  hudAmbulanceFront: {fileID: 822906251}
-  hudRainSlowingDown: {fileID: 1543302665}
-  hudHeavyRainSlowingDown: {fileID: 1253041425}
-  hudBypassTraffic: {fileID: 720012809}
-  hudBypassAccident: {fileID: 476111793}
-  hudBlinkInterval: 1
-  hudFadeSpeed: 2
 --- !u!65 &1839258761
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -53241,12 +52774,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1937101282}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1937101281}
-    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1937101280}
     - targetCorrespondingSourceObject: {fileID: 6840936910576188610, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 449758191}
@@ -53290,43 +52817,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
   m_PrefabInstance: {fileID: 1937101270}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1937101280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937101271}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightLEDParent: {fileID: 1285714037}
-  leftLEDParent: {fileID: 1289888780}
-  LEDColor: {r: 0, g: 0, b: 1, a: 1}
-  defaultColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!114 &1937101281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937101271}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c24ce38d851f84d1aabe45d7dcfb0e9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hudCanvas: {fileID: 1055422518}
-  hudAmbulanceBehindRightMoveLeft: {fileID: 239981711}
-  hudAmbulanceFront: {fileID: 517432618}
-  hudRainSlowingDown: {fileID: 773046482}
-  hudHeavyRainSlowingDown: {fileID: 1930191068}
-  hudBypassTraffic: {fileID: 1911370924}
-  hudBypassAccident: {fileID: 1841320618}
-  hudBlinkInterval: 1
-  hudFadeSpeed: 2
 --- !u!65 &1937101282
 BoxCollider:
   m_ObjectHideFlags: 0
