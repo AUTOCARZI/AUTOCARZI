@@ -45882,15 +45882,15 @@ MonoBehaviour:
   normalSpeed: 15
   laneChangeSpeed: 15
   laneCorrectionSpeed: 30
-  rightTurnSpeed: 20
+  rightTurnSpeed: 30
   straightDistance: 20
   laneChangeDistance: 21
-  laneCorrectionDistance: 8
-  rightTurnDelay: 2
-  rightTurnDistance: 20
+  laneCorrectionDistance: 9
+  beforeRightTurnDistance: 13
+  rightTurnDistance: 10
   laneChangeSteer: 0.5
   laneCorrectionSteer: -1
-  rightTurnSteer: 5
+  rightTurnSteer: 2.5
   laneChangeThrottle: 0.8
   rightTurnThrottle: 1
 --- !u!1001 &1697053066

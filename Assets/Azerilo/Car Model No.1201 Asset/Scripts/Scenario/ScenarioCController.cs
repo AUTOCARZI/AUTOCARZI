@@ -10,14 +10,14 @@ public class ScenarioCController : MonoBehaviour
   public float normalSpeed = 15;
   public float laneChangeSpeed = 15f;
   public float laneCorrectionSpeed = 30f;
-  public float rightTurnSpeed = 20;
+  public float rightTurnSpeed = 30;
 
   [Header("Scenario Control")]
   public float straightDistance = 20f;
   public float laneChangeDistance = 21f;
-  public float laneCorrectionDistance = 8f;
-  public float rightTurnDelay = 2f;
-  public float rightTurnDistance = 20f;
+  public float laneCorrectionDistance = 9f;
+  public float beforeRightTurnDistance = 13f;
+  public float rightTurnDistance = 10f;
 
   private Vector3 stateStartPosition;
   private float distanceTraveled;
@@ -33,7 +33,7 @@ public class ScenarioCController : MonoBehaviour
   [Header("Movement Control")]
   public float laneChangeSteer = 0.5f;
   public float laneCorrectionSteer = -1.0f;
-  public float rightTurnSteer = 5.0f;
+  public float rightTurnSteer = 2.5f;
   public float laneChangeThrottle = 0.8f;
   public float rightTurnThrottle = 1.0f;
 
@@ -51,9 +51,12 @@ public class ScenarioCController : MonoBehaviour
 
     if (carAutonomous != null)
     {
-      carAutonomous.isAutonomousMode = true;
-      carAutonomous.targetSpeed = normalSpeed;
+      carAutonomous.SetAutonomousMode(false);
     }
+
+    // 즉시 수동제어 활성화
+    isManualControlActive = true;
+    currentCarState = CarState.Normal;
 
     StartCoroutine(StartScenarioCoroutine());
   }
@@ -62,7 +65,6 @@ public class ScenarioCController : MonoBehaviour
   {
     if (car == null)
     {
-      Debug.LogError("[ScenarioC] Car 참조가 설정되지 않았습니다!");
       enabled = false;
       return;
     }
@@ -70,34 +72,21 @@ public class ScenarioCController : MonoBehaviour
     carAutonomous = car.GetComponent<AutonomousDrivingController>();
     hudManager = FindFirstObjectByType<HUDManager>();
     ledManager = FindFirstObjectByType<LEDManager>();
-
-    if (carAutonomous == null)
-    {
-      Debug.LogError("[ScenarioC] AutonomousDrivingController를 찾을 수 없습니다!");
-      enabled = false;
-      return;
-    }
-
-    if (hudManager == null || ledManager == null )
-    {
-      Debug.LogError("[ScenarioC] 매니저를 찾을 수 없습니다!");
-    }
   }
 
   IEnumerator StartScenarioCoroutine()
   {
+    scenarioStarted = true;
     yield return new WaitForSeconds(0.5f);
 
     StartScenario();
-    scenarioStarted = true;
   }
 
   void StartScenario()
   {
     if (carAutonomous != null)
     {
-      carAutonomous.isAutonomousMode = true;
-      carAutonomous.targetSpeed = normalSpeed;
+      carAutonomous.SetAutonomousMode(false);
       carAutonomous.enableEmergencyBraking = false;
     }
 
@@ -112,7 +101,6 @@ public class ScenarioCController : MonoBehaviour
 
   IEnumerator ExecuteDistanceBasedScenario()
   {
-    SetCarState(CarState.Normal);
     yield return StartCoroutine(WaitForDistance(straightDistance));
 
     TriggerBypassTrafficEvent();
@@ -124,7 +112,7 @@ public class ScenarioCController : MonoBehaviour
     
     TriggerBypassTrafficEndEvent();
     SetCarState(CarState.Normal);
-    yield return new WaitForSeconds(rightTurnDelay);
+    yield return StartCoroutine(WaitForDistance(beforeRightTurnDistance));
 
     SetCarState(CarState.RightTurning);
     yield return StartCoroutine(WaitForDistance(rightTurnDistance));
@@ -161,12 +149,10 @@ public class ScenarioCController : MonoBehaviour
   {
     if (carAutonomous != null)
     {
-      carAutonomous.SetAutonomousMode(true);
-      carAutonomous.targetSpeed = normalSpeed;
+      carAutonomous.SetAutonomousMode(false);
       carAutonomous.enableEmergencyBraking = true;
-      carAutonomous.SetSteeringOverride(false);
     }
-    isManualControlActive = false;
+    isManualControlActive = true;
   }
 
   void SetCarState(CarState newState)
@@ -180,41 +166,33 @@ public class ScenarioCController : MonoBehaviour
       case CarState.Normal:
         if (carAutonomous != null)
         {
-          carAutonomous.SetAutonomousMode(true);
-          carAutonomous.targetSpeed = normalSpeed;
-          carAutonomous.SetSteeringOverride(false);
+          carAutonomous.SetAutonomousMode(false);
         }
-        isManualControlActive = false;
+        isManualControlActive = true;
         break;
 
       case CarState.LaneChanging:
         if (carAutonomous != null)
         {
-          carAutonomous.SetAutonomousMode(true);
-          carAutonomous.targetSpeed = laneChangeSpeed;
-          carAutonomous.SetSteeringOverride(true, laneChangeSteer);
+          carAutonomous.SetAutonomousMode(false);
         }
-        isManualControlActive = false;
+        isManualControlActive = true;
         break;
 
       case CarState.LaneCorrecting:
         if (carAutonomous != null)
         {
-          carAutonomous.SetAutonomousMode(true);
-          carAutonomous.targetSpeed = laneCorrectionSpeed;
-          carAutonomous.SetSteeringOverride(true, laneCorrectionSteer);
+          carAutonomous.SetAutonomousMode(false);
         }
-        isManualControlActive = false;
+        isManualControlActive = true;
         break;
 
       case CarState.RightTurning:
         if (carAutonomous != null)
         {
-          carAutonomous.SetAutonomousMode(true);
-          carAutonomous.targetSpeed = rightTurnSpeed;
-          carAutonomous.SetSteeringOverride(true, rightTurnSteer);
+          carAutonomous.SetAutonomousMode(false);
         }
-        isManualControlActive = false;
+        isManualControlActive = true;
         break;
     }
   }
@@ -238,14 +216,9 @@ public class ScenarioCController : MonoBehaviour
 
   void Update()
   {
-    if (!scenarioStarted || scenarioEnded) return;
-
-    if (currentCarState == CarState.Normal && carAutonomous != null && carAutonomous.isAutonomousMode)
+    if (!scenarioStarted || scenarioEnded) 
     {
-      if (Mathf.Abs(carAutonomous.targetSpeed - normalSpeed) > 0.1f)
-      {
-        carAutonomous.targetSpeed = normalSpeed;
-      }
+      return;
     }
 
     if (isManualControlActive)
@@ -262,28 +235,29 @@ public class ScenarioCController : MonoBehaviour
 
     switch (currentCarState)
     {
+      case CarState.Normal:
+        throttle = 0.4f;
+        steer = 0f;
+        break;
+        
       case CarState.LaneChanging:
-        throttle = laneChangeThrottle;
+        throttle = 0.4f;
         steer = laneChangeSteer;
+        break;
+        
+      case CarState.LaneCorrecting:
+        throttle = 0.4f;
+        steer = laneCorrectionSteer;
         break;
 
       case CarState.RightTurning:
-        throttle = rightTurnThrottle;
+        throttle = 0.4f;
         steer = rightTurnSteer;
         break;
-
-      case CarState.Normal:
-      default:
-        if (carAutonomous != null && !carAutonomous.isAutonomousMode)
-        {
-          carAutonomous.SetAutonomousMode(true);
-          isManualControlActive = false;
-        }
-        return;
     }
 
-    var inputEvent = new CarInputEvent(throttle, steer, brake, false);
-    EventManager.Publish(inputEvent);
+    var movementEvent = new MovementControlEvent(throttle, steer, brake);
+    EventManager.Publish(movementEvent);
   }
 
   [ContextMenu("Restart Scenario")]
