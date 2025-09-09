@@ -15,6 +15,9 @@ public class LEDManager : MonoBehaviour
     private bool isCurrentlyBlinking = false;
     private Color currentLEDColor = Color.white;
 
+    [Header("Reaction Time Tracking")]
+    public ReactionTimeTracker reactionTracker;
+
     // SoundType별 색상 매핑
     private Dictionary<SoundType, Color> soundColorMap;
 
@@ -31,6 +34,17 @@ public class LEDManager : MonoBehaviour
         Debug.Log("[LEDManager] Subscribing to LEDControlEvent...");
         EventManager.Subscribe<LEDControlEvent>(OnLEDControl);
         Debug.Log("[LEDManager] LEDManager initialization complete");
+
+        if (reactionTracker == null)
+        {
+            reactionTracker = FindObjectOfType<ReactionTimeTracker>();
+            if (reactionTracker == null)
+            {
+                GameObject trackerObj = new GameObject("ReactionTimeTracker");
+                reactionTracker = trackerObj.AddComponent<ReactionTimeTracker>();
+                Debug.Log("[HUDManager] Created ReactionTimeTracker automatically");
+            }
+        }
     }
 
     void OnDestroy()
@@ -72,6 +86,10 @@ public class LEDManager : MonoBehaviour
                 Debug.Log($"[LEDManager] Starting LED chained blinking for direction: {ledEvent.direction} with color: {targetColor}");
                 SetupChainedBlinking(ledEvent.blinkSpeed, ledEvent.timerSpeed, ledEvent.volume, ledEvent.direction);
                 isCurrentlyBlinking = true;
+                if (reactionTracker != null)
+                {
+                    reactionTracker.StartEvent(ledEvent.soundType.ToString());
+                }
             }
             else
             {
