@@ -149,7 +149,7 @@ public class ScenarioDController : MonoBehaviour
             if (other.CompareTag("Step"))
             {     
                 Debug.Log("[ScenarioD] Step collision confirmed - starting turn");
-                StartCoroutine(TurnRightForDuration(3f));
+                StartCoroutine(TurnRightForDuration(2.6f));
             } 
         }
 
