@@ -13,9 +13,16 @@ public class RainSceneController : MonoBehaviour
     {
         if (enableAutoRainEvent && IsRainScene())
         {
-            Debug.Log("[RainSceneController] Rain scene detected, scheduling rain-slowing-down event");
-            Invoke(nameof(TriggerRainSlowingDownEvent), delayBeforeEvent);
+            Debug.Log("[RainSceneController] Rain scene detected, triggering rain-slowing-down event immediately");
+            // 한 프레임 대기 후 실행하여 HUDManager가 초기화되도록 함
+            StartCoroutine(TriggerRainEventAfterFrame());
         }
+    }
+    
+    private System.Collections.IEnumerator TriggerRainEventAfterFrame()
+    {
+        yield return null; // 한 프레임 대기
+        TriggerRainSlowingDownEvent();
     }
     
     void OnDestroy()

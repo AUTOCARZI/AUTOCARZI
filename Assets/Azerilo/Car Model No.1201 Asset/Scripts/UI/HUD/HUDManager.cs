@@ -79,8 +79,8 @@ public class HUDManager : MonoBehaviour
       RegisterHUD("rain-slowing-down", hudRainSlowingDown, HUDMode.Static);  // 깜빡임 제거
       RegisterHUD("heavy-rain-slowing-down", hudHeavyRainSlowingDown, HUDMode.Static);  // 깜빡임 제거
 
-      // 상황별 우회 HUD(단발형)
-      RegisterHUD("bypass-traffic", hudBypassTraffic, HUDMode.OneShot, 3.0f, 3);
+      // 상황별 우회 HUD(정적 표시, 4초 지속)
+      RegisterHUD("bypass-traffic", hudBypassTraffic, HUDMode.Static, 4.0f, 1);
       RegisterHUD("bypass-accident", hudBypassAccident, HUDMode.Continuous);
 
       Debug.Log("[HUDManager] HUD System initialized");
@@ -292,10 +292,23 @@ public class HUDManager : MonoBehaviour
     // 바로 완전히 표시
     yield return FadeToAlpha(element.rawImage, 1f);
 
-    // Static 모드는 무한히 지속 (StopBlinking이 호출될 때까지)
-    while (true)
+    // minimumDisplayDuration이 설정되어 있으면 해당 시간 후 자동 종료
+    if (element.minimumDisplayDuration > 0)
     {
-      yield return null;
+      yield return new WaitForSeconds(element.minimumDisplayDuration);
+      yield return FadeOut(key);
+      if (blinkingCoroutines.ContainsKey(key))
+      {
+        blinkingCoroutines[key] = null;
+      }
+    }
+    else
+    {
+      // 시간 제한이 없으면 무한히 지속 (StopBlinking이 호출될 때까지)
+      while (true)
+      {
+        yield return null;
+      }
     }
   }
 
