@@ -84,7 +84,16 @@ public class SceneCycleManager : MonoBehaviour
             LoadNextScene();
         }
 
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            TogglePause();
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        // 특정 태그를 가진 오브젝트가 트리거에 들어왔을 때 일시정지
+        if (other.CompareTag("Player"))
         {
             TogglePause();
         }
