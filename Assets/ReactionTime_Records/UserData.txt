@@ -1,1 +1,0 @@
-Event_ID   Scene_Name   Start_Time(s)   Response_Time(s)   Reaction_Time(s)   Has_Response

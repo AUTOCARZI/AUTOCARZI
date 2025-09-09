@@ -141,40 +141,52 @@ private void AppendRecordToFile(ReactionRecord record)
 {
     try
     {
-        string fileName = "UserData.txt";   // 항상 같은 파일
+        string fileName = "UserData.csv"; 
         string filePath = Path.Combine(Application.persistentDataPath, fileName);
 
         string responseTime = record.responseTime.ToString("F3");
         string reactionTime = record.GetReactionTime() > 0 ? record.GetReactionTime().ToString("F3") : "N/A";
         string hasResponse = record.hasResponse ? "Yes" : "No";
 
-        string line =
-            $"{record.sceneName}\t" +
-            $"{record.startTime:F3}\t" +
-            $"{responseTime}\t" +
-            $"{reactionTime}\t" +
-            $"{hasResponse}\n";
+        string line = $"{record.sceneName},{record.startTime:F3},{responseTime},{reactionTime},{hasResponse}\n";
 
-        File.AppendAllText(filePath, line, Encoding.UTF8);
-        Debug.Log($"[ReactionTimeTracker] Record appended to: {filePath}");
+        // Persistent Data Path
+        if (!File.Exists(filePath))
+        {
+            string header = "SceneName,StartTime,ResponseTime,ReactionTime,HasResponse\n";
+            File.WriteAllText(filePath, header + line, Encoding.UTF8);
+        }
+        else
+        {
+            File.AppendAllText(filePath, line, Encoding.UTF8);
+        }
 
 #if UNITY_EDITOR
-        string editorPath = Path.Combine(Application.dataPath, "ReactionTime_Records");
-        if (!Directory.Exists(editorPath))
-        {
-            Directory.CreateDirectory(editorPath);
-        }
-        string editorFilePath = Path.Combine(editorPath, fileName);
-        File.AppendAllText(editorFilePath, line, Encoding.UTF8);
-        UnityEditor.AssetDatabase.Refresh();
+string editorPath = Path.Combine(Application.dataPath, "ReactionTime_Records");
+if (!Directory.Exists(editorPath))
+    Directory.CreateDirectory(editorPath);
+
+string editorFilePath = Path.Combine(editorPath, fileName);
+
+if (!File.Exists(editorFilePath))
+{
+    string header = "SceneName,StartTime,ResponseTime,ReactionTime,HasResponse\n";
+    File.WriteAllText(editorFilePath, header + line, Encoding.UTF8);
+}
+else
+{
+    File.AppendAllText(editorFilePath, line, Encoding.UTF8);
+}
+
+UnityEditor.AssetDatabase.Refresh();
 #endif
+
     }
     catch (Exception e)
     {
         Debug.LogError($"[ReactionTimeTracker] APPEND FAILED: {e.Message}");
     }
 }
-
 
 
 }
