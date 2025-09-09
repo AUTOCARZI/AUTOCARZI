@@ -23,6 +23,9 @@ public class HUDManager : MonoBehaviour
   public float hudBlinkInterval = 1f;
   public float hudFadeSpeed = 2f;
 
+  [Header("Reaction Time Tracking")]
+  public ReactionTimeTracker reactionTracker;
+
   private Dictionary<string, HUDElement> hudElements;
   private Dictionary<string, Coroutine> blinkingCoroutines;
 
@@ -35,6 +38,16 @@ public class HUDManager : MonoBehaviour
     Debug.Log("[HUDManager] Subscribing to HUDControlEvent...");
     EventManager.Subscribe<HUDControlEvent>(OnHUDControl);
 
+    if (reactionTracker == null)
+    {
+        reactionTracker = FindObjectOfType<ReactionTimeTracker>();
+        if (reactionTracker == null)
+        {
+            GameObject trackerObj = new GameObject("ReactionTimeTracker");
+            reactionTracker = trackerObj.AddComponent<ReactionTimeTracker>();
+            Debug.Log("[HUDManager] Created ReactionTimeTracker automatically");
+        }
+    }
     Debug.Log("[HUDManager] HUDManager initialization complete");
   }
 
@@ -115,6 +128,14 @@ public class HUDManager : MonoBehaviour
   }
 
 
+  private string GetHUDEventType(string hudId)
+  {
+    if (hudId.Contains("ambulance")) return "Ambulance";
+    if (hudId.Contains("rain")) return "Rain";
+    if (hudId.Contains("bypass")) return "Bypass";
+    return "Unknown";
+  }
+
   public void StartBlinking(string key)
   {
     if (!hudElements.ContainsKey(key))
@@ -132,6 +153,12 @@ public class HUDManager : MonoBehaviour
       return;
     }
 
+    if (reactionTracker != null)
+    {
+        string eventType = GetHUDEventType(key);
+        reactionTracker.StartEvent(eventType);
+    }
+    
     // HUD 표시 시작
     element.StartDisplay();
 
@@ -148,34 +175,34 @@ public class HUDManager : MonoBehaviour
     }
   }
 
-  public void StopBlinking(string key)
-  {
-    if (!hudElements.ContainsKey(key))
+    public void StopBlinking(string key)
     {
-      return;
-    }
+        if (!hudElements.ContainsKey(key))
+        {
+            return;
+        }
 
-    HUDElement element = hudElements[key];
+        HUDElement element = hudElements[key];
 
-    // Static 모드는 언제든지 중단 가능
-    if (element.mode != HUDMode.Static && !element.CanStop())
-    {
-      Debug.Log($"[HUDManager] Cannot stop {key} yet (Mode: {element.mode}, Cycles: {element.currentBlinkCount}/{element.targetBlinkCycles})");
-      return;
-    }
+        // Static 모드는 언제든지 중단 가능
+        if (element.mode != HUDMode.Static && !element.CanStop())
+        {
+            Debug.Log($"[HUDManager] Cannot stop {key} yet (Mode: {element.mode}, Cycles: {element.currentBlinkCount}/{element.targetBlinkCycles})");
+            return;
+        }
 
-    if (blinkingCoroutines.ContainsKey(key) && blinkingCoroutines[key] != null)
-    {
-      Debug.Log($"[HUDManager] Stopping display for {key}");
-      StopCoroutine(blinkingCoroutines[key]);
-      blinkingCoroutines[key] = null;
-    }
+        if (blinkingCoroutines.ContainsKey(key) && blinkingCoroutines[key] != null)
+        {
+            Debug.Log($"[HUDManager] Stopping display for {key}");
+            StopCoroutine(blinkingCoroutines[key]);
+            blinkingCoroutines[key] = null;
+        }
 
-    if (hudElements.ContainsKey(key))
-    {
-      StartCoroutine(FadeOut(key));
-    }
-  }
+        if (hudElements.ContainsKey(key))
+        {
+            StartCoroutine(FadeOut(key));
+        }
+}
 
   private System.Collections.IEnumerator BlinkCoroutine(string key)
   {
