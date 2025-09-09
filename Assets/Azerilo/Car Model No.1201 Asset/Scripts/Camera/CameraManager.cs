@@ -11,7 +11,7 @@ public class CameraManager : MonoBehaviour
     public float d2 = 0.85f;
     public float l = 0f;
 
-    private int camMode = 0;
+    private int camMode = 1;
 
     // Update is called once per frame
     void Update()
@@ -26,15 +26,15 @@ public class CameraManager : MonoBehaviour
 
         switch (camMode)
         {
-            case 1:
-                transform.position = focus.transform.position + focus.transform.TransformDirection(new Vector3(l, h2, d2));
-                transform.rotation = focus.transform.rotation;
-                Camera.main.fieldOfView = 90f;
-                break;
-            default:
+            case 0:
                 transform.position = Vector3.Lerp(transform.position, focus.transform.position + focus.transform.TransformDirection(new Vector3(0f, height, -distance)), dampening * Time.deltaTime);
                 transform.LookAt(focus.transform);
                 Camera.main.fieldOfView = 60f;
+                break;
+            default:
+                transform.position = focus.transform.position + focus.transform.TransformDirection(new Vector3(l, h2, d2));
+                transform.rotation = focus.transform.rotation;
+                Camera.main.fieldOfView = 90f;
                 break;
         }
     }
