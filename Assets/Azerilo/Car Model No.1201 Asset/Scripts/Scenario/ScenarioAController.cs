@@ -15,14 +15,14 @@ public class ScenarioAController : MonoBehaviour
   public bool invertStopLineDirection = false;
 
   [Header("Movement Settings")]
-  public float ambulanceSpeed = 4.0f;     // 앰뷸런스 이동 속도
-  public float normalSpeed = 15f;         // 일반 자율주행 속도
+  public float ambulanceSpeed = 2.0f;     // 앰뷸런스 이동 속도
+  public float normalSpeed = 40f;         // 일반 자율주행 속도
   public float emergencyStopSpeed = 0f;   // 응급 정지 시 속도
   public float slowDownSpeed = 15f;       // 사이렌 인지 후 감속 속도
 
   [Header("Scenario Control")]
-  public float straightDistance = 15f;    // 직진 거리
-  public float scenarioEndDistance = 80f;  // 앰뷸런스가 이 거리만큼 멀어지면 시나리오 종료
+  public float straightDistance = 40f;    // 직진 거리
+  public float scenarioEndDistance = 200f;  // 앰뷸런스가 이 거리만큼 멀어지면 시나리오 종료
 
 
 
