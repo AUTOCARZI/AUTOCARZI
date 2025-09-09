@@ -1,5 +1,1 @@
 Event_ID   Scene_Name   Start_Time(s)   Response_Time(s)   Reaction_Time(s)   Has_Response
-RoadScene-Scenario-A	5.126	10.378	5.252	Yes
-RoadScene-Scenario-A-H	5.233	9.952	4.719	Yes
-RoadScene-Scenario-L	5.078	11.751	6.673	Yes
-RoadScene-Scenario-L	5.145	12.897	7.752	Yes
