@@ -73,6 +73,7 @@ public class CarController : MonoBehaviour
     private InputManager im;
     private LightingManager lm;
     private Rigidbody rb;
+    private AutonomousDrivingController carAutonomous;
 
     // Audio detection variables
     private float currentAmbulanceVolume;
@@ -92,6 +93,7 @@ public class CarController : MonoBehaviour
         im = GetComponent<InputManager>();
         lm = GetComponent<LightingManager>();
         rb = GetComponent<Rigidbody>();
+        carAutonomous = GetComponent<AutonomousDrivingController>();
 
         if (CM)
         {
@@ -104,8 +106,11 @@ public class CarController : MonoBehaviour
         }
 
         InitializeSoundSystem();
-        InitializeLaneDetectionCamera();
-        InitializeUDPStreaming();
+        Debug.Log($"[LOG] holi {carAutonomous.isAutonomousMode}");
+        if(carAutonomous.isAutonomousMode){
+            InitializeLaneDetectionCamera();
+            InitializeUDPStreaming();
+        }
 
         // 모든 이벤트 구독
         EventManager.Subscribe<SoundEvent>(OnSoundEventReceived);
