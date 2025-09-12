@@ -2513,6 +2513,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 1198124840}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  reactionTracker: {fileID: 0}
 --- !u!114 &373086291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2534,6 +2535,7 @@ MonoBehaviour:
   hudBypassAccident: {fileID: 0}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
+  reactionTracker: {fileID: 0}
 --- !u!65 &373086292
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8108,52 +8110,6 @@ Transform:
   - {fileID: 227542648}
   m_Father: {fileID: 2049351958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1408332961
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1408332963}
-  - component: {fileID: 1408332962}
-  m_Layer: 0
-  m_Name: RainSceneController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1408332962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1408332961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f10ca52766bdf40e9a31a854efad15af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enableAutoRainEvent: 1
-  delayBeforeEvent: 2
---- !u!4 &1408332963
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1408332961}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.59314, y: 22.00692, z: -0.34459}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1450838417 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3155090286494949620, guid: b7d99e050a268a74393c5e2746a07604, type: 3}
@@ -12667,4 +12623,3 @@ SceneRoots:
   - {fileID: 199604830}
   - {fileID: 855428409}
   - {fileID: 1276792769}
-  - {fileID: 1408332963}

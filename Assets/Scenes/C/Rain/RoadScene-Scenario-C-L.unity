@@ -3717,6 +3717,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 884306671}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  reactionTracker: {fileID: 0}
 --- !u!114 &136204061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3738,6 +3739,7 @@ MonoBehaviour:
   hudBypassAccident: {fileID: 270013561}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
+  reactionTracker: {fileID: 0}
 --- !u!65 &136204062
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4229,6 +4231,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 1156942844}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  reactionTracker: {fileID: 0}
 --- !u!114 &138395324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4250,6 +4253,7 @@ MonoBehaviour:
   hudBypassAccident: {fileID: 752081831}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
+  reactionTracker: {fileID: 0}
 --- !u!65 &138395325
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16796,6 +16800,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 2059196036}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  reactionTracker: {fileID: 0}
 --- !u!114 &660572455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16817,6 +16822,7 @@ MonoBehaviour:
   hudBypassAccident: {fileID: 802972967}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
+  reactionTracker: {fileID: 0}
 --- !u!134 &662903394
 PhysicsMaterial:
   m_ObjectHideFlags: 0
@@ -17456,6 +17462,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 575833833}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  reactionTracker: {fileID: 0}
 --- !u!114 &686719125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17477,6 +17484,7 @@ MonoBehaviour:
   hudBypassAccident: {fileID: 1800923410}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
+  reactionTracker: {fileID: 0}
 --- !u!65 &686719126
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18692,6 +18700,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 1458358573}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  reactionTracker: {fileID: 0}
 --- !u!114 &721735487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18713,6 +18722,7 @@ MonoBehaviour:
   hudBypassAccident: {fileID: 1557773875}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
+  reactionTracker: {fileID: 0}
 --- !u!65 &721735488
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20378,6 +20388,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 174005920}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  reactionTracker: {fileID: 0}
 --- !u!114 &787030479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20399,6 +20410,7 @@ MonoBehaviour:
   hudBypassAccident: {fileID: 640421618}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
+  reactionTracker: {fileID: 0}
 --- !u!65 &787030480
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -22580,6 +22592,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 210990553}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  reactionTracker: {fileID: 0}
 --- !u!114 &878460968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22601,6 +22614,7 @@ MonoBehaviour:
   hudBypassAccident: {fileID: 0}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
+  reactionTracker: {fileID: 0}
 --- !u!65 &878460969
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24218,6 +24232,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 1951740227}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  reactionTracker: {fileID: 0}
 --- !u!114 &921769753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24239,6 +24254,7 @@ MonoBehaviour:
   hudBypassAccident: {fileID: 1796984735}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
+  reactionTracker: {fileID: 0}
 --- !u!65 &921769754
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -34712,52 +34728,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7261547210888614870, guid: a8fa3d785a0778c45ad2984740895d5e, type: 3}
   m_PrefabInstance: {fileID: 1803182912}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1386819846
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1386819848}
-  - component: {fileID: 1386819847}
-  m_Layer: 0
-  m_Name: RainSceneController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1386819847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1386819846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f10ca52766bdf40e9a31a854efad15af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enableAutoRainEvent: 1
-  delayBeforeEvent: 2
---- !u!4 &1386819848
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1386819846}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.59314, y: 22.00692, z: -0.34459}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1391585091
 GameObject:
   m_ObjectHideFlags: 0
@@ -40440,6 +40410,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 1785805319}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  reactionTracker: {fileID: 0}
 --- !u!114 &1563549577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40461,6 +40432,7 @@ MonoBehaviour:
   hudBypassAccident: {fileID: 1754435197}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
+  reactionTracker: {fileID: 0}
 --- !u!65 &1563549578
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -47539,6 +47511,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 75358430}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  reactionTracker: {fileID: 0}
 --- !u!114 &1790190780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47560,6 +47533,7 @@ MonoBehaviour:
   hudBypassAccident: {fileID: 1162140888}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
+  reactionTracker: {fileID: 0}
 --- !u!65 &1790190781
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -49189,6 +49163,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 764756264}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  reactionTracker: {fileID: 0}
 --- !u!114 &1839258760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49210,6 +49185,7 @@ MonoBehaviour:
   hudBypassAccident: {fileID: 476111793}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
+  reactionTracker: {fileID: 0}
 --- !u!65 &1839258761
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -52523,6 +52499,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 1289888780}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  reactionTracker: {fileID: 0}
 --- !u!114 &1937101281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52544,6 +52521,7 @@ MonoBehaviour:
   hudBypassAccident: {fileID: 1841320618}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
+  reactionTracker: {fileID: 0}
 --- !u!65 &1937101282
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -57339,7 +57317,6 @@ SceneRoots:
   - {fileID: 1997520241}
   - {fileID: 913793199}
   - {fileID: 1679335881}
-  - {fileID: 1386819848}
   - {fileID: 1861398868}
   - {fileID: 347449179}
   - {fileID: 1778495534}
