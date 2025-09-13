@@ -75,10 +75,6 @@ public class HUDManager : MonoBehaviour
       RegisterHUD("ambulance-behind-right-move-left", hudAmbulanceBehindRightMoveLeft, HUDMode.Continuous);
       RegisterHUD("ambulance-front", hudAmbulanceFront, HUDMode.Static);  // 깜빡임 제거
 
-      // 상황별 우천 HUD(정적형 - 깜빡임 없음)
-      RegisterHUD("rain-slowing-down", hudRainSlowingDown, HUDMode.Static);  // 깜빡임 제거
-      RegisterHUD("heavy-rain-slowing-down", hudHeavyRainSlowingDown, HUDMode.Static);  // 깜빡임 제거
-
       // 상황별 우회 HUD(정적 표시, 4초 지속)
       RegisterHUD("bypass-traffic", hudBypassTraffic, HUDMode.Static, 4.0f, 1);
       RegisterHUD("bypass-accident", hudBypassAccident, HUDMode.Continuous);
