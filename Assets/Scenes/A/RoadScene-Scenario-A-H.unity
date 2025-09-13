@@ -6685,6 +6685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ledEnabled: 0
   rightLEDParent: {fileID: 297253257}
   leftLEDParent: {fileID: 2059196036}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}

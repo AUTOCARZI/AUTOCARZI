@@ -3251,6 +3251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ledEnabled: 1
   rightLEDParent: {fileID: 366387926}
   leftLEDParent: {fileID: 884306671}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
@@ -3676,6 +3677,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ledEnabled: 1
   rightLEDParent: {fileID: 68509072}
   leftLEDParent: {fileID: 1156942844}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
@@ -17525,6 +17527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ledEnabled: 1
   rightLEDParent: {fileID: 297253257}
   leftLEDParent: {fileID: 2059196036}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
@@ -18105,6 +18108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ledEnabled: 1
   rightLEDParent: {fileID: 311177881}
   leftLEDParent: {fileID: 575833833}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
@@ -19364,6 +19368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ledEnabled: 1
   rightLEDParent: {fileID: 585849511}
   leftLEDParent: {fileID: 1458358573}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
@@ -22066,6 +22071,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ledEnabled: 1
   rightLEDParent: {fileID: 62946850}
   leftLEDParent: {fileID: 174005920}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
@@ -24385,6 +24391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ledEnabled: 0
   rightLEDParent: {fileID: 2067721903}
   leftLEDParent: {fileID: 210990553}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
@@ -25804,6 +25811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ledEnabled: 1
   rightLEDParent: {fileID: 309994531}
   leftLEDParent: {fileID: 1951740227}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
@@ -42139,6 +42147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ledEnabled: 1
   rightLEDParent: {fileID: 426008507}
   leftLEDParent: {fileID: 1785805319}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
@@ -48259,6 +48268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ledEnabled: 1
   rightLEDParent: {fileID: 1546108104}
   leftLEDParent: {fileID: 75358430}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
@@ -49221,6 +49231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ledEnabled: 1
   rightLEDParent: {fileID: 1929403644}
   leftLEDParent: {fileID: 764756264}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
@@ -53002,6 +53013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ledEnabled: 1
   rightLEDParent: {fileID: 1285714037}
   leftLEDParent: {fileID: 1289888780}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
