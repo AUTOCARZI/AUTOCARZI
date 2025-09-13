@@ -2820,6 +2820,7 @@ MonoBehaviour:
   leftLEDParent: {fileID: 1198124840}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  reactionTracker: {fileID: 0}
 --- !u!114 &373086291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2841,6 +2842,7 @@ MonoBehaviour:
   hudBypassAccident: {fileID: 0}
   hudBlinkInterval: 1
   hudFadeSpeed: 2
+  reactionTracker: {fileID: 0}
 --- !u!65 &373086292
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2994,7 +2996,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a2133083bcb346cf83a25666cd5566a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rainMode: 0
   whistleVolumeThreshold: 0.4
+  defaultSpeed: 10
+  maxSpeed: 20
+  enableDefaultMovement: 1
+  hitWall: 0
+  isTurningRight: 0
 --- !u!43 &378404344
 Mesh:
   m_ObjectHideFlags: 0
@@ -4720,7 +4728,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d8ec10890dd234f1fa359c16f1e12254, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -29.244
+      value: -32.67
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d8ec10890dd234f1fa359c16f1e12254, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4728,7 +4736,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d8ec10890dd234f1fa359c16f1e12254, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 64.555
+      value: 53.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d8ec10890dd234f1fa359c16f1e12254, type: 3}
       propertyPath: m_LocalRotation.w
