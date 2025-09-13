@@ -21,6 +21,7 @@ public class ScenarioAController : MonoBehaviour
   public float slowDownSpeed = 15f;       // 사이렌 인지 후 감속 속도
 
   [Header("Scenario Control")]
+  public float waitForSeconds = 3f;       // 정지 후 대기 시간
   public float straightDistance = 40f;    // 직진 거리
   public float scenarioEndDistance = 200f;  // 앰뷸런스가 이 거리만큼 멀어지면 시나리오 종료
 
@@ -114,7 +115,7 @@ public class ScenarioAController : MonoBehaviour
     yield return StartCoroutine(MoveForwardDistance(straightDistance));
 
     SetCarState(CarState.EmergencyStopped);
-    yield return new WaitForSeconds(3f);
+    yield return new WaitForSeconds(waitForSeconds);
 
     SetCarState(CarState.Normal);
     yield return StartCoroutine(MoveForwardDistance(straightDistance));
@@ -154,35 +155,6 @@ public class ScenarioAController : MonoBehaviour
     if (distance > scenarioEndDistance)
     {
       EndScenario();
-    }
-  }
-
-  void CheckStopLineProximity()
-  {
-    if (stopLine == null || currentCarState != CarState.EmergencySlowDown) return;
-    if (!IsCarBeforeStopLine()) return;
-
-    float distanceToStopLine = Vector3.Distance(car.transform.position, stopLine.position);
-
-    if (distanceToStopLine < stopLineDetectionDistance)
-    {
-      SetCarState(CarState.EmergencyStopped);
-    }
-  }
-
-
-  // 정지선을 통과했는지 확인하고 통과 시 즉시 정상 주행으로 복귀
-  void CheckStopLineCrossed()
-  {
-    if (stopLine == null) return;
-    if (currentCarState == CarState.EmergencySlowDown && HasCarPassedStopLine())
-    {
-      SetCarState(CarState.Normal);
-    }
-
-    if (currentCarState == CarState.EmergencyStopped && HasCarPassedStopLine())
-    {
-      SetCarState(CarState.Normal);
     }
   }
 
