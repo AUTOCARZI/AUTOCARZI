@@ -8441,7 +8441,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ledEnabled: 0
   rightLEDParent: {fileID: 1426827844}
   leftLEDParent: {fileID: 1596477737}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
@@ -8463,7 +8462,7 @@ MonoBehaviour:
   hudAmbulanceBehindRightMoveLeft: {fileID: 1726211451}
   hudAmbulanceFront: {fileID: 0}
   hudRainSlowingDown: {fileID: 0}
-  hudHeavyRainSlowingDown: {fileID: 502691745}
+  hudHeavyRainSlowingDown: {fileID: 0}
   hudBypassTraffic: {fileID: 284619765}
   hudBypassAccident: {fileID: 1323489637}
   hudBlinkInterval: 1
@@ -8623,78 +8622,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isRainMode: 0
---- !u!1 &502691742
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 502691743}
-  - component: {fileID: 502691744}
-  - component: {fileID: 502691745}
-  m_Layer: 0
-  m_Name: HUD_Heavy_Rain_Slowing_Down
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &502691743
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502691742}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1178379665}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1200, y: 400}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &502691744
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502691742}
-  m_CullTransparentMesh: 1
---- !u!114 &502691745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502691742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 4fa7bf32109e74ccfa4bfda4ad8268b9, type: 3}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
 --- !u!1 &503053539
 GameObject:
   m_ObjectHideFlags: 0
@@ -11192,7 +11119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ledEnabled: 1
   rightLEDParent: {fileID: 297253257}
   leftLEDParent: {fileID: 2059196036}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
@@ -18193,7 +18119,6 @@ RectTransform:
   - {fileID: 1726211449}
   - {fileID: 284619763}
   - {fileID: 1323489639}
-  - {fileID: 502691743}
   m_Father: {fileID: 498462007}
   m_LocalEulerAnglesHint: {x: -12, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -28287,7 +28212,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212faf5d151a24ad1a0e11615ff67588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ledEnabled: 1
   rightLEDParent: {fileID: 1929403644}
   leftLEDParent: {fileID: 764756264}
   LEDColor: {r: 0, g: 0, b: 1, a: 1}
