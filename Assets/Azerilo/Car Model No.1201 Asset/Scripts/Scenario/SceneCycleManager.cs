@@ -13,7 +13,7 @@ public class SceneCycleManager : MonoBehaviour
     // 무작위로 섞은 24개 씬 순서 (중복 없이 모든 씬 포함)
     private readonly List<string> sceneOrder = new List<string>
     {
-        "Scenes/A/Rain/RoadScene-Scenario-A",
+        "Scenes/A/RoadScene-Scenario-A",
         "Scenes/B/Rain/RoadScene-Scenario-B-H",
         "Scenes/D/RoadScene-Scenario-D-L",
         "Scenes/C/Rain/RoadScene-Scenario-C",
@@ -25,10 +25,10 @@ public class SceneCycleManager : MonoBehaviour
         "Scenes/D/RoadScene-Scenario-D",
         "Scenes/B/Rain/RoadScene-Scenario-B-L",
         "Scenes/C/Rain/RoadScene-Scenario-C-H",
-        "Scenes/A/RoadScene-Scenario-A",
         "Scenes/D/Rain/RoadScene-Scenario-D-L",
         "Scenes/B/RoadScene-Scenario-B-H",
         "Scenes/C/RoadScene-Scenario-C",
+        "Scenes/A/Rain/RoadScene-Scenario-A",
         "Scenes/D/RoadScene-Scenario-D-H",
         "Scenes/B/Rain/RoadScene-Scenario-B",
         "Scenes/C/Rain/RoadScene-Scenario-C-L",
