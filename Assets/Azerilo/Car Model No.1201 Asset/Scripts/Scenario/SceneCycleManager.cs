@@ -13,6 +13,7 @@ public class SceneCycleManager : MonoBehaviour
     // 무작위로 섞은 24개 씬 순서 (중복 없이 모든 씬 포함)
     private readonly List<string> sceneOrder = new List<string>
     {
+        "Scenes/A/Rain/RoadScene-Scenario-A",
         "Scenes/B/Rain/RoadScene-Scenario-B-H",
         "Scenes/D/RoadScene-Scenario-D-L",
         "Scenes/C/Rain/RoadScene-Scenario-C",
@@ -28,7 +29,6 @@ public class SceneCycleManager : MonoBehaviour
         "Scenes/D/Rain/RoadScene-Scenario-D-L",
         "Scenes/B/RoadScene-Scenario-B-H",
         "Scenes/C/RoadScene-Scenario-C",
-        "Scenes/A/Rain/RoadScene-Scenario-A",
         "Scenes/D/RoadScene-Scenario-D-H",
         "Scenes/B/Rain/RoadScene-Scenario-B",
         "Scenes/C/Rain/RoadScene-Scenario-C-L",
@@ -41,6 +41,9 @@ public class SceneCycleManager : MonoBehaviour
 
     private int currentSceneIndex = -1;
     private bool isPaused = false;
+    private bool isLoadingScene = false;
+    private float lastSceneLoadTime = 0f;
+    private const float sceneLoadCooldown = 0.5f;  // 씬 로드 최소 간격
 
     void Awake()
     {
@@ -50,21 +53,22 @@ public class SceneCycleManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             InitializeSceneCycle();
         }
-        else
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
     }
 
-
     void InitializeSceneCycle()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
+        currentSceneIndex = -1;
 
         for (int i = 0; i < sceneOrder.Count; i++)
         {
-            // 씬 이름으로 매칭 (경로의 파일명 부분과 비교)
-            if (sceneOrder[i].Contains(currentSceneName))
+            // 정확한 씬 이름 매칭
+            string sceneNameFromPath = System.IO.Path.GetFileNameWithoutExtension(sceneOrder[i]);
+            if (sceneNameFromPath == currentSceneName)
             {
                 currentSceneIndex = i;
                 break;
@@ -73,17 +77,33 @@ public class SceneCycleManager : MonoBehaviour
 
         if (currentSceneIndex == -1)
         {
-            currentSceneIndex = -1;
+            currentSceneIndex = 0;
         }
+
+        // 씬 로드 완료 이벤트 등록
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        // 싱글톤 체크
+        if (instance != this)
         {
-            LoadNextScene();
+            Destroy(gameObject);
+            return;
         }
 
+        // Tab 키: 씬 전환
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (!isLoadingScene && Time.time - lastSceneLoadTime > sceneLoadCooldown)
+            {
+                lastSceneLoadTime = Time.time;
+                LoadNextScene();
+            }
+        }
+
+        // Enter 키: 일시정지 토글
         if (Input.GetKeyDown(KeyCode.Return))
         {
             TogglePause();
@@ -101,6 +121,8 @@ public class SceneCycleManager : MonoBehaviour
 
     void LoadNextScene()
     {
+        if (isLoadingScene) return;
+
         currentSceneIndex++;
 
         if (currentSceneIndex >= sceneOrder.Count)
@@ -110,16 +132,21 @@ public class SceneCycleManager : MonoBehaviour
         }
 
         string scenePath = sceneOrder[currentSceneIndex];
+        isLoadingScene = true;
 
-
+        // 씬 전환 시 일시정지 해제
         if (isPaused)
         {
-            Time.timeScale = 1f;
             isPaused = false;
+            Time.timeScale = 1f;
         }
 
-        // Build Settings의 경로 그대로 사용
-        SceneManager.LoadScene(scenePath);
+        SceneManager.LoadSceneAsync(scenePath);
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        isLoadingScene = false;
     }
 
     void TogglePause()
@@ -139,6 +166,13 @@ public class SceneCycleManager : MonoBehaviour
 
     void OnDestroy()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        if (instance == this)
+        {
+            instance = null;
+        }
+
         if (Time.timeScale != 1f)
         {
             Time.timeScale = 1f;
